@@ -22,5 +22,5 @@ new Vue({
 });
 
 
-// fix the admin menu for the slug "cortex-importer"
-menuFix('cortex-importer');
+// fix the admin menu for the slug "ifm-importer"
+menuFix('ifm-importer');

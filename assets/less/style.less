@@ -1,0 +1,180 @@
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+summary {
+font-size: 20px;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+summary:hover {
+cursor: pointer;
+}
+.import-fields {
+background: white;
+}
+.import-fields,
+.import-fields-wrapper {
+position: relative;
+}
+.import-fields-wrapper {
+overflow: scroll;
+}
+.import-fields:after {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
+background: rgba(241, 241, 241, 0);
+background: -moz-linear-gradient(
+    top,
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
+);
+background: -webkit-gradient(
+    left top,
+    left bottom,
+    color-stop(0%, rgba(241, 241, 241, 0)),
+    color-stop(90%, rgba(241, 241, 241, 0.5)),
+    color-stop(100%, rgba(241, 241, 241, 1))
+);
+background: -webkit-linear-gradient(
+    top,
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
+);
+background: -o-linear-gradient(
+    top,
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
+);
+background: -ms-linear-gradient(
+    top,
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
+);
+background: linear-gradient(
+    to bottom,
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
+);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f1f1f', endColorstr='#0f1f1f', GradientType=0 );
+}
+.step-name {
+margin-top: 3px;
+margin-bottom: 3px;
+}
+.table-wrapper {
+overflow: scroll;
+margin-bottom: 10px;
+}
+.table-wrapper table {
+table-layout: fixed;
+}
+.table-wrapper td {
+word-wrap: break-word;
+}
+.table-wrapper .cell-content {
+word-break: break-all;
+}
+.entry-length {
+width: 50px;
+}
+.preview-details {
+font-size: 15px;
+margin-top: 4px;
+margin-bottom: 4px;
+}
+.import-list {
+display: block;
+float: left;
+max-width: 90%;
+overflow: hidden;
+padding-right: 10px;
+}
+.csv-table {
+border-collapse: collapse;
+cellpadding: 2px;
+background: white;
+}
+tr th,
+tr td,
+tfoot tr {
+min-width: 130px;
+border: 1px solid black;
+text-align: left;
+border-collapse: collapse;
+padding: 3px;
+}
+tfoot tr td {
+colspan: "100%";
+}
+details ul {
+height: 300px;
+overflow: scroll;
+border: 1px solid black;
+width: 270px;
+padding: 10px;
+}
+summary:focus {
+outline-style: none;
+}
+.step {
+margin-right: 2%;
+max-width: 23%;
+margin-bottom: 15px;
+display: block;
+float: left;
+}
+.step-wrapper {
+display: flex;
+width: 100%;
+flex-wrap: wrap;
+}
+.step .key-row,
+.step .key-value {
+display: flex;
+}
+.step-then {
+text-align: center;
+}
+.step .v-select .dropdown-toggle {
+background-color: white;
+}
+.single-meta {
+display: flex;
+flex-direction: column;
+}
+.v-select .dropdown-toggle {
+background-color: white !important;
+}
+.v-select.dropdown {
+width: 160px;
+}
+.step .single-meta {
+margin-top: 5px;
+margin-bottom: 5px;
+}
+.key-row {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+margin-bottom: 4px;
+}
+.meta-key-input {
+height: 30px;
+}
+.custom-var {
+margin-top: 5px;
+margin-bottom: 10px;
+}
+/* .add-var {
+margin-top: 5px;
+} */

@@ -2,24 +2,13 @@
 
 namespace IfmImport;
 
-require './vendor/autoload.php';
-
 use League\Csv\Reader;
 use League\Csv\Statement;
-
-if (!ini_get("auto_detect_line_endings")) {
-    ini_set("auto_detect_line_endings", '1');
-}
-
-require_once(ABSPATH . 'wp-admin/includes/media.php');
-require_once(ABSPATH . 'wp-admin/includes/file.php');
-require_once(ABSPATH . 'wp-admin/includes/image.php');
-ini_set('memory_limit', '1024M');
 
 class WpImporter
 {
     public $steps;
-    
+
     public $file_path;
     public $limit;
     public $offset;
@@ -34,15 +23,24 @@ class WpImporter
     public function __construct()
     { }
 
-    public function setup($file_path, $steps, $offset = 0, $limit = -1)
+    public function setup($file, $steps, $offset = 0, $limit = -1)
     {
+        if (!ini_get("auto_detect_line_endings")) {
+            ini_set("auto_detect_line_endings", '1');
+        }
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+        ini_set('memory_limit', '1024M');
+
         $this->steps = $steps;
-        $this->readCSV($file_path, $limit, $offset);
+        $this->readCSV($file, $limit, $offset);
     }
 
-    public function readCSV($file_path, $limit, $offset)
+    public function readCSV($file, $limit, $offset)
     {
-        $csv = Reader::createFromPath($file_path);
+        $csv = Reader::createFromFileObject($file);
         $csv->setHeaderOffset(0);
         $this->header = $csv->getHeader();
 
@@ -176,7 +174,8 @@ class WpImporter
             $field_object = get_field_object($key);
             $type = $field_object['type'];
 
-            switch ($type): case 'text':
+            switch ($type):
+                case 'text':
                 case 'Wysiwyg Editor':
                 case 'oEmbed':
                 case 'user':

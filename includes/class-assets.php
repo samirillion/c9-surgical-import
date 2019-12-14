@@ -66,20 +66,20 @@ class Assets {
         $prefix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
 
         $scripts = [
-            'ifmimporter-vendor' => [
+            'ifm-importer-vendor' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/vendor.js',
                 'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/vendor.js' ),
                 'in_footer' => true
             ],
-            'ifmimporter-frontend' => [
+            'ifm-importer-frontend' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/frontend.js',
-                'deps'      => [ 'jquery', 'ifmimporter-vendor' ],
+                'deps'      => [ 'jquery', 'ifm-importer-vendor' ],
                 'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/frontend.js' ),
                 'in_footer' => true
             ],
-            'ifmimporter-admin' => [
+            'ifm-importer-admin' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/admin.js',
-                'deps'      => [ 'jquery', 'ifmimporter-vendor' ],
+                'deps'      => [ 'jquery', 'ifm-importer-vendor' ],
                 'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/admin.js' ),
                 'in_footer' => true
             ]
@@ -96,13 +96,13 @@ class Assets {
     public function get_styles() {
 
         $styles = [
-            'ifmimporter-style' => [
+            'ifm-importer-style' => [
                 'src' =>  IFM_IMPORT_ASSETS . '/css/style.css'
             ],
-            'ifmimporter-frontend' => [
+            'ifm-importer-frontend' => [
                 'src' =>  IFM_IMPORT_ASSETS . '/css/frontend.css'
             ],
-            'ifmimporter-admin' => [
+            'ifm-importer-admin' => [
                 'src' =>  IFM_IMPORT_ASSETS . '/css/admin.css'
             ],
         ];

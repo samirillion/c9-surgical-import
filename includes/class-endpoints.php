@@ -1,6 +1,8 @@
 <?php
+
 namespace IfmImport;
-include('class-importer.php');
+
+require_once('class-import.php');
 
 /**
  * REST_API Handler
@@ -10,7 +12,7 @@ class ENDPOINTS
 
     public function __construct()
     {
-        $this->namespace = 'ifmimporter/v1';
+        $this->namespace = 'c9importer/v1';
         add_action('rest_api_init', array($this, 'register_endpoints'));
     }
 
@@ -35,12 +37,12 @@ class ENDPOINTS
 
         register_rest_route($this->namespace, '/import-posts', array(
             'methods' => 'GET',
-            'callback' => [ new Importer, 'run_import']
+            'callback' => [new Importer, 'run_import']
         ));
 
         register_rest_route($this->namespace, '/download-image', array(
             'methods' => 'GET',
-            'callback' => [ new Importer, 'download_image']
+            'callback' => [new Importer, 'download_image']
         ));
 
         register_rest_route($this->namespace, '/returnparsedcsv/(?P<id>\d+)', array(
@@ -54,7 +56,6 @@ class ENDPOINTS
                 ),
             ),
         ));
-
     }
 
     public function get_and_parse_csv($attachment_id)

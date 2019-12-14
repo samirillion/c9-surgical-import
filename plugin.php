@@ -1,19 +1,19 @@
 <?php
- /*
+/*
 Plugin Name: IFM Surgical Import
-Plugin URI: https://example.com/
-Description: Plugin for importing things
-Version: 0.1
-Author: Your Name
-Author URI: https://covertnine.com/
+Plugin URI: https://github.com/ifm-importer
+Description: Upload complex, interrelated data with this very powerful Importer plugin.
+Version: 1.0.0
+Author: Sam Gates
+Author URI: https://idealforum.org/
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: corteximporter
+Text Domain: ifm-importer
 Domain Path: /languages
 */
 
 /**
- * Copyright (c) 2019 Your Name (email: Email). All rights reserved.
+ * Copyright (c) 2019 Sam Gates (email: samirillion@protonmail.com). All rights reserved.
  *
  * Released under the GPL license
  * http://www.opensource.org/licenses/gpl-license.php
@@ -61,7 +61,7 @@ final class IFM_Importer_Plugin
      *
      * @var string
      */
-    public $varname = 'ifmimporter';
+    public $varname = 'ifm-importer';
 
     /**
      * Holds various class instances
@@ -143,6 +143,7 @@ final class IFM_Importer_Plugin
         define('IFM_IMPORT_FILE', __FILE__);
         define('IFM_IMPORT_PATH', dirname(IFM_IMPORT_FILE));
         define('IFM_IMPORT_INCLUDES', IFM_IMPORT_PATH . '/includes');
+        define('IFM_IMPORT_VENDOR', IFM_IMPORT_PATH . '/vendor');
         define('IFM_IMPORT_URL', plugins_url('', IFM_IMPORT_FILE));
         define('IFM_IMPORT_ASSETS', IFM_IMPORT_URL . '/assets');
         define('IFM_IMPORT_VAR_NAME', $this->varname);
@@ -167,13 +168,13 @@ final class IFM_Importer_Plugin
     public function activate()
     {
 
-        $installed = get_option('ifmimporter_installed');
+        $installed = get_option('ifm_importer_installed');
 
         if (!$installed) {
-            update_option('ifmimporter_installed', time());
+            update_option('ifm_importer_installed', time());
         }
 
-        update_option('ifmimporter_version', IFM_IMPORT_VERSION);
+        update_option('ifm_importer_version', IFM_IMPORT_VERSION);
     }
 
     /**
@@ -191,6 +192,7 @@ final class IFM_Importer_Plugin
      */
     public function includes()
     {
+        require_once IFM_IMPORT_VENDOR . '/autoload.php';
 
         require_once IFM_IMPORT_INCLUDES . '/class-assets.php';
         require_once IFM_IMPORT_INCLUDES . '/class-endpoints.php';
@@ -261,7 +263,7 @@ final class IFM_Importer_Plugin
      */
     public function localization_setup()
     {
-        load_plugin_textdomain('ifmimporter', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        load_plugin_textdomain('ifm-importer', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 
     /**
@@ -292,4 +294,4 @@ final class IFM_Importer_Plugin
     }
 } // IFM_Importer_Plugin
 
-$ifmimporter = IFM_Importer_Plugin::init();
+IFM_Importer_Plugin::init();

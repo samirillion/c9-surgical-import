@@ -1,4 +1,5 @@
 <?php
+
 namespace IfmImport;
 
 /**
@@ -22,9 +23,9 @@ class Admin
         global $submenu;
 
         $capability = 'manage_options';
-        $slug       = 'cortex-importer';
+        $slug       = 'ifm-importer';
 
-        $hook = add_menu_page(__('Cortex Importer', 'textdomain'), __('Cortex Importer', 'textdomain'), $capability, $slug, [$this, 'plugin_page'], 'dashicons-text');
+        $hook = add_menu_page(__('Ifm Importer', 'textdomain'), __('Ifm Importer', 'textdomain'), $capability, $slug, [$this, 'plugin_page'], 'dashicons-networking');
 
         if (current_user_can($capability)) {
             $submenu[$slug][] = array(__('Import', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/');
@@ -52,7 +53,7 @@ class Admin
      */
     public function localize_scripts()
     {
-        wp_localize_script('ifmimporter-admin', 'WP_API_Settings', array(
+        wp_localize_script('ifm-importer-admin', 'WP_API_Settings', array(
             // 'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce('wp_rest')
         ));
@@ -65,8 +66,8 @@ class Admin
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_style('ifmimporter-admin');
-        wp_enqueue_script('ifmimporter-admin');
+        wp_enqueue_style('ifm-importer-admin');
+        wp_enqueue_script('ifm-importer-admin');
     }
 
     /**
@@ -88,7 +89,7 @@ class Admin
     //  */
     // public function register_rest_routes()
     // {
-    //     register_rest_route('ifmimporter/v1', '/author/(?P<id>\d+)', array(
+    //     register_rest_route('ifm-importer/v1', '/author/(?P<id>\d+)', array(
     //         'methods' => 'GET',
     //         'callback' => $this->my_awesome_func
     //     ));

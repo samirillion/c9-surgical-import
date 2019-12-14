@@ -1,0 +1,14 @@
+{
+    "name": "ifm/importer",
+    "type": "project",
+    "license": "GPL2",
+    "authors": [
+        {
+            "name": "samirillion",
+            "email": "sam@protonmail.com"
+        }
+    ],
+    "require": {
+        "league/csv": "^9.4"
+    }
+}

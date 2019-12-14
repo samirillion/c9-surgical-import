@@ -16,11 +16,11 @@ var WpApi = new WPAPI({
     nonce: window.WP_API_Settings.nonce
 });
 
-WpApi.myPosts = WpApi.registerRoute('ifmimporter/v1', '/author/(?P<id>)');
+WpApi.myPosts = WpApi.registerRoute('ifm-importer/v1', '/author/(?P<id>)');
 
-WpApi.getCsv = WpApi.registerRoute('ifmimporter/v1', '/getcsv');
+WpApi.getCsv = WpApi.registerRoute('ifm-importer/v1', '/getcsv');
 
-WpApi.importPosts = WpApi.registerRoute('ifmimporter/v1', '/import-posts');
+WpApi.importPosts = WpApi.registerRoute('ifm-importer/v1', '/import-posts');
 
 
 export { WpApi }

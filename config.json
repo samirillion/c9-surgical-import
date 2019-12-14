@@ -1,4 +1,4 @@
 {
-  "proxyURL": "http://cortex.local/wp-admin/admin.php?page=cortex-importer",
+  "proxyURL": "http://cortex.local/wp-admin/admin.php?page=ifm-importer",
   "baseURL": "cortex.local"
 }

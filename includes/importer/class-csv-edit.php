@@ -2,22 +2,20 @@
 
 namespace IfmImport;
 
-require './vendor/autoload.php';
-
 use League\Csv\Reader;
 use League\Csv\Writer;
 
 class CsvEdit
 {
-    public $steps;
-    public $step;
-    public $records;
-    public $record;
-    public $csv_out;
-    public $header;s
-    public $header_out;
-    public $records_out;
-    public $record_out;
+    protected $steps;
+    protected $step;
+    protected $records;
+    protected $record;
+    protected $csv_out;
+    protected $header;
+    protected $header_out;
+    protected $records_out;
+    protected $record_out;
 
     public function __construct($in, $out, $steps)
     {
