@@ -1,5 +1,6 @@
 # IFM Surgical Import
 
+## This plugin is currently under construction. But feel free to look through the code.
 
 ## 🚚 Running
 
