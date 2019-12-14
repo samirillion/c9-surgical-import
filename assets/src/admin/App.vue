@@ -2,7 +2,7 @@
   <div id="vue-backend-app">
     <h1>Cortex Importer</h1>
     <keep-alive>
-      <router-view/>
+      <router-view />
     </keep-alive>
   </div>
 </template>
@@ -23,7 +23,14 @@ summary {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.import-fields, .import-fields-wrapper {
+summary:hover {
+  cursor: pointer;
+}
+.import-fields {
+  background: white;
+}
+.import-fields,
+.import-fields-wrapper {
   position: relative;
 }
 .import-fields-wrapper {
@@ -36,43 +43,43 @@ summary {
   left: 0;
   height: 100%;
   width: 100%;
-  background: rgba(241,241,241, 0);
+  background: rgba(241, 241, 241, 0);
   background: -moz-linear-gradient(
     top,
-    rgba(241,241,241, 0) 0%,
-    rgba(241,241,241, 0.5) 90%,
-    rgba(241,241,241, 1) 100%
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
   );
   background: -webkit-gradient(
     left top,
     left bottom,
-    color-stop(0%, rgba(241,241,241, 0)),
-    color-stop(90%, rgba(241,241,241, 0.5)),
-    color-stop(100%, rgba(241,241,241, 1))
+    color-stop(0%, rgba(241, 241, 241, 0)),
+    color-stop(90%, rgba(241, 241, 241, 0.5)),
+    color-stop(100%, rgba(241, 241, 241, 1))
   );
   background: -webkit-linear-gradient(
     top,
-    rgba(241,241,241, 0) 0%,
-    rgba(241,241,241, 0.5) 90%,
-    rgba(241,241,241, 1) 100%
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
   );
   background: -o-linear-gradient(
     top,
-    rgba(241,241,241, 0) 0%,
-    rgba(241,241,241, 0.5) 90%,
-    rgba(241,241,241, 1) 100%
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
   );
   background: -ms-linear-gradient(
     top,
-    rgba(241,241,241, 0) 0%,
-    rgba(241,241,241, 0.5) 90%,
-    rgba(241,241,241, 1) 100%
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
   );
   background: linear-gradient(
     to bottom,
-    rgba(241,241,241, 0) 0%,
-    rgba(241,241,241, 0.5) 90%,
-    rgba(241,241,241, 1) 100%
+    rgba(241, 241, 241, 0) 0%,
+    rgba(241, 241, 241, 0.5) 90%,
+    rgba(241, 241, 241, 1) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f1f1f', endColorstr='#0f1f1f', GradientType=0 );
 }
@@ -111,6 +118,7 @@ summary {
 .csv-table {
   border-collapse: collapse;
   cellpadding: 2px;
+  background: white;
 }
 tr th,
 tr td,

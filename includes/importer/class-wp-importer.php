@@ -1,6 +1,6 @@
 <?php
 
-namespace C9Import;
+namespace IfmImport;
 
 require './vendor/autoload.php';
 

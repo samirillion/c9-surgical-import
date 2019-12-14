@@ -2,8 +2,8 @@
 require get_template_directory() . '/client/inc/importer/class-wp-import.php';
 require get_template_directory() . '/client/inc/importer/class-csv-edit.php';
 
-use C9Import\CsvEdit;
-use C9Import\WpImporter;
+use IfmImport\CsvEdit;
+use IfmImport\WpImporter;
 
 $transient = 'import_process_0_6';
 if (current_user_can('manage_options') && !get_transient($transient)) :

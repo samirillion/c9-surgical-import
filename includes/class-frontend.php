@@ -1,5 +1,5 @@
 <?php
-namespace C9Import;
+namespace IfmImport;
 
 /**
  * Frontend Pages Handler
@@ -19,8 +19,8 @@ class Frontend {
      * @return string
      */
     public function render_frontend( $atts, $content = '' ) {
-        wp_enqueue_style( 'c9importer-frontend' );
-        wp_enqueue_script( 'c9importer-frontend' );
+        wp_enqueue_style( 'ifmimporter-frontend' );
+        wp_enqueue_script( 'ifmimporter-frontend' );
 
         $content .= '<div id="vue-frontend-app"></div>';
 

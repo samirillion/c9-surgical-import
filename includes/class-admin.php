@@ -1,5 +1,5 @@
 <?php
-namespace C9Import;
+namespace IfmImport;
 
 /**
  * Admin Pages Handler
@@ -52,7 +52,7 @@ class Admin
      */
     public function localize_scripts()
     {
-        wp_localize_script('c9importer-admin', 'WP_API_Settings', array(
+        wp_localize_script('ifmimporter-admin', 'WP_API_Settings', array(
             // 'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce('wp_rest')
         ));
@@ -65,8 +65,8 @@ class Admin
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_style('c9importer-admin');
-        wp_enqueue_script('c9importer-admin');
+        wp_enqueue_style('ifmimporter-admin');
+        wp_enqueue_script('ifmimporter-admin');
     }
 
     /**
@@ -88,7 +88,7 @@ class Admin
     //  */
     // public function register_rest_routes()
     // {
-    //     register_rest_route('c9importer/v1', '/author/(?P<id>\d+)', array(
+    //     register_rest_route('ifmimporter/v1', '/author/(?P<id>\d+)', array(
     //         'methods' => 'GET',
     //         'callback' => $this->my_awesome_func
     //     ));

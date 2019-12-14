@@ -1,4 +1,4 @@
 {
-  "proxyURL": "http://cea2.local/wp-admin/admin.php?page=cortex-importer",
-  "baseURL": "cea2.local"
+  "proxyURL": "http://cortex.local/wp-admin/admin.php?page=cortex-importer",
+  "baseURL": "cortex.local"
 }

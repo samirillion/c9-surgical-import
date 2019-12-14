@@ -1,5 +1,5 @@
 <?php 
-namespace C9Import;
+namespace IfmImport;
 // to get media-sideload image working
 
 require_once(ABSPATH . 'wp-admin/includes/media.php');

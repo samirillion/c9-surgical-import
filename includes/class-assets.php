@@ -1,5 +1,5 @@
 <?php
-namespace C9Import;
+namespace IfmImport;
 
 /**
  * Scripts and Styles Class
@@ -36,7 +36,7 @@ class Assets {
         foreach ( $scripts as $handle => $script ) {
             $deps      = isset( $script['deps'] ) ? $script['deps'] : false;
             $in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : false;
-            $version   = isset( $script['version'] ) ? $script['version'] : C9IMPORTER_VERSION;
+            $version   = isset( $script['version'] ) ? $script['version'] : IFM_IMPORT_VERSION;
 
             wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
         }
@@ -53,7 +53,7 @@ class Assets {
         foreach ( $styles as $handle => $style ) {
             $deps = isset( $style['deps'] ) ? $style['deps'] : false;
 
-            wp_register_style( $handle, $style['src'], $deps, C9IMPORTER_VERSION );
+            wp_register_style( $handle, $style['src'], $deps, IFM_IMPORT_VERSION );
         }
     }
 
@@ -66,21 +66,21 @@ class Assets {
         $prefix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
 
         $scripts = [
-            'c9importer-vendor' => [
-                'src'       => C9IMPORTER_ASSETS . '/js/vendor.js',
-                'version'   => filemtime( C9IMPORTER_PATH . '/assets/js/vendor.js' ),
+            'ifmimporter-vendor' => [
+                'src'       => IFM_IMPORT_ASSETS . '/js/vendor.js',
+                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/vendor.js' ),
                 'in_footer' => true
             ],
-            'c9importer-frontend' => [
-                'src'       => C9IMPORTER_ASSETS . '/js/frontend.js',
-                'deps'      => [ 'jquery', 'c9importer-vendor' ],
-                'version'   => filemtime( C9IMPORTER_PATH . '/assets/js/frontend.js' ),
+            'ifmimporter-frontend' => [
+                'src'       => IFM_IMPORT_ASSETS . '/js/frontend.js',
+                'deps'      => [ 'jquery', 'ifmimporter-vendor' ],
+                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/frontend.js' ),
                 'in_footer' => true
             ],
-            'c9importer-admin' => [
-                'src'       => C9IMPORTER_ASSETS . '/js/admin.js',
-                'deps'      => [ 'jquery', 'c9importer-vendor' ],
-                'version'   => filemtime( C9IMPORTER_PATH . '/assets/js/admin.js' ),
+            'ifmimporter-admin' => [
+                'src'       => IFM_IMPORT_ASSETS . '/js/admin.js',
+                'deps'      => [ 'jquery', 'ifmimporter-vendor' ],
+                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/admin.js' ),
                 'in_footer' => true
             ]
         ];
@@ -96,14 +96,14 @@ class Assets {
     public function get_styles() {
 
         $styles = [
-            'c9importer-style' => [
-                'src' =>  C9IMPORTER_ASSETS . '/css/style.css'
+            'ifmimporter-style' => [
+                'src' =>  IFM_IMPORT_ASSETS . '/css/style.css'
             ],
-            'c9importer-frontend' => [
-                'src' =>  C9IMPORTER_ASSETS . '/css/frontend.css'
+            'ifmimporter-frontend' => [
+                'src' =>  IFM_IMPORT_ASSETS . '/css/frontend.css'
             ],
-            'c9importer-admin' => [
-                'src' =>  C9IMPORTER_ASSETS . '/css/admin.css'
+            'ifmimporter-admin' => [
+                'src' =>  IFM_IMPORT_ASSETS . '/css/admin.css'
             ],
         ];
 

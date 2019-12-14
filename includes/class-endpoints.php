@@ -1,5 +1,5 @@
 <?php
-namespace C9Import;
+namespace IfmImport;
 include('class-importer.php');
 
 /**
@@ -10,7 +10,7 @@ class ENDPOINTS
 
     public function __construct()
     {
-        $this->namespace = 'c9importer/v1';
+        $this->namespace = 'ifmimporter/v1';
         add_action('rest_api_init', array($this, 'register_endpoints'));
     }
 

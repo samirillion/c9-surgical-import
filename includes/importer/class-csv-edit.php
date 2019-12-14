@@ -1,6 +1,6 @@
 <?php
 
-namespace C9Import;
+namespace IfmImport;
 
 require './vendor/autoload.php';
 
@@ -14,7 +14,7 @@ class CsvEdit
     public $records;
     public $record;
     public $csv_out;
-    public $header;
+    public $header;s
     public $header_out;
     public $records_out;
     public $record_out;

@@ -1,6 +1,6 @@
 <?php
  /*
-Plugin Name: Cortex Import Plugin
+Plugin Name: IFM Surgical Import
 Plugin URI: https://example.com/
 Description: Plugin for importing things
 Version: 0.1
@@ -13,7 +13,7 @@ Domain Path: /languages
 */
 
 /**
- * Copyright (c) YEAR Your Name (email: Email). All rights reserved.
+ * Copyright (c) 2019 Your Name (email: Email). All rights reserved.
  *
  * Released under the GPL license
  * http://www.opensource.org/licenses/gpl-license.php
@@ -42,11 +42,11 @@ Domain Path: /languages
 if (!defined('ABSPATH')) exit;
 
 /**
- * C9_Importer_Plugin class
+ * IFM_Importer_Plugin class
  *
- * @class C9_Importer_Plugin The class that holds the entire C9_Importer_Plugin plugin
+ * @class IFM_Importer_Plugin The class that holds the entire IFM_Importer_Plugin plugin
  */
-final class C9_Importer_Plugin
+final class IFM_Importer_Plugin
 {
 
     /**
@@ -54,14 +54,14 @@ final class C9_Importer_Plugin
      *
      * @var string
      */
-    public $version = '0.1.0';
+    public $version = '0.1.1';
 
     /**
      * Plugin Name
      *
      * @var string
      */
-    public $varname = 'c9importer';
+    public $varname = 'ifmimporter';
 
     /**
      * Holds various class instances
@@ -71,7 +71,7 @@ final class C9_Importer_Plugin
     private $container = array();
 
     /**
-     * Constructor for the C9_Importer_Plugin class
+     * Constructor for the IFM_Importer_Plugin class
      *
      * Sets up all the appropriate hooks and actions
      * within our plugin.
@@ -88,9 +88,9 @@ final class C9_Importer_Plugin
     }
 
     /**
-     * Initializes the C9_Importer_Plugin() class
+     * Initializes the IFM_Importer_Plugin() class
      *
-     * Checks for an existing C9_Importer_Plugin() instance
+     * Checks for an existing IFM_Importer_Plugin() instance
      * and if it doesn't find one, creates it.
      */
     public static function init()
@@ -98,7 +98,7 @@ final class C9_Importer_Plugin
         static $instance = false;
 
         if (!$instance) {
-            $instance = new C9_Importer_Plugin();
+            $instance = new IFM_Importer_Plugin();
         }
 
         return $instance;
@@ -139,13 +139,13 @@ final class C9_Importer_Plugin
      */
     public function define_constants()
     {
-        define('C9IMPORTER_VERSION', $this->version);
-        define('C9IMPORTER_FILE', __FILE__);
-        define('C9IMPORTER_PATH', dirname(C9IMPORTER_FILE));
-        define('C9IMPORTER_INCLUDES', C9IMPORTER_PATH . '/includes');
-        define('C9IMPORTER_URL', plugins_url('', C9IMPORTER_FILE));
-        define('C9IMPORTER_ASSETS', C9IMPORTER_URL . '/assets');
-        define('C9IMPORTER_VAR_NAME', $this->varname);
+        define('IFM_IMPORT_VERSION', $this->version);
+        define('IFM_IMPORT_FILE', __FILE__);
+        define('IFM_IMPORT_PATH', dirname(IFM_IMPORT_FILE));
+        define('IFM_IMPORT_INCLUDES', IFM_IMPORT_PATH . '/includes');
+        define('IFM_IMPORT_URL', plugins_url('', IFM_IMPORT_FILE));
+        define('IFM_IMPORT_ASSETS', IFM_IMPORT_URL . '/assets');
+        define('IFM_IMPORT_VAR_NAME', $this->varname);
     }
 
     /**
@@ -167,13 +167,13 @@ final class C9_Importer_Plugin
     public function activate()
     {
 
-        $installed = get_option('c9importer_installed');
+        $installed = get_option('ifmimporter_installed');
 
         if (!$installed) {
-            update_option('c9importer_installed', time());
+            update_option('ifmimporter_installed', time());
         }
 
-        update_option('c9importer_version', C9IMPORTER_VERSION);
+        update_option('ifmimporter_version', IFM_IMPORT_VERSION);
     }
 
     /**
@@ -192,23 +192,23 @@ final class C9_Importer_Plugin
     public function includes()
     {
 
-        require_once C9IMPORTER_INCLUDES . '/class-assets.php';
-        require_once C9IMPORTER_INCLUDES . '/class-endpoints.php';
+        require_once IFM_IMPORT_INCLUDES . '/class-assets.php';
+        require_once IFM_IMPORT_INCLUDES . '/class-endpoints.php';
 
         if ($this->is_request('admin')) {
-            require_once C9IMPORTER_INCLUDES . '/class-admin.php';
+            require_once IFM_IMPORT_INCLUDES . '/class-admin.php';
         }
 
         if ($this->is_request('frontend')) {
-            require_once C9IMPORTER_INCLUDES . '/class-frontend.php';
+            require_once IFM_IMPORT_INCLUDES . '/class-frontend.php';
         }
 
         if ($this->is_request('ajax')) {
-            // require_once C9IMPORTER_INCLUDES . '/class-ajax.php';
+            // require_once IFM_IMPORT_INCLUDES . '/class-ajax.php';
         }
 
         if ($this->is_request('rest')) {
-            require_once C9IMPORTER_INCLUDES . '/class-rest-api.php';
+            require_once IFM_IMPORT_INCLUDES . '/class-rest-api.php';
         }
     }
 
@@ -235,23 +235,23 @@ final class C9_Importer_Plugin
     {
 
         if ($this->is_request('admin')) {
-            $this->container['admin'] = new C9Import\Admin();
+            $this->container['admin'] = new IfmImport\Admin();
         }
 
         if ($this->is_request('frontend')) {
-            $this->container['frontend'] = new C9Import\Frontend();
+            $this->container['frontend'] = new IfmImport\Frontend();
         }
 
         if ($this->is_request('ajax')) {
-            // $this->container['ajax'] =  new C9Import\Ajax();
+            // $this->container['ajax'] =  new IfmImport\Ajax();
         }
 
         if ($this->is_request('rest')) {
-            $this->container['rest'] = new C9Import\REST_API();
+            $this->container['rest'] = new IfmImport\REST_API();
         }
 
-        $this->container['assets'] = new C9Import\Assets();
-        $this->container['endpoints'] = new C9Import\Endpoints();
+        $this->container['assets'] = new IfmImport\Assets();
+        $this->container['endpoints'] = new IfmImport\Endpoints();
     }
 
     /**
@@ -261,7 +261,7 @@ final class C9_Importer_Plugin
      */
     public function localization_setup()
     {
-        load_plugin_textdomain('c9importer', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        load_plugin_textdomain('ifmimporter', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 
     /**
@@ -290,6 +290,6 @@ final class C9_Importer_Plugin
                 return (!is_admin() || defined('DOING_AJAX')) && !defined('DOING_CRON');
         }
     }
-} // C9_Importer_Plugin
+} // IFM_Importer_Plugin
 
-$c9importer = C9_Importer_Plugin::init();
+$ifmimporter = IFM_Importer_Plugin::init();
