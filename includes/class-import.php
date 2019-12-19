@@ -40,12 +40,21 @@ class Import
         // $importer->setup($this->csv, $this->import_steps);
         // $importer->run();
 
-        return true;
+        return "toit";
     }
 
     public function get_edit_steps()
     {
-        return ['step1', 'step2'];
+        return array(
+            'method' => 'create_post',
+            'id' => 'profile_id',
+            'map' => array(
+                'post_title' => '$Display Name',
+                'post_content' => '$html_data',
+                'post_type' => 'profile',
+                'post_status' => 'publish'
+            ),
+        );
     }
     public function get_import_steps()
     {

@@ -1,9 +1,9 @@
 <template>
   <div class="import">
-    <FileUploader @uploaded="onUpload"/>
+    <FileUploader @uploaded="onUpload" />
 
-    <details v-if="parsedCsv.length > 1">
-      <summary>Import fields</summary>
+    <details v-if="parsedCsv.length > 1" open>
+      <summary>Import fields (pick some!)</summary>
       <div class="table-wrapper">
         <table class="csv-table">
           <tbody>
@@ -15,29 +15,35 @@
                   name="select-all"
                   @change="toggleSelect"
                   v-model="allSelected"
-                >
+                />
               </th>
-              <th v-for="(column, columnIndex) in parsedCsv[0]" :key="columnIndex">
-                <input type="checkbox" :name="column" :value="column" v-model="checkedFields">
+              <th
+                v-for="(column, columnIndex) in parsedCsv[0]"
+                :key="columnIndex"
+              >
+                <input
+                  type="checkbox"
+                  :name="column"
+                  :value="column"
+                  v-model="checkedFields"
+                />
                 <label :for="column">{{ column }} ({{ columnIndex }})</label>
               </th>
             </tr>
             <tr
-              v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries)+ 1)"
+              v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
               :key="exampleIndex"
             >
               <td></td>
               <td v-for="(td, tdIndex) in example" :key="tdIndex">
-                <div
-                  class="cell-content"
-                  style="height:100%;width:100%;"
-                >{{ td.substring(0,exampleEntryLength) }}</div>
+                <div class="cell-content" style="height:100%;width:100%;">
+                  {{ td.substring(0, exampleEntryLength) }}
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
       <span class="preview-details" v-if="parsedCsv.length > 0">
         Previewing the first
         <input
@@ -46,43 +52,46 @@
           min="10"
           class="entry-length"
           v-model="exampleEntryLength"
-        > characters
+        />
+        characters of
         <select v-model="exampleEntries">
-          <option v-for="index in parsedCsv.length" :key="index">{{index}}</option>
+          <option v-for="index in parsedCsv.length" :key="index">{{
+            index
+          }}</option>
         </select>
-        of {{ parsedCsv.length }} Entries
+        of {{ parsedCsv.length }} total Entries
       </span>
     </details>
+    <div v-if="checkedFields.length > 0">
+      <!-- <details class="custom-var-wrapper" v-if="checkedFields.length > 0">
+        <summary>Build Custom Variables</summary>
+        <VarBuilder />
+      </details> -->
 
-    <details class="custom-var-wrapper" v-if="checkedFields.length > 0">
-      <summary>Build Custom Variables</summary>
-      <VarBuilder/>
-    </details>
+      <!-- <details class="fields-wrapper" v-if="checkedFields.length > 0">
+        <summary>Variables ({{ checkedFields.length }})</summary>
+        <div class="import-fields-wrapper">
+          <ul class="import-fields">
+            <li v-for="(field, index) in checkedFields" :key="index">
+              {{ field }}
+            </li>
+          </ul>
+        </div>
+      </details> -->
+      <!-- v-if="checkedFields.length  -->
+      <hr />
+      <details open>
+        <summary>Create Your Steps</summary>
 
-    <details class="fields-wrapper" v-if="checkedFields.length > 0">
-      <summary>Variables ({{ checkedFields.length }})</summary>
-      <div class="import-fields-wrapper">
-        <ul class="import-fields">
-          <li v-for="(field, index) in checkedFields" :key="index">
-            {{field}}
-            <!-- <select  -->
-          </li>
-        </ul>
-      </div>
-    </details>
-
-    <hr>
-
-    <!-- v-if="checkedFields.length  -->
-    <details open>
-      <summary>Create Your Steps</summary>
-
-      <ImportStepper :checkedFields="checkedFields"/>
-    </details>
-    <hr style="clear:both;">
+        <ImportSteps :checkedFields="checkedFields" />
+      </details>
+    </div>
+    <hr style="clear:both;" />
     <div class="row">
       <button class="button button-primary">Validate Input</button>
-      <button class="button button-primary" @click="runImport">Run Import</button>
+      <button class="button button-primary" @click="runImport">
+        Run Import
+      </button>
     </div>
   </div>
 </template>
@@ -93,7 +102,7 @@ import axios from "axios";
 import { WpApi } from "@/shared/services/WpApi";
 import { CsvToArray } from "@/shared/utils/CsvToArray";
 import FileUploader from "@/shared/components/FileUploader.vue";
-import ImportStepper from "@/admin/components/import-stepper/ImportStepper.vue";
+import ImportSteps from "@/admin/components/import-stepper/ImportSteps.vue";
 import VarBuilder from "@/admin/components/import-stepper/VarBuilder.vue";
 
 import ArgStore from "@/admin/components/import-stepper/ArgStore";
@@ -102,7 +111,7 @@ export default {
   name: "Import",
   components: {
     FileUploader,
-    ImportStepper,
+    ImportSteps,
     VarBuilder
   },
   data() {
@@ -120,8 +129,11 @@ export default {
   },
   methods: {
     async runImport() {
-      const response = await WpApi.runImport()
-        .param("import_maps", ArgStore.getData())
+      const response = await WpApi.runImport().param(
+        "import_maps",
+        ArgStore.getData()
+      );
+      console.log(response);
     },
     toggleSelect() {
       if (!this.allSelected) {

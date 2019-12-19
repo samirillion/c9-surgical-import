@@ -38,7 +38,7 @@ import MetaMapper from "@/admin/components/import-stepper/MetaMapper.vue";
 import ArgStore from "@/admin/components/import-stepper/ArgStore";
 
 export default {
-  name: "ImportStepper",
+  name: "ImportSteps",
   components: {
     ParamMapper,
     MetaMapper

@@ -31,7 +31,7 @@ class ENDPOINTS
         ));
 
         register_rest_route($this->namespace, '/run', array(
-            'methods' => 'WP_REST_Server::CREATABLE',
+            'methods' => 'GET',
             'callback' => [new Import, 'run'],
             'permission_callback' => [$this, 'is_admin'],
             'validate_callback' => function ($param, $request, $key) {

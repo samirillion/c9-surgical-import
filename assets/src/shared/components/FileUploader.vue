@@ -7,17 +7,17 @@
         type="file"
         class="file-upload"
         ref="fileUpload"
-        v-on:change="stageUpload()"
+        v-on:change="stageFile()"
       />
     </label>
     <br />
-    <button
+    <!-- <button
       v-if="readyToSubmit"
-      v-on:click="submitFile()"
+      v-on:click="previewFile()"
       class="button button-primary"
     >
-      Upload
-    </button>
+      View
+    </button> -->
   </div>
 </template>
 
@@ -32,14 +32,23 @@ export default {
     return {
       file: {},
       uploadId: {},
-      readyToSubmit: false
+      readyToSubmit: false,
+      leaveWarning: false
     };
+  },
+  beforeMount() {
+    window.addEventListener("beforeunload", event => {
+      if (!this.leaveWarning) return;
+      event.preventDefault();
+      // Chrome requires returnValue to be set.
+      event.returnValue = "";
+    });
   },
   methods: {
     /*
         Submits the file to the server
       */
-    submitFile() {
+    previewFile() {
       /*
         Initialize the form data with FormData API
       */
@@ -69,9 +78,11 @@ export default {
     /*
         Handles a change on the file upload
       */
-    stageUpload() {
+    stageFile() {
+      this.leaveWarning = true;
       this.file = this.$refs.fileUpload.files[0];
       this.readyToSubmit = true;
+      this.previewFile();
     }
   }
 };
