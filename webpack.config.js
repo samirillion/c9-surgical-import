@@ -67,7 +67,7 @@ plugins.push(new OptimizeCSSPlugin({
 }));
 
 plugins.push(new webpack.DefinePlugin({
-    c9_import_vars: JSON.stringify(config)
+    ifm_import_vars: JSON.stringify(config)
 }))
 
 // Differ settings based on production flag

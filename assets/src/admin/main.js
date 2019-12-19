@@ -9,7 +9,7 @@ Vue.component('v-select', vSelect)
 // import devtools from '@vue/devtools'
 
 // if (process.env.NODE_ENV === 'development') {
-//     devtools.connect('http://' + c9_import_vars.baseURL)
+//     devtools.connect('http://' + ifm_import_vars.baseURL)
 // }
 
 Vue.config.productionTip = false

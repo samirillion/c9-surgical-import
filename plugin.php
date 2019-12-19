@@ -183,7 +183,8 @@ final class IFM_Importer_Plugin
      * Nothing being called here yet.
      */
     public function deactivate()
-    { }
+    {
+    }
 
     /**
      * Include the required files
@@ -205,9 +206,9 @@ final class IFM_Importer_Plugin
             require_once IFM_IMPORT_INCLUDES . '/class-frontend.php';
         }
 
-        if ($this->is_request('ajax')) {
-            // require_once IFM_IMPORT_INCLUDES . '/class-ajax.php';
-        }
+        // if ($this->is_request('ajax')) {
+        //     require_once IFM_IMPORT_INCLUDES . '/class-ajax.php';
+        // }
 
         if ($this->is_request('rest')) {
             require_once IFM_IMPORT_INCLUDES . '/class-rest-api.php';
@@ -244,13 +245,16 @@ final class IFM_Importer_Plugin
             $this->container['frontend'] = new IfmImport\Frontend();
         }
 
-        if ($this->is_request('ajax')) {
-            // $this->container['ajax'] =  new IfmImport\Ajax();
-        }
+        // if ($this->is_request('ajax')) {
+        //     $this->container['ajax'] =  new IfmImport\Ajax();
+        // }
 
-        if ($this->is_request('rest')) {
-            $this->container['rest'] = new IfmImport\REST_API();
-        }
+        // if ($this->is_request('rest')) {
+        //     $this->container['rest'] = new IfmImport\REST_API();
+        // }
+
+        $this->container['Import'] = new IfmImport\Import();
+
 
         $this->container['assets'] = new IfmImport\Assets();
         $this->container['endpoints'] = new IfmImport\Endpoints();

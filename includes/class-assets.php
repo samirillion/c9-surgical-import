@@ -1,17 +1,20 @@
 <?php
+
 namespace IfmImport;
 
 /**
  * Scripts and Styles Class
  */
-class Assets {
+class Assets
+{
 
-    function __construct() {
+    function __construct()
+    {
 
-        if ( is_admin() ) {
-            add_action( 'admin_enqueue_scripts', [ $this, 'register' ], 5 );
+        if (is_admin()) {
+            add_action('admin_enqueue_scripts', [$this, 'register'], 5);
         } else {
-            add_action( 'wp_enqueue_scripts', [ $this, 'register' ], 5 );
+            add_action('wp_enqueue_scripts', [$this, 'register'], 5);
         }
     }
 
@@ -20,9 +23,10 @@ class Assets {
      *
      * @return void
      */
-    public function register() {
-        $this->register_scripts( $this->get_scripts() );
-        $this->register_styles( $this->get_styles() );
+    public function register()
+    {
+        $this->register_scripts($this->get_scripts());
+        $this->register_styles($this->get_styles());
     }
 
     /**
@@ -32,13 +36,14 @@ class Assets {
      *
      * @return void
      */
-    private function register_scripts( $scripts ) {
-        foreach ( $scripts as $handle => $script ) {
-            $deps      = isset( $script['deps'] ) ? $script['deps'] : false;
-            $in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : false;
-            $version   = isset( $script['version'] ) ? $script['version'] : IFM_IMPORT_VERSION;
+    private function register_scripts($scripts)
+    {
+        foreach ($scripts as $handle => $script) {
+            $deps      = isset($script['deps']) ? $script['deps'] : false;
+            $in_footer = isset($script['in_footer']) ? $script['in_footer'] : false;
+            $version   = isset($script['version']) ? $script['version'] : IFM_IMPORT_VERSION;
 
-            wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
+            wp_register_script($handle, $script['src'], $deps, $version, $in_footer);
         }
     }
 
@@ -49,11 +54,12 @@ class Assets {
      *
      * @return void
      */
-    public function register_styles( $styles ) {
-        foreach ( $styles as $handle => $style ) {
-            $deps = isset( $style['deps'] ) ? $style['deps'] : false;
+    public function register_styles($styles)
+    {
+        foreach ($styles as $handle => $style) {
+            $deps = isset($style['deps']) ? $style['deps'] : false;
 
-            wp_register_style( $handle, $style['src'], $deps, IFM_IMPORT_VERSION );
+            wp_register_style($handle, $style['src'], $deps, IFM_IMPORT_VERSION);
         }
     }
 
@@ -62,25 +68,26 @@ class Assets {
      *
      * @return array
      */
-    public function get_scripts() {
-        $prefix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
+    public function get_scripts()
+    {
+        $prefix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.min' : '';
 
         $scripts = [
             'ifm-importer-vendor' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/vendor.js',
-                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/vendor.js' ),
+                'version'   => filemtime(IFM_IMPORT_PATH . '/assets/js/vendor.js'),
                 'in_footer' => true
             ],
             'ifm-importer-frontend' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/frontend.js',
-                'deps'      => [ 'jquery', 'ifm-importer-vendor' ],
-                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/frontend.js' ),
+                'deps'      => ['jquery', 'ifm-importer-vendor'],
+                'version'   => filemtime(IFM_IMPORT_PATH . '/assets/js/frontend.js'),
                 'in_footer' => true
             ],
             'ifm-importer-admin' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/admin.js',
-                'deps'      => [ 'jquery', 'ifm-importer-vendor' ],
-                'version'   => filemtime( IFM_IMPORT_PATH . '/assets/js/admin.js' ),
+                'deps'      => ['jquery', 'ifm-importer-vendor'],
+                'version'   => filemtime(IFM_IMPORT_PATH . '/assets/js/admin.js'),
                 'in_footer' => true
             ]
         ];
@@ -93,7 +100,8 @@ class Assets {
      *
      * @return array
      */
-    public function get_styles() {
+    public function get_styles()
+    {
 
         $styles = [
             'ifm-importer-style' => [
@@ -109,5 +117,4 @@ class Assets {
 
         return $styles;
     }
-
 }

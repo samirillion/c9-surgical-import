@@ -66,7 +66,7 @@ class Admin
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_style('ifm-importer-admin');
+        wp_enqueue_style('ifm-importer-style');
         wp_enqueue_script('ifm-importer-admin');
     }
 

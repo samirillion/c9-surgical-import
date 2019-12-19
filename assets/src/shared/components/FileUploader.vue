@@ -6,12 +6,18 @@
       <input
         type="file"
         class="file-upload"
-        ref="file"
-        v-on:change="handleFileUpload()"
-      >
+        ref="fileUpload"
+        v-on:change="stageUpload()"
+      />
     </label>
-    <br>
-    <button v-if="readyToSubmit" v-on:click="submitFile()" class="button button-primary">Upload</button>
+    <br />
+    <button
+      v-if="readyToSubmit"
+      v-on:click="submitFile()"
+      class="button button-primary"
+    >
+      Upload
+    </button>
   </div>
 </template>
 
@@ -35,19 +41,19 @@ export default {
       */
     submitFile() {
       /*
-                Initialize the form data
-            */
+        Initialize the form data with FormData API
+      */
       let formData = new FormData();
       /*
-                Add the form data we need to submit
-            */
+        Add the form data we need to submit
+      */
       formData.append("file", this.file);
 
-      let $this = this
+      let $this = this;
 
       /*
-          Make the request to the POST /single-file URL
-        */
+        Make the request to the POST /single-file URL
+      */
       WpApi.media()
         .file(this.file)
         .create({
@@ -55,15 +61,16 @@ export default {
           description: "Csv Upload for Import"
         })
         .then(function(response) {
-          $this.$emit('uploaded', response.id)
-        })
+          console.log(response);
+          $this.$emit("uploaded", response.id);
+        });
     },
 
     /*
         Handles a change on the file upload
       */
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
+    stageUpload() {
+      this.file = this.$refs.fileUpload.files[0];
       this.readyToSubmit = true;
     }
   }

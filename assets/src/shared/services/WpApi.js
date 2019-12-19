@@ -1,7 +1,6 @@
 // node-wpapi JS wrapper for the wp-api
-var WPAPI = require('wpapi');
+var WPAPI = require("wpapi");
 // import axios from 'axios';
-
 
 // export const WpApi = () => {
 //     return axios.create({
@@ -10,17 +9,16 @@ var WPAPI = require('wpapi');
 // }
 
 // wp-api params are defined here: http://v2.wp-api.org/reference/posts/
-// using ES6 property-value shorthand for the object literal parameters 
+// using ES6 property-value shorthand for the object literal parameters
 var WpApi = new WPAPI({
-    endpoint: 'http://' + c9_import_vars.baseURL + '/wp-json',
-    nonce: window.WP_API_Settings.nonce
+  endpoint: "http://" + ifm_import_vars.baseURL + "/wp-json",
+  nonce: window.WP_API_Settings.nonce
 });
 
-WpApi.myPosts = WpApi.registerRoute('ifm-importer/v1', '/author/(?P<id>)');
+WpApi.myPosts = WpApi.registerRoute("ifm/importer/v1", "/author/(?P<id>)");
 
-WpApi.getCsv = WpApi.registerRoute('ifm-importer/v1', '/getcsv');
+WpApi.getCsv = WpApi.registerRoute("ifm/importer/v1", "/getcsv");
 
-WpApi.importPosts = WpApi.registerRoute('ifm-importer/v1', '/import-posts');
+WpApi.runImport = WpApi.registerRoute("ifm/importer/v1", "/run");
 
-
-export { WpApi }
+export { WpApi };
