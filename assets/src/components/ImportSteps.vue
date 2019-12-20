@@ -56,15 +56,14 @@
 </template>
 
 <script>
-import store from "@/admin/store";
+import store from "@/store";
 import {
   userParams,
   postParams,
   importActions
-} from "@/admin/components/importer/Constants";
-import ParamMapper from "@/admin/components/importer/ParamMapper.vue";
-import MetaMapper from "@/admin/components/importer/MetaMapper.vue";
-import StepsStore from "@/admin/components/importer/StepsStore";
+} from "@/utils/Constants";
+import ParamMapper from "@/components/ParamMapper.vue";
+import MetaMapper from "@/components/MetaMapper.vue";
 
 export default {
   name: "ImportSteps",
@@ -106,7 +105,7 @@ export default {
       }
     },
     addStep(stepIndex) {
-      StepsStore.addStep(stepIndex);
+      // StepsStore.addStep(stepIndex);
       this.steps.splice(stepIndex + 1, 0, {
         parent: null,
         action: "",
@@ -115,7 +114,7 @@ export default {
     },
     deleteStep(stepIndex) {
       this.steps.splice(stepIndex, 1);
-      StepsStore.removeStep(stepIndex);
+      // StepsStore.removeStep(stepIndex);
     }
   }
 };

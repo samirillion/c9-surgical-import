@@ -5,18 +5,18 @@
 </template>
 
 <script>
-import StepsStore from "@/admin/components/importer/StepsStore";
+import store from "@/store";
 
 export default {
   name: "StepsRaw",
   computed: {
     data: function() {
-      return StepsStore.getSteps();
+      // return StepsStore.getSteps();
     }
   },
   watch: {
     data: function() {
-      return StepsStore.getSteps();
+      // return StepsStore.getSteps();
     }
   }
 };

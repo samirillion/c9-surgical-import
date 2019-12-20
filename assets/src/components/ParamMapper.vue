@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import StepsStore from "@/admin/components/importer/StepsStore";
+import store from "@/store";
 
 export default {
   name: "ParamMapper",
@@ -22,10 +22,10 @@ export default {
       if (inputField === null) {
         // shite
         delete this.map[dbParam];
-        StepsStore.updateStep(parseInt(this.step), this.map);
+        // StepsStore.updateStep(parseInt(this.step), this.map);
       } else {
         this.map[dbParam] = inputField;
-        StepsStore.updateStep(parseInt(this.step), this.map);
+        // StepsStore.updateStep(parseInt(this.step), this.map);
       }
     }
   }

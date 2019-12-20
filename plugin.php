@@ -202,10 +202,6 @@ final class IFM_Importer_Plugin
             require_once IFM_IMPORT_INCLUDES . '/class-admin.php';
         }
 
-        if ($this->is_request('frontend')) {
-            require_once IFM_IMPORT_INCLUDES . '/class-frontend.php';
-        }
-
         // if ($this->is_request('ajax')) {
         //     require_once IFM_IMPORT_INCLUDES . '/class-ajax.php';
         // }
@@ -241,10 +237,6 @@ final class IFM_Importer_Plugin
             $this->container['admin'] = new IfmImport\Admin();
         }
 
-        if ($this->is_request('frontend')) {
-            $this->container['frontend'] = new IfmImport\Frontend();
-        }
-
         // if ($this->is_request('ajax')) {
         //     $this->container['ajax'] =  new IfmImport\Ajax();
         // }
@@ -273,7 +265,7 @@ final class IFM_Importer_Plugin
     /**
      * What type of request is this?
      *
-     * @param  string $type admin, ajax, cron or frontend.
+     * @param  string $type admin, ajax, or
      *
      * @return bool
      */
@@ -291,9 +283,6 @@ final class IFM_Importer_Plugin
 
             case 'cron':
                 return defined('DOING_CRON');
-
-            case 'frontend':
-                return (!is_admin() || defined('DOING_AJAX')) && !defined('DOING_CRON');
         }
     }
 } // IFM_Importer_Plugin

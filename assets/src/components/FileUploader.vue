@@ -23,7 +23,7 @@
 
 <!-- Javascript -->
 <script>
-import { WpApi } from "@/shared/services/WpApi";
+import { WpApi } from "@/services/WpApi";
 
 export default {
   name: "FileUploader",

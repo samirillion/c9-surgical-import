@@ -104,14 +104,14 @@
 <script>
 import axios from "axios";
 
-import { WpApi } from "@/shared/services/WpApi";
-import { CsvToArray } from "@/shared/utils/CsvToArray";
-import FileUploader from "@/shared/components/FileUploader.vue";
-import ImportSteps from "@/admin/components/importer/ImportSteps.vue";
-import VarBuilder from "@/admin/components/importer/VarBuilder.vue";
-import StepsRaw from "@/admin/components/importer/StepsRaw.vue";
+import { WpApi } from "@/services/WpApi";
+import { CsvToArray } from "@/utils/CsvToArray";
+import FileUploader from "@/components/FileUploader.vue";
+import ImportSteps from "@/components/ImportSteps.vue";
+import VarBuilder from "@/components/VarBuilder.vue";
+import StepsRaw from "@/components/StepsRaw.vue";
 
-import StepsStore from "@/admin/components/importer/StepsStore";
+import store from "@/store";
 
 export default {
   name: "Import",
@@ -143,7 +143,7 @@ export default {
     async runImport() {
       const response = await WpApi.runImport().param(
         "import_maps",
-        StepsStore.getSteps()
+        // StepsStore.getSteps()
       );
       console.log(response);
     },
@@ -156,7 +156,7 @@ export default {
     },
     async onUpload(uploadId) {
       this.uploadId = uploadId;
-      StepsStore.setFileId(uploadId);
+      // StepsStore.setFileId(uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
       this.checkedFields = [];
