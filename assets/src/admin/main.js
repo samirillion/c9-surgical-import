@@ -1,26 +1,20 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import menuFix from './utils/admin-menu-fix'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import menuFix from "./utils/admin-menu-fix";
 
-import vSelect from 'vue-select'
-Vue.component('v-select', vSelect)
+import vSelect from "vue-select";
 
-// import devtools from '@vue/devtools'
+Vue.component("v-select", vSelect);
 
-// if (process.env.NODE_ENV === 'development') {
-//     devtools.connect('http://' + ifm_import_vars.baseURL)
-// }
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#vue-admin-app',
-    router,
-    render: h => h(App)
+  el: "#vue-admin-app",
+  router,
+  render: h => h(App)
 });
 
-
 // fix the admin menu for the slug "ifm-importer"
-menuFix('ifm-importer');
+menuFix("ifm-importer");

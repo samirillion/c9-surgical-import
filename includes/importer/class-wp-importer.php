@@ -17,6 +17,17 @@ class WpImporter
     public $records;
     public $record;
 
+
+    public static $import_methods = [
+        'get_user_by_email',
+        'create_post',
+        'update_user_meta',
+        'add_post_terms',
+        'add_acf_meta',
+        'update_post',
+        'create_user'
+    ];
+
     // maintain an array of ids to reference in later steps _on the same record_
     public $ids = array();
 
@@ -37,6 +48,17 @@ class WpImporter
         $this->steps = $steps;
         $this->readCSV($file, $limit, $offset);
     }
+
+    // public static function get_import_methods() {
+    //     $methods = [];
+    //     foreach (self::$import_methods as $method ) {
+    //         if(true)
+    //         {
+    //             $methods[] = $method;
+    //         }
+    //     }
+    //     return $methods;
+    // }
 
     public function readCSV($file, $limit, $offset)
     {
@@ -154,8 +176,8 @@ class WpImporter
         }
     }
 
-    public function update_post($post_id)
-    { }
+    // public function update_post($post_id)
+    // { }
 
     public function add_post_terms()
     {

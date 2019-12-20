@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ArgStore from "@/admin/components/import-stepper/ArgStore";
+import StepsStore from "@/admin/components/importer/StepsStore";
 
 export default {
   name: "MetaMapper",
@@ -34,18 +34,18 @@ export default {
   methods: {
     updateKey(keyEvent, index) {
       this.meta[index].key = keyEvent.target.value;
-      ArgStore.updateStep(parseInt(this.step), this.meta)
+      StepsStore.updateStep(parseInt(this.step), this.meta)
     },
     updateValue(valueEvent, index) {
       this.meta[index].value = valueEvent;
-      ArgStore.updateStep(parseInt(this.step), this.meta)
+      StepsStore.updateStep(parseInt(this.step), this.meta)
     },
     addMeta(step, index) {
       this.meta.splice(index + 1, 0, { key: "", value: "" });
     },
     spliceMeta(index) {
       this.meta.splice(index, 1);
-      ArgStore.updateStep(parseInt(this.step), this.meta)
+      StepsStore.updateStep(parseInt(this.step), this.meta)
     }
   }
 };

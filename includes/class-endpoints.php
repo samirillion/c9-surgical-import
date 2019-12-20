@@ -40,6 +40,11 @@ class ENDPOINTS
             }
         ));
 
+        register_rest_route($this->namespace, '/methods', array(
+            'methods' => 'GET',
+            'callback' => [new Import, 'get_available_methods'],
+        ));
+
         register_rest_route($this->namespace, '/getcsv', array(
             'methods' => 'GET',
             'callback' => [new Import, 'get_csv']

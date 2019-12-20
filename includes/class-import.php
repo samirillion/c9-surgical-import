@@ -43,8 +43,14 @@ class Import
         return "toit";
     }
 
+    public function get_available_methods()
+    {
+        return WpImporter::$import_methods;
+    }
+
     public function get_edit_steps()
     {
+        // example steps
         return array(
             'method' => 'create_post',
             'id' => 'profile_id',

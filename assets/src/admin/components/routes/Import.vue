@@ -85,6 +85,11 @@
 
         <ImportSteps :checkedFields="checkedFields" />
       </details>
+      <details open>
+        <summary>View Steps as Json</summary>
+
+        <StepsRaw />
+      </details>
     </div>
     <hr style="clear:both;" />
     <div class="row">
@@ -102,17 +107,19 @@ import axios from "axios";
 import { WpApi } from "@/shared/services/WpApi";
 import { CsvToArray } from "@/shared/utils/CsvToArray";
 import FileUploader from "@/shared/components/FileUploader.vue";
-import ImportSteps from "@/admin/components/import-stepper/ImportSteps.vue";
-import VarBuilder from "@/admin/components/import-stepper/VarBuilder.vue";
+import ImportSteps from "@/admin/components/importer/ImportSteps.vue";
+import VarBuilder from "@/admin/components/importer/VarBuilder.vue";
+import StepsRaw from "@/admin/components/importer/StepsRaw.vue";
 
-import ArgStore from "@/admin/components/import-stepper/ArgStore";
+import StepsStore from "@/admin/components/importer/StepsStore";
 
 export default {
   name: "Import",
   components: {
     FileUploader,
     ImportSteps,
-    VarBuilder
+    VarBuilder,
+    StepsRaw
   },
   data() {
     return {
@@ -127,11 +134,16 @@ export default {
       exampleEntryLength: 25
     };
   },
+  computed: {
+    exampleStepper: function() {
+      return parsedCsv.slice(1, parseInt(exampleEntries) + 1);
+    }
+  },
   methods: {
     async runImport() {
       const response = await WpApi.runImport().param(
         "import_maps",
-        ArgStore.getData()
+        StepsStore.getSteps()
       );
       console.log(response);
     },
@@ -144,7 +156,7 @@ export default {
     },
     async onUpload(uploadId) {
       this.uploadId = uploadId;
-      ArgStore.setFileId(uploadId);
+      StepsStore.setFileId(uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
       this.checkedFields = [];

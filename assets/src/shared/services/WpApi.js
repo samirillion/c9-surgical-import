@@ -15,6 +15,8 @@ var WpApi = new WPAPI({
   nonce: window.WP_API_Settings.nonce
 });
 
+WpApi.importMethods = WpApi.registerRoute("ifm/importer/v1", "/methods");
+
 WpApi.myPosts = WpApi.registerRoute("ifm/importer/v1", "/author/(?P<id>)");
 
 WpApi.getCsv = WpApi.registerRoute("ifm/importer/v1", "/getcsv");

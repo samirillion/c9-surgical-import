@@ -1,7 +1,10 @@
 <template>
   <div class="step-wrapper">
+    <!-- loop through steps here -->
     <div class="step" v-for="(step, stepIndex) in steps" :key="stepIndex">
-      <h4 class="step-name">Step {{stepPlusOne(stepIndex)}}</h4>
+      <h4 class="step-name">
+        {{ step.verb }} {{ step.entity }} {{ stepPlusOne(stepIndex) }}
+      </h4>
 
       <select v-model="step.action">
         <option></option>
@@ -9,33 +12,59 @@
         <option value="newUser">create a user</option>
         <option value="addMeta" v-if="stepIndex !== 0">add meta</option>
       </select>
-      
-      <button @click="addStep(stepIndex)" class="button button-primary" v-if="step.action !== ''">+</button>
-      <button @click="deleteStep(stepIndex)" v-if="steps.length > 1" class="button button-primary">-</button>
-      
+      <select v-model="step.verb">
+        <option value="create">create</option>
+        <option value="update">update</option>
+        <option value="delete">delete</option>
+        <option value="addMeta" v-if="stepIndex !== 0">add meta</option>
+      </select>
+      <select v-model="step.entity">
+        <option></option>
+        <option value="post">post</option>
+        <option value="user">user</option>
+        <option value="postMeta">post meta</option>
+        <option value="userMeta">user meta</option>
+      </select>
+      <button
+        @click="deleteStep(stepIndex)"
+        v-if="steps.length > 1"
+        class="button button-primary"
+      >
+        -
+      </button>
+
       <span v-if="step.action !== ''">
-        <b>then</b>
+        <b>where</b>
       </span>
 
       <!-- Add a Post or Meta -->
       <div class="post-params" v-if="step.action !== 'addMeta'">
-        <ParamMapper :dbParams="getParams(step.action)" :inputFields="fields" :step="stepIndex"/>
+        <ParamMapper
+          :actions="getParams(step.action)"
+          :inputFields="fields"
+          :step="stepIndex"
+        />
       </div>
       <div class="add-meta" v-else-if="step.action == 'addMeta'">
-        <MetaMapper :inputFields="fields" :step="stepIndex"/>
+        <MetaMapper :inputFields="fields" :step="stepIndex" />
       </div>
     </div>
+    <button @click="addStep(steps.length)" class="button button-primary">
+      +
+    </button>
   </div>
 </template>
 
 <script>
+import store from "@/admin/store";
 import {
   userParams,
-  postParams
-} from "@/admin/components/import-stepper/Constants";
-import ParamMapper from "@/admin/components/import-stepper/ParamMapper.vue";
-import MetaMapper from "@/admin/components/import-stepper/MetaMapper.vue";
-import ArgStore from "@/admin/components/import-stepper/ArgStore";
+  postParams,
+  importActions
+} from "@/admin/components/importer/Constants";
+import ParamMapper from "@/admin/components/importer/ParamMapper.vue";
+import MetaMapper from "@/admin/components/importer/MetaMapper.vue";
+import StepsStore from "@/admin/components/importer/StepsStore";
 
 export default {
   name: "ImportSteps",
@@ -64,7 +93,7 @@ export default {
   },
   methods: {
     onParamUpdate: function(newValue) {
-      console.log(newValue)
+      console.log(newValue);
     },
     stepPlusOne: function(index) {
       return index + 1;
@@ -77,6 +106,7 @@ export default {
       }
     },
     addStep(stepIndex) {
+      StepsStore.addStep(stepIndex);
       this.steps.splice(stepIndex + 1, 0, {
         parent: null,
         action: "",
@@ -85,7 +115,7 @@ export default {
     },
     deleteStep(stepIndex) {
       this.steps.splice(stepIndex, 1);
-      ArgStore.removeStep(stepIndex);
+      StepsStore.removeStep(stepIndex);
     }
   }
 };
