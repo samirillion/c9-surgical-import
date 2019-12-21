@@ -19,8 +19,8 @@ export default new Vuex.Store({
     removeStep(state, stepIndex) {
       state.steps.splice(stepIndex, 1);
     },
-    addStep(state, stepIndex) {
-      state.steps.splice(stepIndex + 1, 0, {
+    addStep(state, stepLength) {
+      state.steps.splice(stepLength + 1, 0, {
         id: "",
         verb: "",
         entity: "",
