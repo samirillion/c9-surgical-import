@@ -6,16 +6,14 @@
     <div class="step-wrapper">
       <!-- loop through steps here -->
       <div class="step" v-for="(step, stepIndex) in steps" :key="stepIndex">
-        <h4 class="step-name">
-          {{ step.verb }} {{ step.entity }} {{ stepPlusOne(stepIndex) }}
-        </h4>
-        <select v-model="step.verb">
+        <input type="text" class="step-name" v-model="step.id" />
+        <select v-model="step.verb" v-on:change="setStepId(stepIndex)">
           <option value="create">create</option>
           <option value="update">update</option>
           <option value="delete">delete</option>
           <option value="addMeta" v-if="stepIndex !== 0">add meta</option>
         </select>
-        <select v-model="step.entity">
+        <select v-model="step.entity" v-on:change="setStepId(stepIndex)">
           <option></option>
           <option value="post">post</option>
           <option value="user">user</option>
@@ -80,6 +78,9 @@ export default {
     }
   },
   methods: {
+    setStepId: function(index) {
+      store.commit("setStepId", index);
+    },
     onParamUpdate: function(newValue) {
       console.log(newValue);
     },
@@ -87,9 +88,9 @@ export default {
       return index + 1;
     },
     getParams(action) {
-      if (action == "newPost") {
+      if ("newPost" === action) {
         return postParams;
-      } else if (action == "newUser") {
+      } else if ("newUser" === action) {
         return userParams;
       }
     },
@@ -98,12 +99,6 @@ export default {
     },
     deleteStep(stepIndex) {
       store.commit("removeStep", stepIndex);
-    },
-    updateVerb(verb) {
-      store.commit("updateVerb", stepIndex, verb);
-    },
-    updateEntity() {
-
     }
   }
 };

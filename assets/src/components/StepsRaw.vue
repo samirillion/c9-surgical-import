@@ -1,5 +1,5 @@
 <template>
-  <details v-if="[] !== data" open>
+  <details v-if="[] !== steps" open>
     <Summary>{{ summary }}</Summary>
     {{ steps }}
   </details>
