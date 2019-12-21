@@ -63,6 +63,7 @@
       </span>
     </details>
     <div v-if="checkedFields.length > 0">
+            <hr />
       <!-- <details class="custom-var-wrapper" v-if="checkedFields.length > 0">
         <summary>Build Custom Variables</summary>
         <VarBuilder />
@@ -79,19 +80,10 @@
         </div>
       </details> -->
       <!-- v-if="checkedFields.length  -->
-      <hr />
-      <details open>
-        <summary>Create Your Steps</summary>
-
-        <ImportSteps :checkedFields="checkedFields" />
-      </details>
-      <details open>
-        <summary>View Steps as Json</summary>
-
-        <StepsRaw />
-      </details>
+        <ImportSteps :checkedFields="checkedFields" :summary="'Create Your Steps'" />
+        <StepsRaw :open="true" :summary="'View Steps as Json'"/>
     </div>
-    <hr style="clear:both;" />
+    <hr/>
     <div class="row">
       <button class="button button-primary">Validate Input</button>
       <button class="button button-primary" @click="runImport">

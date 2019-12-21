@@ -6,12 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     uploadedFileId: [],
-    steps: []
-  },
-  getters: {
-    steps: state => {
-      return state.steps;
-    }
+    steps: [{ id: "", verb: "", entity: "", map: {} }]
   },
   mutations: {
     setFileId(state, id) {
@@ -21,14 +16,13 @@ export default new Vuex.Store({
       state.steps.splice(stepIndex, 1);
     },
     addStep(state, stepIndex) {
-      state.steps.splice(stepIndex + 1, 0, {
-        parent: null,
-        action: "",
-        map: {}
-      });
+      state.steps.splice(stepIndex + 1, 0, { id: "", verb: "", entity: "", map: {} });
     },
-    updateStep(stepIndex, stepContent) {
-      state.steps.splice(stepIndex, 1, stepContent);
+    updateVerb(stepIndex, verb) {
+      state.steps[stepIndex].verb = verb;
+    },
+    updateEntity(stepIndex, verb) {
+      state.steps[stepIndex].entity = verb;
     },
     addBaseFields(type, field) {
       state.fields.push(field);

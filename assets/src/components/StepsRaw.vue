@@ -1,7 +1,8 @@
 <template>
-  <div v-if="[] !== data">
-      {{ data.steps }}
-  </div>
+  <details v-if="[] !== data" open>
+    <Summary>{{ summary }}</Summary>
+    {{ steps }}
+  </details>
 </template>
 
 <script>
@@ -9,14 +10,10 @@ import store from "@/store";
 
 export default {
   name: "StepsRaw",
+  props: ["summary"],
   computed: {
-    data: function() {
-      // return StepsStore.getSteps();
-    }
-  },
-  watch: {
-    data: function() {
-      // return StepsStore.getSteps();
+    steps: function() {
+      return store.state.steps;
     }
   }
 };
