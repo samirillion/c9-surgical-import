@@ -18,18 +18,6 @@ class ENDPOINTS
 
     public function register_endpoints()
     {
-        register_rest_route($this->namespace, '/author/(?P<id>\d+)', array(
-            'methods' => 'GET',
-            'callback' => [$this, 'my_awesome_func'],
-            'args' => array(
-                'id' => array(
-                    'validate_callback' => function ($param, $request, $key) {
-                        return is_numeric($param);
-                    }
-                ),
-            ),
-        ));
-
         register_rest_route($this->namespace, '/run', array(
             'methods' => 'GET',
             'callback' => [new Import, 'run'],
@@ -71,6 +59,16 @@ class ENDPOINTS
                 ),
             ),
         ));
+
+        register_rest_route($this->namespace, '/get-post-types', array(
+            'methods' => 'GET',
+            'callback' => [$this, 'get_post_types'],
+        ));
+
+        register_rest_route($this->namespace, '/get-acf-fields', array(
+            'methods' => 'GET',
+            'callback' => [$this, 'get_acf_fields'],
+        ));
     }
 
     public function is_admin($request)
@@ -82,22 +80,37 @@ class ENDPOINTS
     {
     }
 
-    /**
-     * Grab latest post title by an author!
-     *
-     * @param array $data Options for the function.
-     * @return string|null Post title for the latest,  * or null if none.
-     */
-    public function my_awesome_func($data)
+    public function get_post_types()
     {
-        $posts = get_posts(array(
-            'author' => $data['id'],
-        ));
+        return get_post_types(
+            array(
+                'public'   => true
+            )
+        );
+    }
 
-        if (empty($posts)) {
-            return null;
+    public function get_acf_fields()
+    {
+        $options = array();
+        $field_groups = acf_get_field_groups();
+        foreach ($field_groups as $group) {
+            // DO NOT USE here: $fields = acf_get_fields($group['key']);
+            // because it causes repeater field bugs and returns "trashed" fields
+            $fields = get_posts(array(
+                'posts_per_page'   => -1,
+                'post_type'        => 'acf-field',
+                'orderby'          => 'menu_order',
+                'order'            => 'ASC',
+                'suppress_filters' => true, // DO NOT allow WPML to modify the query
+                'post_parent'      => $group['ID'],
+                'post_status'      => 'any',
+                'update_post_meta_cache' => false
+            ));
+            foreach ($fields as $field) {
+                $options[$field->post_title] = $field->post_name;
+            }
         }
 
-        return $posts[0]->post_title;
+        return $options;
     }
 }

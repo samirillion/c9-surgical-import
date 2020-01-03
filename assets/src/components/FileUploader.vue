@@ -11,19 +11,13 @@
       />
     </label>
     <br />
-    <!-- <button
-      v-if="readyToSubmit"
-      v-on:click="previewFile()"
-      class="button button-primary"
-    >
-      View
-    </button> -->
   </div>
 </template>
 
 <!-- Javascript -->
 <script>
 import { WpApi } from "@/services/WpApi";
+import store from "@/store";
 
 export default {
   name: "FileUploader",

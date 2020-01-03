@@ -3,10 +3,13 @@
     <h4>Set Values</h4>
     <div v-for="(setter, setIndex) in setMap" :key="setIndex">
       <select v-model="setMap.left">
+        <option></option>
         <option v-for="(param, paramIndex) in params" :key="paramIndex">
           {{ param }}
         </option>
       </select>
+      <v-select :options="['coolio', 'yurp']" v-model="setMap.right" />
+
       <button
         @click="deleteSetter(setIndex)"
         v-if="setMap > 1"
@@ -36,9 +39,9 @@ export default {
   },
   computed: {
     params: function() {
-      if ("post" === step.entity) {
+      if ("post" === this.step.entity) {
         return postParams;
-      } else if ("user" === step.entity) {
+      } else if ("user" === this.step.entity) {
         return userParams;
       }
     }

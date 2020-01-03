@@ -8,12 +8,12 @@
       <div class="ifm-step" v-for="(step, stepIndex) in steps" :key="stepIndex">
         <div class="ifm-step-wrapper">
           <input type="text" class="regular-text" v-model="step.id" />
-          <select v-model="step.verb" v-on:change="setStepId(stepIndex)">
+          <select v-model="step.verb" @change="setStepId(stepIndex)">
             <option></option>
             <option value="create">create</option>
             <option value="update">update</option>
           </select>
-          <select v-model="step.entity" v-on:change="setStepId(stepIndex)">
+          <select v-model="step.entity" @change="setStepId(stepIndex)">
             <option></option>
             <option value="post">post</option>
             <option value="user">user</option>
@@ -28,7 +28,7 @@
             -
           </button>
         </div>
-        <StepMap :index="stepIndex"></StepMap>
+        <!-- <StepMap :index="stepIndex"></StepMap> -->
         <hr />
       </div>
       <button @click="addStep(steps.length)" class="button button-primary">

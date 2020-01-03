@@ -23,4 +23,8 @@ WpApi.getCsv = WpApi.registerRoute("ifm/importer/v1", "/getcsv");
 
 WpApi.runImport = WpApi.registerRoute("ifm/importer/v1", "/run");
 
+WpApi.postTypes = WpApi.registerRoute("ifm/importer/v1", "/get-post-types");
+
+WpApi.postTypes = WpApi.registerRoute("ifm/importer/v1", "/get-acf-fields");
+
 export { WpApi };

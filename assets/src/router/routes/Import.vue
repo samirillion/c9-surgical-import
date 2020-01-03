@@ -26,10 +26,12 @@
                   :name="column"
                   :value="column"
                   v-model="checkedFields"
+                  @change="updateCheckedFields"
                 />
                 <label :for="column">{{ column }} ({{ columnIndex }})</label>
               </th>
             </tr>
+            <!-- prettier-ignore-attribute -->
             <tr
               v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
               :key="exampleIndex"
@@ -102,11 +104,10 @@ export default {
     return {
       allSelected: false,
       file: [],
-      uploadId: null,
       uploadObject: {},
       rawCsv: {},
       parsedCsv: [],
-      checkedFields: [],
+      checkedFields: store.state.checkedFields,
       exampleEntries: 1,
       exampleEntryLength: 25
     };
@@ -117,6 +118,9 @@ export default {
     }
   },
   methods: {
+    updateCheckedFields() {
+      store.commit("updateCheckedFields", this.checkedFields);
+    },
     async runImport() {
       const response = await WpApi.runImport().param(
         "import_maps"
@@ -127,16 +131,19 @@ export default {
     toggleSelect() {
       if (!this.allSelected) {
         this.checkedFields = [];
+        this.updateCheckedFields();
       } else {
         this.checkedFields = this.parsedCsv[0];
+        this.updateCheckedFields();
       }
     },
     async onUpload(uploadId) {
-      this.uploadId = uploadId;
+      store.commit("setFileId", uploadId);
       // StepsStore.setFileId(uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
       this.checkedFields = [];
+      this.updateCheckedFields();
       this.allSelected = false;
     },
     async getObjectFromId(fileId) {
