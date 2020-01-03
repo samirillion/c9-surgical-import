@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     uploadedFileId: [],
-    steps: [{ id: "", verb: "", entity: "", map: {} }]
+    steps: [{ id: "", verb: "", entity: "", getMap: {}, setMap: {} }]
   },
   mutations: {
     setFileId(state, id) {
@@ -24,7 +24,8 @@ export default new Vuex.Store({
         id: "",
         verb: "",
         entity: "",
-        map: {}
+        getMap: {},
+        setMap: {}
       });
     },
     updateVerb(stepIndex, verb) {

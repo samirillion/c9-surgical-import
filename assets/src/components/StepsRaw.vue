@@ -1,7 +1,7 @@
 <template>
   <details v-if="[] !== steps" open>
     <Summary>{{ summary }}</Summary>
-    {{ steps }}
+    <pre>{{ steps }}</pre>
   </details>
 </template>
 

@@ -70,7 +70,6 @@ export default {
           description: "Csv Upload for Import"
         })
         .then(function(response) {
-          console.log(response);
           $this.$emit("uploaded", response.id);
         });
     },

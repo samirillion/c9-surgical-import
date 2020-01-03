@@ -5,7 +5,7 @@
     <details v-if="parsedCsv.length > 1" open>
       <summary>Import fields (pick some!)</summary>
       <div class="table-wrapper">
-        <table class="csv-table">
+        <table class="csv-table striped">
           <tbody>
             <tr>
               <th>
@@ -63,27 +63,14 @@
       </span>
     </details>
     <div v-if="checkedFields.length > 0">
-            <hr />
-      <!-- <details class="custom-var-wrapper" v-if="checkedFields.length > 0">
-        <summary>Build Custom Variables</summary>
-        <VarBuilder />
-      </details> -->
-
-      <!-- <details class="fields-wrapper" v-if="checkedFields.length > 0">
-        <summary>Variables ({{ checkedFields.length }})</summary>
-        <div class="import-fields-wrapper">
-          <ul class="import-fields">
-            <li v-for="(field, index) in checkedFields" :key="index">
-              {{ field }}
-            </li>
-          </ul>
-        </div>
-      </details> -->
-      <!-- v-if="checkedFields.length  -->
-        <ImportSteps :checkedFields="checkedFields" :summary="'Create Your Steps'" />
-        <StepsRaw :open="true" :summary="'View Steps as Json'"/>
+      <hr />
+      <ImportSteps
+        :checkedFields="checkedFields"
+        :summary="'Create Your Steps'"
+      />
+      <StepsRaw :open="true" :summary="'View Steps as Json'" />
     </div>
-    <hr/>
+    <hr />
     <div class="row">
       <button class="button button-primary">Validate Input</button>
       <button class="button button-primary" @click="runImport">
@@ -100,7 +87,6 @@ import { WpApi } from "@/services/WpApi";
 import { CsvToArray } from "@/utils/CsvToArray";
 import FileUploader from "@/components/FileUploader.vue";
 import ImportSteps from "@/components/ImportSteps.vue";
-import VarBuilder from "@/components/VarBuilder.vue";
 import StepsRaw from "@/components/StepsRaw.vue";
 
 import store from "@/store";
@@ -110,7 +96,6 @@ export default {
   components: {
     FileUploader,
     ImportSteps,
-    VarBuilder,
     StepsRaw
   },
   data() {
@@ -134,7 +119,7 @@ export default {
   methods: {
     async runImport() {
       const response = await WpApi.runImport().param(
-        "import_maps",
+        "import_maps"
         // StepsStore.getSteps()
       );
       console.log(response);
