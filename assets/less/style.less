@@ -127,16 +127,35 @@ details ul {
 summary:focus {
   outline-style: none;
 }
+.ifm-steps-and-vars {
+  display: flex;
+  width: 100%;
+  clear: both;
+}
 .ifm-step {
-  margin-bottom: 5px;
   display: block;
   float: left;
   width: 100%;
+  padding: 20px;
+  background: white;
 }
-.step-wrapper {
+.ifm-step h4 {
+  margin-top:  10px;
+}
+.ifm-create-steps {
+  width: 50%;
+  float: left;
+}
+.ifm-steps-wrapper {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+}
+.ifm-step-wrapper {
+  display: flex;
+}
+.ifm-step-wrapper .button-primary {
+  margin-left: 5px;
 }
 .ifm-step .key-row,
 .ifm-step .key-value {
@@ -145,8 +164,32 @@ summary:focus {
 .step-then {
   text-align: center;
 }
+.ifm-map-setters {
+  display: flex;
+}
+.ifm-step .v-select .open-indicator:before {
+  border-color: rgba(60, 60, 60, 0.8);
+  border-style: solid;
+  border-width: 2px 2px 0 0;
+}
 .ifm-step .v-select .dropdown-toggle {
   background-color: white;
+  font-size: 14px;
+  line-height: 2;
+  color: #32373c;
+  border-color: #7e8993;
+  box-shadow: none;
+  border-radius: 3px;
+  padding: 0 0 0 8px;
+  min-height: 30px;
+  max-width: 25rem;
+  -webkit-appearance: none;
+  background: #fff
+    url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2…%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
+    no-repeat right 5px top 55%;
+  background-size: 16px 16px;
+  cursor: pointer;
+  vertical-align: middle;
 }
 .single-meta {
   display: flex;
@@ -171,12 +214,42 @@ summary:focus {
 .meta-key-input {
   height: 30px;
 }
-.custom-var {
-  margin-top: 5px;
-  margin-bottom: 10px;
+.ifm-var-builder {
+  width: 48%;
+  float: right;
+}
+.ifm-var-builder summary,
+.ifm-create-steps summary {
+  background: white;
+  margin: 0;
+  padding: 20px;
+  border: 1px solid black;
+}
+.ifm-create-steps summary {
+  border-bottom: none;
+}
+.ifm-custom-var {
+  padding: 20px;
+  background: white;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: none;
+}
+.ifm-var-builder .ifm-custom-var:nth-child(even),
+.ifm-steps-wrapper .ifm-step:nth-child(even) {
+  background-color: rgb(249, 249, 249);
+}
+.ifm-var-builder .ifm-custom-var:last-child {
+  border-bottom: 1px solid black;
+}
+.ifm-steps-wrapper {
+  border: 1px solid black;
 }
 .ifm-step .regular-text {
   width: 13em;
+}
+.ifm-step h4 {
+  margin: 0;
 }
 .ifm-params .button-primary {
   font-size: 10px;
@@ -187,12 +260,6 @@ summary:focus {
   text-align: center;
   padding: 0;
   padding: 0;
-}
-.ifm-step-wrapper {
-  display: flex;
-}
-.ifm-step-wrapper .button-primary {
-  margin-left: 5px;
 }
 /* .add-var {
 margin-top: 5px;

@@ -1,8 +1,15 @@
 <template>
-  <div class="custom-var-wrapper">
-    <div class="custom-var" v-for="(customVar, index) in customVars" :key="index">
+  <details open class="ifm-var-builder">
+    <summary>
+      Create Custom Right Hand Values
+    </summary>
+    <div
+      class="ifm-custom-var"
+      v-for="(customVar, index) in customVars"
+      :key="index"
+    >
       <label for="varName">Variable Name</label>
-      <input type="text" name="varName">
+      <input type="text" name="varName" />
       <label for="addSubVar">Add a:</label>
       <select name="addSubVar">
         <option></option>
@@ -11,25 +18,33 @@
         <option value="string">Regex</option>
       </select>
       <button @click="addSubVar">+</button>
-      <br>
+      <br />
       {{ customVar[0] }}
-      <div v-for="(subVar, subVarIndex) in customVars[index]" :key="subVarIndex">
+      <div
+        v-for="(subVar, subVarIndex) in customVars[index]"
+        :key="subVarIndex"
+      >
         {{ subVar.type }}
-        <br>
-        <input type="text">
+        <br />
+        <input type="text" />
         <button @click="removeSubVar">-</button>
       </div>
-      <br height="0">
+      <br height="0" />
       <button class="button button-primary" @click="addVar(index)">+</button>
-      <button class="button button-primary" v-if="customVars.length > 1" @click="removeVar(index)">-</button>
+      <button
+        class="button button-primary"
+        v-if="customVars.length > 1"
+        @click="removeVar(index)"
+      >
+        -
+      </button>
     </div>
-  </div>
+  </details>
 </template>
 
 <script>
 export default {
   name: "VarBuilder",
-  props: ["baseFields"],
   data() {
     return {
       nextSubVar: "field",

@@ -2,6 +2,7 @@
   <div class="import">
     <FileUploader @uploaded="onUpload" />
 
+    <!-- <details v-if="parsedCsv.length > 1" open> -->
     <details v-if="parsedCsv.length > 1" open>
       <summary>Import fields (pick some!)</summary>
       <div class="table-wrapper">
@@ -66,10 +67,13 @@
     </details>
     <div v-if="checkedFields.length > 0">
       <hr />
-      <ImportSteps
-        :checkedFields="checkedFields"
-        :summary="'Create Your Steps'"
-      />
+      <div class="ifm-steps-and-vars">
+        <ImportSteps
+          :checkedFields="checkedFields"
+          :summary="'Create Your Steps'"
+        />
+        <VarBuilder />
+      </div>
       <StepsRaw :open="true" :summary="'View Steps as Json'" />
     </div>
     <hr />
@@ -90,6 +94,7 @@ import { CsvToArray } from "@/utils/CsvToArray";
 import FileUploader from "@/components/FileUploader.vue";
 import ImportSteps from "@/components/ImportSteps.vue";
 import StepsRaw from "@/components/StepsRaw.vue";
+import VarBuilder from "@/components/VarBuilder.vue";
 
 import store from "@/store";
 
@@ -98,7 +103,8 @@ export default {
   components: {
     FileUploader,
     ImportSteps,
-    StepsRaw
+    StepsRaw,
+    VarBuilder
   },
   data() {
     return {

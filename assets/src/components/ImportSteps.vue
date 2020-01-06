@@ -1,13 +1,13 @@
 <template>
-  <details open>
+  <details open class="ifm-create-steps">
     <summary>
       {{ summary }}
     </summary>
-    <div class="step-wrapper">
+    <div class="ifm-steps-wrapper">
       <!-- loop through steps here -->
       <div class="ifm-step" v-for="(step, stepIndex) in steps" :key="stepIndex">
+        <h4>{{ step.id }}</h4>
         <div class="ifm-step-wrapper">
-          <input type="text" class="regular-text" v-model="step.id" />
           <select v-model="step.verb" @change="setStepId(stepIndex)">
             <option></option>
             <option value="create">create</option>
@@ -28,12 +28,11 @@
             -
           </button>
         </div>
-        <!-- <StepMap :index="stepIndex"></StepMap> -->
-        <hr />
+        <StepMap :index="stepIndex"></StepMap>
+        <button @click="addStep(steps.length)" class="button button-primary">
+          +
+        </button>
       </div>
-      <button @click="addStep(steps.length)" class="button button-primary">
-        +
-      </button>
     </div>
   </details>
 </template>

@@ -3,18 +3,16 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const stepScheme = {
-  id: "",
-  verb: "",
-  entity: "",
-  getMap: [{}],
-  setMap: [{}]
-}
-
 export default new Vuex.Store({
   state: {
     uploadedFileId: null,
-    steps: [stepScheme],
+    steps: [{
+      id: "",
+      verb: "",
+      entity: "",
+      getMap: [{}],
+      setMap: [{}]
+    }],
     checkedFields: []
   },
   mutations: {
@@ -32,7 +30,13 @@ export default new Vuex.Store({
       state.steps.splice(stepIndex, 1);
     },
     addStep(state, stepLength) {
-      state.steps.splice(stepLength + 1, 0, stepScheme);
+      state.steps.splice(stepLength + 1, 0, {
+        id: "",
+        verb: "",
+        entity: "",
+        getMap: [{}],
+        setMap: [{}]
+      });
     },
     updateEntity(stepIndex, verb) {
       state.steps[stepIndex].entity = verb;
