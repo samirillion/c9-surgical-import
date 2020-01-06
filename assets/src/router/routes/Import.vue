@@ -3,9 +3,9 @@
     <FileUploader @uploaded="onUpload" />
 
     <!-- <details v-if="parsedCsv.length > 1" open> -->
-    <details v-if="parsedCsv.length > 1" open>
+    <details open>
       <summary>Import fields (pick some!)</summary>
-      <div class="table-wrapper">
+      <div class="ifm-table-wrapper">
         <table class="csv-table striped">
           <tbody>
             <tr>
@@ -70,7 +70,6 @@
       <div class="ifm-steps-and-vars">
         <ImportSteps
           :checkedFields="checkedFields"
-          :summary="'Create Your Steps'"
         />
         <VarBuilder />
       </div>
@@ -113,7 +112,7 @@ export default {
       uploadObject: {},
       rawCsv: {},
       parsedCsv: [],
-      checkedFields: store.state.checkedFields,
+      checkedFields: ["name", "cool"],
       exampleEntries: 1,
       exampleEntryLength: 25
     };

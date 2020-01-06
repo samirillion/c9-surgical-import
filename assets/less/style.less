@@ -1,3 +1,6 @@
+/** 
+Global Elements
+**/
 hr {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -10,6 +13,50 @@ summary {
 }
 summary:hover {
   cursor: pointer;
+}
+tr th,
+tr td,
+tfoot tr {
+  min-width: 130px;
+  border: 1px solid black;
+  text-align: left;
+  border-collapse: collapse;
+  padding: 3px;
+}
+tfoot tr td {
+  colspan: "100%";
+}
+details ul {
+  height: 300px;
+  overflow: scroll;
+  border: 1px solid black;
+  width: 270px;
+  padding: 10px;
+}
+summary:focus {
+  outline-style: none;
+}
+/**
+Import Fields Element
+**/
+.ifm-table-wrapper {
+  overflow: scroll;
+  margin-bottom: 10px;
+  padding-bottom: 12px;
+}
+.csv-table {
+  border-collapse: collapse;
+  cellpadding: 2px;
+  background: white;
+}
+.ifm-table-wrapper table {
+  table-layout: fixed;
+}
+.ifm-table-wrapper td {
+  word-wrap: break-word;
+}
+.ifm-table-wrapper .cell-content {
+  word-break: break-all;
 }
 .import-fields {
   background: white;
@@ -68,23 +115,6 @@ summary:hover {
   );
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f1f1f', endColorstr='#0f1f1f', GradientType=0 );
 }
-.step-name {
-  vertical-align: middle;
-}
-.table-wrapper {
-  overflow: scroll;
-  margin-bottom: 10px;
-  padding-bottom: 12px;
-}
-.table-wrapper table {
-  table-layout: fixed;
-}
-.table-wrapper td {
-  word-wrap: break-word;
-}
-.table-wrapper .cell-content {
-  word-break: break-all;
-}
 .entry-length {
   width: 50px;
 }
@@ -100,33 +130,9 @@ summary:hover {
   overflow: hidden;
   padding-right: 10px;
 }
-.csv-table {
-  border-collapse: collapse;
-  cellpadding: 2px;
-  background: white;
-}
-tr th,
-tr td,
-tfoot tr {
-  min-width: 130px;
-  border: 1px solid black;
-  text-align: left;
-  border-collapse: collapse;
-  padding: 3px;
-}
-tfoot tr td {
-  colspan: "100%";
-}
-details ul {
-  height: 300px;
-  overflow: scroll;
-  border: 1px solid black;
-  width: 270px;
-  padding: 10px;
-}
-summary:focus {
-  outline-style: none;
-}
+/**
+Ifm Steps
+*/
 .ifm-steps-and-vars {
   display: flex;
   width: 100%;
@@ -136,19 +142,25 @@ summary:focus {
   display: block;
   float: left;
   width: 100%;
-  padding: 20px;
+  margin: 10px;
+  margin-top: 0;
+  padding: 10px;
   background: white;
+  border: 1px solid black;
 }
 .ifm-step h4 {
-  margin-top:  10px;
+  margin-top: 10px;
 }
 .ifm-create-steps {
-  width: 50%;
+  width: calc(50% - 5px);
   float: left;
+  margin-right: 5px;
+  border: 1px solid black;
+  background: white;
 }
 .ifm-steps-wrapper {
   display: flex;
-  width: 100%;
+  width: auto;
   flex-wrap: wrap;
 }
 .ifm-step-wrapper {
@@ -191,6 +203,9 @@ summary:focus {
   cursor: pointer;
   vertical-align: middle;
 }
+.wp-core-ui .ifm-step .button-primary.wide {
+  width: 100%;
+}
 .single-meta {
   display: flex;
   flex-direction: column;
@@ -223,10 +238,9 @@ summary:focus {
   background: white;
   margin: 0;
   padding: 20px;
-  border: 1px solid black;
 }
-.ifm-create-steps summary {
-  border-bottom: none;
+.ifm-create-steps .ifm-step summary {
+  padding: 0;
 }
 .ifm-custom-var {
   padding: 20px;
@@ -243,7 +257,6 @@ summary:focus {
   border-bottom: 1px solid black;
 }
 .ifm-steps-wrapper {
-  border: 1px solid black;
 }
 .ifm-step .regular-text {
   width: 13em;

@@ -1,12 +1,26 @@
 <template>
   <details open class="ifm-create-steps">
     <summary>
-      {{ summary }}
+      Create Import Steps
     </summary>
     <div class="ifm-steps-wrapper">
       <!-- loop through steps here -->
-      <div class="ifm-step" v-for="(step, stepIndex) in steps" :key="stepIndex">
-        <h4>{{ step.id }}</h4>
+      <details
+        open
+        class="ifm-step"
+        v-for="(step, stepIndex) in steps"
+        :key="stepIndex"
+      >
+        <summary>
+          Step {{ stepIndex + 1 }}
+          <button
+            @click="deleteStep(stepIndex)"
+            v-if="steps.length > 1"
+            class="button button-primary"
+          >
+            -
+          </button>
+        </summary>
         <div class="ifm-step-wrapper">
           <select v-model="step.verb" @change="setStepId(stepIndex)">
             <option></option>
@@ -20,19 +34,12 @@
             <option value="post_meta">post meta</option>
             <option value="user_meta">user meta</option>
           </select>
-          <button
-            @click="deleteStep(stepIndex)"
-            v-if="steps.length > 1"
-            class="button button-primary"
-          >
-            -
-          </button>
         </div>
         <StepMap :index="stepIndex"></StepMap>
-        <button @click="addStep(steps.length)" class="button button-primary">
-          +
+        <button @click="addStep(steps.length)" class="button button-primary wide">
+          + Add Step
         </button>
-      </div>
+      </details>
     </div>
   </details>
 </template>
@@ -46,7 +53,7 @@ export default {
   components: {
     StepMap
   },
-  props: ["checkedFields", "summary"],
+  props: ["checkedFields"],
   data() {
     return {
       steps: store.state.steps,
