@@ -2,8 +2,7 @@
   <div class="import">
     <FileUploader @uploaded="onUpload" />
 
-    <!-- <details v-if="parsedCsv.length > 1" open> -->
-    <details open>
+    <details v-if="parsedCsv.length > 1" open>
       <summary>Import fields (pick some!)</summary>
       <div class="ifm-table-wrapper">
         <table class="csv-table striped">
@@ -112,7 +111,7 @@ export default {
       uploadObject: {},
       rawCsv: {},
       parsedCsv: [],
-      checkedFields: ["name", "cool"],
+      checkedFields: store.state.checkedFields,
       exampleEntries: 1,
       exampleEntryLength: 25
     };

@@ -36,6 +36,43 @@ details ul {
 summary:focus {
   outline-style: none;
 }
+#ifm-importer-app.wp-core-ui select {
+  height: 30px;
+}
+/**
+V-select Styes
+*/
+#ifm-importer-app .v-select .dropdown-toggle {
+  height: 30px;
+  background-color: white !important;
+}
+#ifm-importer-app .v-select.dropdown {
+  width: 160px;
+}
+#ifm-importer-app .v-select .dropdown-toggle {
+  background-color: white;
+  font-size: 14px;
+  line-height: 2;
+  color: #32373c;
+  border-color: #7e8993;
+  box-shadow: none;
+  border-radius: 3px;
+  padding: 0 0 0 8px;
+  min-height: 30px;
+  max-width: 25rem;
+  -webkit-appearance: none;
+  background: #fff
+    url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2…%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
+    no-repeat right 5px top 55%;
+  background-size: 16px 16px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+#ifm-importer-app .v-select .open-indicator:before {
+  border-color: rgba(60, 60, 60, 0.8);
+  border-style: solid;
+  border-width: 2px 2px 0 0;
+}
 /**
 Import Fields Element
 **/
@@ -138,19 +175,6 @@ Ifm Steps
   width: 100%;
   clear: both;
 }
-.ifm-step {
-  display: block;
-  float: left;
-  width: 100%;
-  margin: 10px;
-  margin-top: 0;
-  padding: 10px;
-  background: white;
-  border: 1px solid black;
-}
-.ifm-step h4 {
-  margin-top: 10px;
-}
 .ifm-create-steps {
   width: calc(50% - 5px);
   float: left;
@@ -163,62 +187,71 @@ Ifm Steps
   width: auto;
   flex-wrap: wrap;
 }
-.ifm-step-wrapper {
+.ifm-step-wrapper, .ifm-params {
+  padding: 5px 10px;
+  margin: 5px 0;
   display: flex;
+  background: #F8F8F8;
+  border: 1px solid #e3e3e3;
+}
+.ifm-params {
+  display: block;
+}
+.ifm-step-wrapper > select {
+  flex-grow: 1;
 }
 .ifm-step-wrapper .button-primary {
   margin-left: 5px;
+}
+.ifm-create-steps .ifm-step summary {
+  padding: 0;
+  height: 30px;
+  background: none;
+}
+.ifm-step-number {
+  line-height: 30px;
+}
+.ifm-summary-right {
+  float: right;
+  display: flex;
+  align-items: center;
+}
+.ifm-step-name {
+  font-size: 14px;
+  color: #333333;
+  margin-right: 5px;
+}
+.ifm-step {
+  display: block;
+  float: left;
+  width: 100%;
+  margin: 10px;
+  margin-top: 0;
+  padding: 10px;
+  background: white;
+  border: 1px solid black;
+}
+.ifm-step h4 {
+  margin: 0;
+}
+.ifm-step .regular-text {
+  width: 13em;
 }
 .ifm-step .key-row,
 .ifm-step .key-value {
   display: flex;
 }
-.step-then {
-  text-align: center;
-}
 .ifm-map-setters {
   display: flex;
-}
-.ifm-step .v-select .open-indicator:before {
-  border-color: rgba(60, 60, 60, 0.8);
-  border-style: solid;
-  border-width: 2px 2px 0 0;
-}
-.ifm-step .v-select .dropdown-toggle {
-  background-color: white;
-  font-size: 14px;
-  line-height: 2;
-  color: #32373c;
-  border-color: #7e8993;
-  box-shadow: none;
-  border-radius: 3px;
-  padding: 0 0 0 8px;
-  min-height: 30px;
-  max-width: 25rem;
-  -webkit-appearance: none;
-  background: #fff
-    url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2…%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-    no-repeat right 5px top 55%;
-  background-size: 16px 16px;
-  cursor: pointer;
-  vertical-align: middle;
 }
 .wp-core-ui .ifm-step .button-primary.wide {
   width: 100%;
 }
-.single-meta {
-  display: flex;
-  flex-direction: column;
-}
-.v-select .dropdown-toggle {
-  background-color: white !important;
-}
-.v-select.dropdown {
-  width: 160px;
-}
 .ifm-step .single-meta {
   margin-top: 5px;
   margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
 }
 .key-row {
   display: flex;
@@ -239,9 +272,6 @@ Ifm Steps
   margin: 0;
   padding: 20px;
 }
-.ifm-create-steps .ifm-step summary {
-  padding: 0;
-}
 .ifm-custom-var {
   padding: 20px;
   background: white;
@@ -256,14 +286,6 @@ Ifm Steps
 .ifm-var-builder .ifm-custom-var:last-child {
   border-bottom: 1px solid black;
 }
-.ifm-steps-wrapper {
-}
-.ifm-step .regular-text {
-  width: 13em;
-}
-.ifm-step h4 {
-  margin: 0;
-}
 .ifm-params .button-primary {
   font-size: 10px;
   height: 20px;
@@ -274,6 +296,3 @@ Ifm Steps
   padding: 0;
   padding: 0;
 }
-/* .add-var {
-margin-top: 5px;
-} */

@@ -1,5 +1,5 @@
 <template>
-  <div id="vue-backend-app">
+  <div id="ifm-importer-app">
     <h1>Ifm Importer</h1>
     <keep-alive>
       <router-view />

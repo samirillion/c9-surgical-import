@@ -12,14 +12,19 @@
         :key="stepIndex"
       >
         <summary>
-          Step {{ stepIndex + 1 }}
-          <button
-            @click="deleteStep(stepIndex)"
-            v-if="steps.length > 1"
-            class="button button-primary"
-          >
-            -
-          </button>
+          <span class="ifm-step-number"> Step {{ stepIndex + 1 }} </span>
+          <span class="ifm-summary-right">
+            <span class="ifm-step-name">
+              {{ step.id }}
+            </span>
+            <button
+              @click="deleteStep(stepIndex)"
+              v-if="steps.length > 1"
+              class="button button-primary"
+            >
+              -
+            </button>
+          </span>
         </summary>
         <div class="ifm-step-wrapper">
           <select v-model="step.verb" @change="setStepId(stepIndex)">
@@ -33,10 +38,14 @@
             <option value="user">user</option>
             <option value="post_meta">post meta</option>
             <option value="user_meta">user meta</option>
+            <option value="acf_data">acf data</option>
           </select>
         </div>
         <StepMap :index="stepIndex"></StepMap>
-        <button @click="addStep(steps.length)" class="button button-primary wide">
+        <button
+          @click="addStep(steps.length)"
+          class="button button-primary wide"
+        >
           + Add Step
         </button>
       </details>

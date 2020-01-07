@@ -6,16 +6,28 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     uploadedFileId: null,
-    steps: [{
-      id: "",
-      verb: "",
-      entity: "",
-      getMap: [{}],
-      setMap: [{}]
-    }],
+    steps: [
+      {
+        id: "",
+        verb: "",
+        entity: "",
+        getMap: [],
+        setMap: []
+      }
+    ],
     checkedFields: []
   },
   mutations: {
+    addSetter(state, setMapObj) {
+      state.steps[setMapObj.stepIndex].setMap.splice(
+        setMapObj.setMapLength + 1,
+        0,
+        {}
+      );
+    },
+    deleteSetter(state, setMapObj) {
+      state.steps[setMapObj.stepIndex].setMap.splice(setMapObj.mapIndex, 1);
+    },
     updateCheckedFields(state, checkedFields) {
       state.checkedFields = checkedFields;
     },
