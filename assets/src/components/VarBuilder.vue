@@ -1,7 +1,7 @@
 <template>
   <details class="ifm-var-builder">
     <summary>
-      Custom Right Hand Values
+      Custom Right Hand Variables
     </summary>
     <div
       class="ifm-custom-var"

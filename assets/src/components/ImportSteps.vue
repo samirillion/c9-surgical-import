@@ -26,20 +26,23 @@
             </button>
           </span>
         </summary>
-        <div class="ifm-step-wrapper">
-          <select v-model="step.verb" @change="setStepId(stepIndex)">
-            <option></option>
-            <option value="create">create</option>
-            <option value="update">update</option>
-          </select>
-          <select v-model="step.entity" @change="setStepId(stepIndex)">
-            <option></option>
-            <option value="post">post</option>
-            <option value="user">user</option>
-            <option value="post_meta">post meta</option>
-            <option value="user_meta">user meta</option>
-            <option value="acf_data">acf data</option>
-          </select>
+        <div class="ifm-define-action">
+          <h4>Define Action</h4>
+          <div class="ifm-entity-verb-wrapper">
+            <select v-model="step.verb" @change="setStepId(stepIndex)">
+              <option></option>
+              <option value="create">create</option>
+              <option value="update">update</option>
+            </select>
+            <select v-model="step.entity" @change="setStepId(stepIndex)">
+              <option></option>
+              <option value="post">post</option>
+              <option value="user">user</option>
+              <option value="post_meta">post meta</option>
+              <option value="user_meta">user meta</option>
+              <option value="acf_data">acf data</option>
+            </select>
+          </div>
         </div>
         <StepMap :index="stepIndex"></StepMap>
         <button

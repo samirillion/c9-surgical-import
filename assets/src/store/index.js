@@ -11,11 +11,11 @@ export default new Vuex.Store({
         id: "",
         verb: "",
         entity: "",
-        getMap: [],
-        setMap: []
+        getMap: [{}],
+        setMap: [{}]
       }
     ],
-    checkedFields: []
+    checkedFields: ["cool"]
   },
   mutations: {
     addSetter(state, setMapObj) {
