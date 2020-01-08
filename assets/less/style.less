@@ -3,7 +3,8 @@ Variables
 **/
 @dark: #333333;
 @grey: #7e8993;
-@light-grey: #f9f9f9;
+@lighter-grey: #e3e3e3;
+@lightest-grey: #f9f9f9;
 
 /** 
 Global Elements
@@ -26,7 +27,7 @@ Global Elements
   tr td,
   tfoot tr {
     min-width: 130px;
-    border: 1px solid black;
+    border: 1px solid @dark;
     text-align: left;
     border-collapse: collapse;
     padding: 3px;
@@ -37,7 +38,7 @@ Global Elements
   details ul {
     height: 300px;
     overflow: scroll;
-    border: 1px solid black;
+    border: 1px solid @dark;
     width: 270px;
     padding: 10px;
   }
@@ -51,20 +52,56 @@ Global Elements
     cursor: pointer;
   }
   h4 {
-    margin: 0 0 10px 0;
+    margin: 0;
     font-size: 17px;
     font-weight: 400;
   }
   /**
-V-select Styes
-*/
-
+  Class-based Input Styles
+  **/
+  .ifm-input-group {
+    display: flex;
+    margin-bottom: 5px;
+    align-items: flex-end;
+  }
+  .ifm-input-group > select,
+  .ifm-input-group .v-select {
+    min-width: 20%;
+    margin-right: 5px;
+  }
+  .vs__selected-options,
+  .selected-tag {
+    padding: 0;
+  }
+  .ifm-input-group button {
+    width: 30px;
+    flex-grow: 0;
+    background: white;
+    border: none;
+    border: 1px solid @grey;
+  }
+  .ifm-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-right: 5px;
+    min-width: 20%;
+    flex-grow: 1;
+    margin-top: 10px;
+    label {
+      margin-bottom: 5px;
+    }
+    input,
+    select,
+    .v-select {
+      width: 100%;
+    }
+  }
+  .ifm-input-wrapper:last-child {
+    margin-right: 0;
+  }
   .v-select .dropdown-toggle {
     height: 30px;
     background-color: white !important;
-  }
-  .v-select.dropdown {
-    width: 160px;
   }
   .v-select .dropdown-toggle {
     background-color: white;
@@ -208,11 +245,13 @@ Ifm Steps
   }
   .ifm-create-steps,
   .ifm-var-builder {
-    width: calc(50% - 5px);
     float: left;
     margin-right: 5px;
-    border: 1px solid black;
+    border: 1px solid @dark;
     background: white;
+  }
+  .ifm-create-steps {
+    width: 60%;
   }
   .ifm-steps-wrapper {
     display: flex;
@@ -224,8 +263,8 @@ Ifm Steps
     padding: 5px 10px;
     margin: 5px 0;
     display: flex;
-    background: @light-grey;
-    border: 1px solid @light-grey;
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
   }
   .ifm-define-action {
     display: block;
@@ -235,12 +274,15 @@ Ifm Steps
     width: 100%;
     display: flex;
   }
+  .ifm-entity-verb-wrapper select:first-child {
+    margin-right: 10px;
+  }
   .ifm-entity-verb-wrapper * {
     flex-grow: 1;
   }
   .ifm-params {
     display: block;
-    padding: 15px 20px;
+    padding: 15px 25px;
   }
   .ifm-params button {
     height: 30px;
@@ -281,7 +323,7 @@ Ifm Steps
     margin-top: 0;
     padding: 10px;
     background: white;
-    border: 1px solid black;
+    border: 1px solid @dark;
   }
   .ifm-step .regular-text {
     width: 13em;
@@ -289,26 +331,6 @@ Ifm Steps
   .ifm-step .key-row,
   .ifm-step .key-value {
     display: flex;
-  }
-  .ifm-map-setters {
-    display: flex;
-    margin-bottom: 5px;
-  }
-  .ifm-map-setters > select,
-  .ifm-map-setters .v-select {
-    flex-grow: 1;
-    margin-right: 5px;
-  }
-  .vs__selected-options,
-  .selected-tag {
-    padding: 0;
-  }
-  .ifm-map-setters button {
-    width: 30px;
-    flex-grow: 0;
-    background: white;
-    border: none;
-    border: 1px solid @grey;
   }
   .ifm-step .button-primary.wide {
     width: 100%;
@@ -341,15 +363,54 @@ Ifm Steps
   }
   .ifm-custom-var {
     padding: 20px;
+    padding-top: 0;
+  }
+  .ifm-custom-var-wrapper {
     background: white;
     border-bottom: none;
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
+    position: relative;
+    padding: 10px;
   }
-  // .ifm-var-builder .ifm-custom-var:nth-child(even),
+  .custom-var-header {
+    display: flex;
+  }
+  .custom-var-header label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .custom-var-header button {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }
+  .add-custom-value {
+    margin-top: 10px;
+  }
+  .var-type-wrapper {
+    margin-right: 10px;
+  }
+  .custom-var-header .var-type-wrapper,
+  .custom-var-header .var-name-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .var-value {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .var-input-label {
+    margin-bottom: 10px;
+  }
+  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even),
   // .ifm-steps-wrapper .ifm-step:nth-child(even) {
-  //   background-color: @light-grey;
+  //   background-color: @lightest-grey;
   // }
-  // .ifm-var-builder .ifm-custom-var:nth-child(even) .ifm-define-action,
-  // .ifm-var-builder .ifm-custom-var:nth-child(even) .ifm-params,
+  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even) .ifm-define-action,
+  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even) .ifm-params,
   // .ifm-steps-wrapper .ifm-step:nth-child(even) .ifm-define-action,
   // .ifm-steps-wrapper .ifm-step:nth-child(even) .ifm-params {
   //   background-color: white;

@@ -15,7 +15,13 @@ export default new Vuex.Store({
         setMap: [{}]
       }
     ],
-    checkedFields: ["cool"]
+    checkedFields: ["cool"],
+    customVars: [{}]
+  },
+  getters: {
+    stepIds: state => {
+      return state.steps.filter(step => step.id);
+    }
   },
   mutations: {
     addSetter(state, setMapObj) {
@@ -27,6 +33,16 @@ export default new Vuex.Store({
     },
     deleteSetter(state, setMapObj) {
       state.steps[setMapObj.stepIndex].setMap.splice(setMapObj.mapIndex, 1);
+    },
+    addGetter(state, getMapObj) {
+      state.steps[getMapObj.stepIndex].getMap.splice(
+        getMapObj.getMapLength + 1,
+        0,
+        {}
+      );
+    },
+    deleteGetter(state, getMapObj) {
+      state.steps[getMapObj.stepIndex].getMap.splice(getMapObj.mapIndex, 1);
     },
     updateCheckedFields(state, checkedFields) {
       state.checkedFields = checkedFields;

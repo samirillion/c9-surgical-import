@@ -29,19 +29,31 @@
         <div class="ifm-define-action">
           <h4>Define Action</h4>
           <div class="ifm-entity-verb-wrapper">
-            <select v-model="step.verb" @change="setStepId(stepIndex)">
-              <option></option>
-              <option value="create">create</option>
-              <option value="update">update</option>
-            </select>
-            <select v-model="step.entity" @change="setStepId(stepIndex)">
-              <option></option>
-              <option value="post">post</option>
-              <option value="user">user</option>
-              <option value="post_meta">post meta</option>
-              <option value="user_meta">user meta</option>
-              <option value="acf_data">acf data</option>
-            </select>
+            <div class="ifm-input-wrapper">
+              <label for="stepVerb">Action</label>
+              <select
+                name="stepVerb"
+                v-model="step.verb"
+                @change="setStepId(stepIndex)"
+              >
+                <option value="create">create</option>
+                <option value="update">update</option>
+              </select>
+            </div>
+            <div class="ifm-input-wrapper">
+              <label for="stepEntity">Object</label>
+              <select
+                name="stepEntity"
+                v-model="step.entity"
+                @change="setStepId(stepIndex)"
+              >
+                <option value="post">post</option>
+                <option value="user">user</option>
+                <option value="post_meta">post meta</option>
+                <option value="user_meta">user meta</option>
+                <option value="acf_data">acf data</option>
+              </select>
+            </div>
           </div>
         </div>
         <StepMap :index="stepIndex"></StepMap>
