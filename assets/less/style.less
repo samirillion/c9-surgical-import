@@ -5,7 +5,7 @@ Variables
 @grey: #7e8993;
 @lighter-grey: #e3e3e3;
 @lightest-grey: #f9f9f9;
-
+@blue: #007cba;
 /** 
 Global Elements
 **/
@@ -45,7 +45,7 @@ Global Elements
   summary:focus {
     outline-style: none;
   }
-  #ifm-importer-app .wp-core-ui select {
+  .wp-core-ui select {
     height: 30px;
   }
   button:hover {
@@ -61,13 +61,23 @@ Global Elements
   **/
   .ifm-input-group {
     display: flex;
-    margin-bottom: 5px;
     align-items: flex-end;
   }
   .ifm-input-group > select,
   .ifm-input-group .v-select {
-    min-width: 20%;
+    min-width: 25%;
     margin-right: 5px;
+    .dropdown-menu {
+      height: auto;
+      overflow: scroll;
+      width: 100%;
+      background: @lightest-grey;
+      border: none;
+      padding: 0;
+    }
+    .highlight {
+      background: @blue;
+    }
   }
   .vs__selected-options,
   .selected-tag {
@@ -76,17 +86,15 @@ Global Elements
   .ifm-input-group button {
     width: 30px;
     flex-grow: 0;
-    background: white;
-    border: none;
-    border: 1px solid @grey;
   }
   .ifm-input-wrapper {
     display: flex;
     flex-direction: column;
     margin-right: 5px;
-    min-width: 20%;
+    min-width: 25%;
     flex-grow: 1;
     margin-top: 10px;
+    padding-bottom: 5px;
     label {
       margin-bottom: 5px;
     }
@@ -266,6 +274,23 @@ Ifm Steps
     background: @lightest-grey;
     border: 1px solid @lighter-grey;
   }
+  .type-and-value {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    margin: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    border: 1px solid @lighter-grey;
+    .ifm-input-wrapper {
+      padding-bottom: 0;
+      margin-top: 5px;
+    }
+  }
+  .delete-map-row {
+    margin-bottom: 5px;
+  }
   .ifm-define-action {
     display: block;
     padding: 10px;
@@ -287,9 +312,6 @@ Ifm Steps
   .ifm-params button {
     height: 30px;
     width: 30px;
-    background: white;
-    border: none;
-    border: 1px solid @grey;
   }
   .ifm-define-action > select {
     flex-grow: 1;
@@ -342,14 +364,9 @@ Ifm Steps
     display: flex;
     flex-direction: column;
   }
-  .key-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 4px;
-  }
-  .meta-key-input {
+  .ifm-step .equals {
     height: 30px;
+    font-size: 20px;
   }
   .ifm-var-builder {
     width: 48%;

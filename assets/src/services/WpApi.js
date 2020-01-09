@@ -25,6 +25,6 @@ WpApi.runImport = WpApi.registerRoute("ifm/importer/v1", "/run");
 
 WpApi.postTypes = WpApi.registerRoute("ifm/importer/v1", "/get-post-types");
 
-WpApi.postTypes = WpApi.registerRoute("ifm/importer/v1", "/get-acf-fields");
+WpApi.acfFields = WpApi.registerRoute("ifm/importer/v1", "/get-acf-fields");
 
 export { WpApi };

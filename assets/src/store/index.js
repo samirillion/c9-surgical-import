@@ -8,9 +8,9 @@ export default new Vuex.Store({
     uploadedFileId: null,
     steps: [
       {
-        id: "",
-        verb: "",
-        entity: "",
+        id: "create_post_1",
+        verb: "create",
+        entity: "post",
         getMap: [{}],
         setMap: [{}]
       }
@@ -19,52 +19,63 @@ export default new Vuex.Store({
     customVars: [{}]
   },
   getters: {
+    customVars: state => {
+      return state.customVars.map(customVar => customVar.name);
+    },
     stepIds: state => {
-      return state.steps.filter(step => step.id);
+      return state.steps.map(step => step.id);
     }
   },
   mutations: {
-    addSetter(state, setMapObj) {
-      state.steps[setMapObj.stepIndex].setMap.splice(
-        setMapObj.setMapLength + 1,
-        0,
-        {}
-      );
-    },
-    deleteSetter(state, setMapObj) {
-      state.steps[setMapObj.stepIndex].setMap.splice(setMapObj.mapIndex, 1);
-    },
-    addGetter(state, getMapObj) {
-      state.steps[getMapObj.stepIndex].getMap.splice(
-        getMapObj.getMapLength + 1,
-        0,
-        {}
-      );
-    },
-    deleteGetter(state, getMapObj) {
-      state.steps[getMapObj.stepIndex].getMap.splice(getMapObj.mapIndex, 1);
+    setFileId(state, id) {
+      state.uploadedFileId = id;
     },
     updateCheckedFields(state, checkedFields) {
       state.checkedFields = checkedFields;
-    },
-    setFileId(state, id) {
-      state.uploadedFileId = id;
     },
     setStepId(state, index) {
       state.steps[index].id =
         state.steps[index].verb + "_" + state.steps[index].entity + "_" + index;
     },
-    removeStep(state, stepIndex) {
-      state.steps.splice(stepIndex, 1);
-    },
     addStep(state, stepLength) {
       state.steps.splice(stepLength + 1, 0, {
-        id: "",
-        verb: "",
-        entity: "",
+        id: "create_post_" + (stepLength + 1),
+        verb: "create",
+        entity: "post",
         getMap: [{}],
         setMap: [{}]
       });
+    },
+    removeStep(state, stepIndex) {
+      state.steps.splice(stepIndex, 1);
+    },
+    addMapRow(state, stepMapArgs) {
+      if (stepMapArgs.isGetter) {
+        state.steps[stepMapArgs.stepIndex].getMap.splice(
+          stepMapArgs.mapLength + 1,
+          0,
+          {}
+        );
+      } else {
+        state.steps[stepMapArgs.stepIndex].setMap.splice(
+          stepMapArgs.mapLength + 1,
+          0,
+          {}
+        );
+      }
+    },
+    deleteMapRow(state, stepMapArgs) {
+      if (stepMapArgs.isGetter) {
+        state.steps[stepMapArgs.stepIndex].getMap.splice(
+          stepMapArgs.mapIndex,
+          1
+        );
+      } else {
+        state.steps[stepMapArgs.stepIndex].setMap.splice(
+          stepMapArgs.mapIndex,
+          1
+        );
+      }
     },
     updateEntity(stepIndex, verb) {
       state.steps[stepIndex].entity = verb;

@@ -12,7 +12,7 @@
         :key="stepIndex"
       >
         <summary>
-          <span class="ifm-step-number"> Step {{ stepIndex + 1 }} </span>
+          <span class="ifm-step-number">Step {{ stepIndex + 1 }}</span>
           <span class="ifm-summary-right">
             <span class="ifm-step-name">
               {{ step.id }}
@@ -56,7 +56,22 @@
             </div>
           </div>
         </div>
-        <StepMap :index="stepIndex"></StepMap>
+        <StepMap
+          v-if="
+            'update' === step.verb ||
+              'post_meta' === step.entity ||
+              'user_meta' === step.entity ||
+              'acf_data' === step.entity
+          "
+          :title="'Where'"
+          :index="stepIndex"
+          :isGetter="true"
+        ></StepMap>
+        <StepMap
+          :title="'Set Values'"
+          :index="stepIndex"
+          :isGetter="false"
+        ></StepMap>
         <button
           @click="addStep(steps.length)"
           class="button button-primary wide"

@@ -1,7 +1,7 @@
 <template>
   <details class="ifm-var-builder" open>
     <summary>
-      Custom Variable
+      Custom Values
     </summary>
     <div
       class="ifm-custom-var"
