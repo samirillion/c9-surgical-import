@@ -8,9 +8,8 @@ export default new Vuex.Store({
     uploadedFileId: null,
     steps: [
       {
-        id: "create_post_1",
-        verb: "create",
-        entity: "post",
+        id: "create_post_0",
+        action: "create_post",
         getMap: [{}],
         setMap: [{}]
       }
@@ -34,14 +33,12 @@ export default new Vuex.Store({
       state.checkedFields = checkedFields;
     },
     setStepId(state, index) {
-      state.steps[index].id =
-        state.steps[index].verb + "_" + state.steps[index].entity + "_" + index;
+      state.steps[index].id = state.steps[index].action + "_" + index;
     },
     addStep(state, stepLength) {
       state.steps.splice(stepLength + 1, 0, {
-        id: "create_post_" + (stepLength + 1),
-        verb: "create",
-        entity: "post",
+        id: "create_post_" + (stepLength),
+        action: "create_post",
         getMap: [{}],
         setMap: [{}]
       });

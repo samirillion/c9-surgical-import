@@ -1,7 +1,7 @@
 <template>
   <details open class="ifm-create-steps">
     <summary>
-      Create Import Steps
+      Create Import Steps (runs on each CSV row)
     </summary>
     <div class="ifm-steps-wrapper">
       <!-- loop through steps here -->
@@ -28,40 +28,36 @@
         </summary>
         <div class="ifm-define-action">
           <h4>Define Action</h4>
-          <div class="ifm-entity-verb-wrapper">
+          <div class="ifm-action-wrapper">
             <div class="ifm-input-wrapper">
-              <label for="stepVerb">Action</label>
+              <label for="stepAction">Action</label>
               <select
-                name="stepVerb"
-                v-model="step.verb"
+                name="stepAction"
+                v-model="step.action"
                 @change="setStepId(stepIndex)"
               >
-                <option value="create">create</option>
-                <option value="update">update</option>
-              </select>
-            </div>
-            <div class="ifm-input-wrapper">
-              <label for="stepEntity">Object</label>
-              <select
-                name="stepEntity"
-                v-model="step.entity"
-                @change="setStepId(stepIndex)"
-              >
-                <option value="post">post</option>
-                <option value="user">user</option>
-                <option value="post_meta">post meta</option>
-                <option value="user_meta">user meta</option>
-                <option value="acf_data">acf data</option>
+                <option value="create_post">create post</option>
+                <option value="update_post">update post</option>
+                <option value="create_user">create user</option>
+                <option value="update_user">update user</option>
+                <option value="taxonomy">add categories, tags, etc</option>
+                <option value="post_meta">add post meta</option>
+                <option value="user_meta">add user meta</option>
+                <option value="acf_data">add acf data</option>
+                <option value="get_val">get post or user id</option>
               </select>
             </div>
           </div>
         </div>
         <StepMap
           v-if="
-            'update' === step.verb ||
-              'post_meta' === step.entity ||
-              'user_meta' === step.entity ||
-              'acf_data' === step.entity
+            'taxonomy' === step.action ||
+              'update_user' === step.action ||
+              'update_post' === step.action ||
+              'get_val' === step.action ||
+              'post_meta' === step.action ||
+              'user_meta' === step.action ||
+              'acf_data' === step.action
           "
           :title="'Where'"
           :index="stepIndex"

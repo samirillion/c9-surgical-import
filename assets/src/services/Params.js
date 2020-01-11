@@ -1,47 +1,52 @@
 import WpApi from "@/services/WpApi";
 
-export const postMeta = ["post_id", "meta_id"];
-export const userMeta = ["user_id", "meta_id"];
-export const getUser = ["id", "slug", "email", "login"];
-export const getPost = ["id", "title", "slug"];
-export const createUser = [
-  "user_pass",
-  "user_login",
-  "user_nicename",
-  "user_url",
-  "user_email",
-  "display_name",
-  "nickname",
-  "first_name",
-  "last_name",
-  "description",
-  "rich_editing",
-  "user_registered",
-  "role",
-  "jabber",
-  "aim",
-  "yim",
-  "locale"
-];
+export const postMeta = { post_id: "post id", meta_id: "meta id" };
+export const userMeta = { user_id: "user id", meta_id: "meta id" };
+export const getUser = {
+  id: "id",
+  slug: "slug",
+  email: "email",
+  login: "login"
+};
+export const getPost = { id: "id", title: "title", slug: "slug" };
+export const createUser = {
+  user_pass: "pasword",
+  user_login: "login",
+  user_nicename: "nicename",
+  user_url: "url",
+  user_email: "email",
+  display_name: "display name",
+  nickname: "nickname",
+  first_name: "first name",
+  last_name: "fast name",
+  description: "description",
+  rich_editing: "rich editing",
+  user_registered: "user registered",
+  role: "role",
+  jabber: "jabber",
+  aim: "aim",
+  yim: "yim",
+  locale: "locale"
+};
 
 export const createPost = {
-  post_author: "Author",
-  post_name: "Name",
-  post_type: "Type",
-  post_title: "Title",
-  post_date: "Date",
-  post_date_gmt: "Date GMT",
-  post_content: "Content",
-  post_excerpt: "Excerpt",
-  post_status: "Status",
-  comment_status: "Comment Status",
-  ping_status: "Ping Status",
-  post_password: "Post Password",
-  post_parent: "Post Parent",
-  post_modified: "Last Modified",
-  post_modified_gmt: "Last Modified GMT",
-  comment_count: "Comment Count",
-  menu_order: "Menu Order"
+  post_author: "author",
+  post_name: "name",
+  post_type: "type",
+  post_title: "title",
+  post_date: "date",
+  post_date_gmt: "date gmt",
+  post_content: "content",
+  post_excerpt: "excerpt",
+  post_status: "status",
+  comment_status: "comment status",
+  ping_status: "ping status",
+  post_password: "post password",
+  post_parent: "post parent",
+  post_modified: "last modified",
+  post_modified_gmt: "last modified gmt",
+  comment_count: "comment count",
+  menu_order: "menu order"
 };
 
 export const params = {

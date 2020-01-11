@@ -24,12 +24,12 @@
             @change="updateOptions(mapRow.type)"
           >
             <option v-if="'post_type' === mapRow.left" value="postType"
-              >Post Type</option
+              >post type</option
             >
-            <option value="csvValue">CSV Value</option>
-            <option value="stepId">Previous Step ID</option>
-            <option value="string">String</option>
-            <option value="customVar">Custom Variable</option>
+            <option value="csvValue">csv value</option>
+            <option value="stepId">previous step id</option>
+            <option value="string">string</option>
+            <option value="customVar">custom variable</option>
           </select>
         </div>
         <div class="ifm-input-wrapper">
@@ -92,25 +92,38 @@ export default {
       return this.setMap;
     },
     getParams: function() {
-      if ("post" === this.step.entity) return getPost;
-      if ("user" === this.step.entity) return getUser;
+      if ("update_post" === this.step.action) return getPost;
+      if ("update_user" === this.step.action) return getUser;
     },
     setParams: function() {
-      if ("post" === this.step.entity) return createPost;
-      if ("user" === this.step.entity) return createUser;
+      if (
+        "create_post" === this.step.action ||
+        "update_post" === this.step.action
+      )
+        return createPost;
+      if (
+        "create_user" === this.step.action ||
+        "update_user" === this.step.action
+      )
+        return createUser;
       return [];
     }
   },
   methods: {
     async getPostTypes() {
       const response = await WpApi.postTypes();
-      console.log(response);
       this.postTypes = Object.values(response);
     },
     updateOptions(type) {
+      console.log(store.getters.stepIds, this.index + 1);
+      let index = this.index > 0 ? this.index : 1;
       if ("postType" === type) this.valueOptions = this.postTypes;
       if ("csvValue" === type) this.valueOptions = store.state.checkedFields;
-      if ("stepId" === type) this.valueOptions = store.getters.stepIds;
+      if ("stepId" === type)
+        this.valueOptions = store.getters.stepIds.slice(
+          0,
+          this.index - store.getters.stepIds.length
+        );
       if ("customVar" === type) this.valueOptions = store.getters.customVars;
     },
     addMapRow(mapLength) {
