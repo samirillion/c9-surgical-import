@@ -30,40 +30,24 @@
           <h4>Define Action</h4>
           <div class="ifm-action-wrapper">
             <div class="ifm-input-wrapper">
-              <label for="stepAction">Action</label>
-              <select
-                name="stepAction"
+              <v-select
+                :options="actions"
+                index="id"
+                label="displayName"
                 v-model="step.action"
-                @change="setStepId(stepIndex)"
-              >
-                <option value="create_post">create post</option>
-                <option value="update_post">update post</option>
-                <option value="create_user">create user</option>
-                <option value="update_user">update user</option>
-                <option value="taxonomy">add categories, tags, etc</option>
-                <option value="post_meta">add post meta</option>
-                <option value="user_meta">add user meta</option>
-                <option value="acf_data">add acf data</option>
-                <option value="get_val">get post or user id</option>
-              </select>
+                @input="setStepId(stepIndex)"
+              ></v-select>
             </div>
           </div>
         </div>
         <StepMap
-          v-if="
-            'taxonomy' === step.action ||
-              'update_user' === step.action ||
-              'update_post' === step.action ||
-              'get_val' === step.action ||
-              'post_meta' === step.action ||
-              'user_meta' === step.action ||
-              'acf_data' === step.action
-          "
+          v-if="getterActions.includes(step.action)"
           :title="'Where'"
           :index="stepIndex"
           :isGetter="true"
         ></StepMap>
         <StepMap
+          v-if="setterActions.includes(step.action)"
           :title="'Set Values'"
           :index="stepIndex"
           :isGetter="false"
@@ -82,6 +66,7 @@
 <script>
 import store from "@/store";
 import StepMap from "@/components/StepMap.vue";
+import { actions } from "@/services/Actions";
 
 export default {
   name: "ImportSteps",
@@ -92,10 +77,21 @@ export default {
   data() {
     return {
       steps: store.state.steps,
-      customFields: []
+      customFields: [],
+      actions
     };
   },
   computed: {
+    getterActions: function() {
+      return actions
+        .filter(action => "getParams" in action)
+        .map(action => action.id);
+    },
+    setterActions: function() {
+      return actions
+        .filter(action => "setParams" in action)
+        .map(action => action.id);
+    },
     fields: function() {
       return this.checkedFields.concat(this.customFields);
     }

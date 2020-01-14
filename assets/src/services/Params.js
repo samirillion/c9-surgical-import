@@ -3,23 +3,23 @@ import WpApi from "@/services/WpApi";
 export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
-  id: "id",
-  slug: "slug",
-  email: "email",
-  login: "login"
+  id: "user id",
+  slug: "user slug",
+  email: "user email",
+  login: "user login"
 };
-export const getPost = { id: "id", title: "title", slug: "slug" };
+export const getPost = { id: "post id", title: "post title", slug: " post slug" };
 export const createUser = {
-  user_pass: "pasword",
-  user_login: "login",
-  user_nicename: "nicename",
-  user_url: "url",
-  user_email: "email",
-  display_name: "display name",
-  nickname: "nickname",
-  first_name: "first name",
-  last_name: "fast name",
-  description: "description",
+  user_pass: "user pasword",
+  user_login: "user login",
+  user_nicename: "user nicename",
+  user_url: "user url",
+  user_email: "user email",
+  display_name: "user display name",
+  nickname: "user nickname",
+  first_name: "user first name",
+  last_name: "user last name",
+  description: "user description",
   rich_editing: "rich editing",
   user_registered: "user registered",
   role: "role",
@@ -30,16 +30,16 @@ export const createUser = {
 };
 
 export const createPost = {
-  post_author: "author",
-  post_name: "name",
-  post_type: "type",
-  post_title: "title",
-  post_date: "date",
-  post_date_gmt: "date gmt",
-  post_content: "content",
-  post_excerpt: "excerpt",
-  post_status: "status",
-  comment_status: "comment status",
+  post_author: "post author",
+  post_name: "post name",
+  post_type: "post type",
+  post_title: "post title",
+  post_date: "post date",
+  post_date_gmt: "post date gmt",
+  post_content: "post content",
+  post_excerpt: "post excerpt",
+  post_status: "post status",
+  comment_status: "post comment status",
   ping_status: "ping status",
   post_password: "post password",
   post_parent: "post parent",

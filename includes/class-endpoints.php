@@ -69,6 +69,11 @@ class ENDPOINTS
             'methods' => 'GET',
             'callback' => [$this, 'get_acf_fields'],
         ));
+
+        register_rest_route($this->namespace, '/get-taxonomies', array(
+            'methods' => 'GET',
+            'callback' => [$this, 'get_taxonomies'],
+        ));
     }
 
     public function is_admin($request)
@@ -87,6 +92,13 @@ class ENDPOINTS
                 'public'   => true
             )
         );
+    }
+
+    public function get_taxonomies()
+    {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT DISTINCT taxonomy FROM {$wpdb->prefix}term_taxonomy");
+        return $results;
     }
 
     public function get_acf_fields()

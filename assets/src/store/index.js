@@ -3,20 +3,26 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
+const getDefaultState = () => {
+  return {
     uploadedFileId: null,
     steps: [
       {
-        id: "create_post_0",
-        action: "create_post",
+        id: "",
+        action: "",
         getMap: [{}],
         setMap: [{}]
       }
     ],
     checkedFields: ["cool"],
     customVars: [{}]
-  },
+  };
+};
+
+const state = getDefaultState();
+
+export default new Vuex.Store({
+  state,
   getters: {
     customVars: state => {
       return state.customVars.map(customVar => customVar.name);
@@ -26,6 +32,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    resetState(state) {
+      Object.assign(state, getDefaultState());
+    },
     setFileId(state, id) {
       state.uploadedFileId = id;
     },
@@ -37,7 +46,7 @@ export default new Vuex.Store({
     },
     addStep(state, stepLength) {
       state.steps.splice(stepLength + 1, 0, {
-        id: "create_post_" + (stepLength),
+        id: "create_post_" + stepLength,
         action: "create_post",
         getMap: [{}],
         setMap: [{}]

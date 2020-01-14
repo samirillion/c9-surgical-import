@@ -8,9 +8,19 @@
     >
       <div class="ifm-input-wrapper">
         <label for="mapRowLeft">Parameter</label>
-        <select name="mapRowLeft" v-model="mapRow.left">
-          <option v-for="(param, paramIndex) in params" :key="paramIndex">
-            {{ param }}
+        <input
+          v-if="action.id.endsWith('meta') && false === isGetter"
+          type="text"
+          name="mapRowLeft"
+          v-model="mapRow.left"
+        />
+        <select v-else name="mapRowLeft" v-model="mapRow.left">
+          <option
+            v-for="(paramValue, paramKey) in params"
+            :key="paramKey"
+            :value="paramKey"
+          >
+            {{ paramValue }}
           </option>
         </select>
       </div>
@@ -27,9 +37,11 @@
               >post type</option
             >
             <option value="csvValue">csv value</option>
-            <option value="stepId">previous step id</option>
+            <option v-if="stepIds.length > 0" value="stepId"
+              >previous step id</option
+            >
             <option value="string">string</option>
-            <option value="customVar">custom variable</option>
+            <option value="customVar">complex variable</option>
           </select>
         </div>
         <div class="ifm-input-wrapper">
@@ -40,7 +52,7 @@
             v-model="mapRow.right"
             v-if="'string' !== mapRow.type"
           />
-          <input type="text" name="mapRowRight" v-else />
+          <input type="text" name="mapRowRight" v-model="mapRow.right" v-else />
         </div>
       </div>
       <button
@@ -64,6 +76,7 @@
 <script>
 import store from "@/store";
 import { getUser, getPost, createUser, createPost } from "@/services/Params";
+import { actions } from "@/services/Actions";
 import { WpApi } from "@/services/WpApi";
 
 export default {
@@ -84,29 +97,21 @@ export default {
   // need to throw some extra conditionals in here because this map works for setting and getting values
   computed: {
     params: function() {
-      if (this.isGetter) return this.getParams;
-      return this.setParams;
+      if (this.isGetter) return this.action.getParams;
+      return this.action.setParams;
+    },
+    action: function() {
+      return actions.find(action => this.step.action === action.id);
     },
     stepMap: function() {
       if (this.isGetter) return this.getMap;
       return this.setMap;
     },
-    getParams: function() {
-      if ("update_post" === this.step.action) return getPost;
-      if ("update_user" === this.step.action) return getUser;
-    },
-    setParams: function() {
-      if (
-        "create_post" === this.step.action ||
-        "update_post" === this.step.action
-      )
-        return createPost;
-      if (
-        "create_user" === this.step.action ||
-        "update_user" === this.step.action
-      )
-        return createUser;
-      return [];
+    stepIds: function() {
+      return store.getters.stepIds.slice(
+        0,
+        this.index - store.getters.stepIds.length
+      );
     }
   },
   methods: {
@@ -115,15 +120,10 @@ export default {
       this.postTypes = Object.values(response);
     },
     updateOptions(type) {
-      console.log(store.getters.stepIds, this.index + 1);
       let index = this.index > 0 ? this.index : 1;
       if ("postType" === type) this.valueOptions = this.postTypes;
       if ("csvValue" === type) this.valueOptions = store.state.checkedFields;
-      if ("stepId" === type)
-        this.valueOptions = store.getters.stepIds.slice(
-          0,
-          this.index - store.getters.stepIds.length
-        );
+      if ("stepId" === type) this.valueOptions = this.stepIds;
       if ("customVar" === type) this.valueOptions = store.getters.customVars;
     },
     addMapRow(mapLength) {
