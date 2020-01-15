@@ -1,5 +1,5 @@
 <template>
-  <details v-if="[] !== steps" open>
+  <details class="raw-json" v-if="[] !== steps">
     <Summary>{{ summary }}</Summary>
     <pre>{{ steps }}</pre>
   </details>

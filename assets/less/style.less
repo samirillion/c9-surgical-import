@@ -38,9 +38,11 @@ Global Elements
   details ul {
     height: 300px;
     overflow: scroll;
-    border: 1px solid @dark;
+    border: 1px solid @lighter-grey;
+    background: @lightest-grey;
     width: 270px;
     padding: 10px;
+    border-radius: 5px;
   }
   summary:focus {
     outline-style: none;
@@ -74,8 +76,16 @@ Global Elements
       background: @lightest-grey;
       border: none;
       padding: 0;
+      li {
+        margin: 0;
+        padding-top: 2.5px;
+        padding-bottom: 2.5px;
+      }
     }
     .highlight {
+      background: @blue;
+    }
+    .highlight>a {
       background: @blue;
     }
   }
@@ -121,7 +131,6 @@ Global Elements
     border-radius: 3px;
     padding: 0 0 0 8px;
     min-height: 30px;
-    max-width: 25rem;
     -webkit-appearance: none;
     background: #fff
       url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2…%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
@@ -337,7 +346,6 @@ Ifm Steps
     float: right;
     display: flex;
     align-items: center;
-    margin-top: 7px;
   }
   .ifm-step-name {
     font-size: 14px;
@@ -385,6 +393,13 @@ Ifm Steps
     margin: 0;
     padding: 20px;
   }
+  .raw-json pre {
+    margin: 20px;
+    margin-top: 0;
+    padding: 20px;
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
+  }
   .ifm-custom-var {
     padding: 20px;
     padding-top: 0;
@@ -429,16 +444,6 @@ Ifm Steps
   .var-input-label {
     margin-bottom: 10px;
   }
-  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even),
-  // .ifm-steps-wrapper .ifm-step:nth-child(even) {
-  //   background-color: @lightest-grey;
-  // }
-  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even) .ifm-define-action,
-  // .ifm-var-builder .ifm-custom-var-wrapper:nth-child(even) .ifm-params,
-  // .ifm-steps-wrapper .ifm-step:nth-child(even) .ifm-define-action,
-  // .ifm-steps-wrapper .ifm-step:nth-child(even) .ifm-params {
-  //   background-color: white;
-  // }
   .ifm-params .button-primary {
     font-size: 10px;
     height: 20px;

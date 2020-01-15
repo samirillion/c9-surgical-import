@@ -51,12 +51,18 @@
         + Add Custom Value
       </button>
     </div>
+    <StepsRaw :open="true" :summary="'View Steps as Json'" />
   </details>
 </template>
 
 <script>
+import StepsRaw from "@/components/StepsRaw.vue";
+
 export default {
   name: "VarBuilder",
+  components: {
+    StepsRaw
+  },
   data() {
     return {
       nextSubVar: "field",
@@ -71,10 +77,10 @@ export default {
       this.customVars.splice(parseInt(index), 1);
     },
     varType(event) {
-      console.log(event);
+      // console.log(event);
     },
     removeSubVar(event) {
-      console.log(event);
+      // console.log(event);
     }
   }
 };

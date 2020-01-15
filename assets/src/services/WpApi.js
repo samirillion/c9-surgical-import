@@ -1,17 +1,10 @@
 // node-wpapi JS wrapper for the wp-api
 var WPAPI = require("wpapi");
-// import axios from 'axios';
-
-// export const WpApi = () => {
-//     return axios.create({
-//         baseURL
-//     })
-// }
 
 // wp-api params are defined here: http://v2.wp-api.org/reference/posts/
 // using ES6 property-value shorthand for the object literal parameters
 var WpApi = new WPAPI({
-  endpoint: "http://" + ifm_import_vars.baseURL + "/wp-json",
+  endpoint: window.location.origin + "/wp-json",
   nonce: window.WP_API_Settings.nonce
 });
 

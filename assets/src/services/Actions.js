@@ -80,6 +80,5 @@ export const getActions = async () => {
     }
     return container;
   });
-  console.log(hydratedActions);
   return hydratedActions;
 };
