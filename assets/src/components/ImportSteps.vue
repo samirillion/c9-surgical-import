@@ -45,12 +45,14 @@
           :title="'Where'"
           :index="stepIndex"
           :isGetter="true"
+          :actions="actions"
         ></StepMap>
         <StepMap
           v-if="setterActions.includes(step.action)"
           :title="'Set Values'"
           :index="stepIndex"
           :isGetter="false"
+          :actions="actions"
         ></StepMap>
         <button
           @click="addStep(steps.length)"
@@ -66,7 +68,7 @@
 <script>
 import store from "@/store";
 import StepMap from "@/components/StepMap.vue";
-import { actions } from "@/services/Actions";
+import { getActions } from "@/services/Actions";
 
 export default {
   name: "ImportSteps",
@@ -78,17 +80,20 @@ export default {
     return {
       steps: store.state.steps,
       customFields: [],
-      actions
+      actions: []
     };
+  },
+  mounted() {
+    this.getActions();
   },
   computed: {
     getterActions: function() {
-      return actions
+      return this.actions
         .filter(action => "getParams" in action)
         .map(action => action.id);
     },
     setterActions: function() {
-      return actions
+      return this.actions
         .filter(action => "setParams" in action)
         .map(action => action.id);
     },
@@ -97,6 +102,10 @@ export default {
     }
   },
   methods: {
+    async getActions() {
+      const actions = await getActions();
+      this.actions = actions;
+    },
     setStepId: function(index) {
       store.commit("setStepId", index);
     },

@@ -76,12 +76,12 @@
 <script>
 import store from "@/store";
 import { getUser, getPost, createUser, createPost } from "@/services/Params";
-import { actions } from "@/services/Actions";
+import { getActions } from "@/services/Actions";
 import { WpApi } from "@/services/WpApi";
 
 export default {
   name: "StepMap",
-  props: ["index", "isGetter", "title"],
+  props: ["index", "isGetter", "title", "actions"],
   data() {
     return {
       step: store.state.steps[this.index],
@@ -98,10 +98,17 @@ export default {
   computed: {
     params: function() {
       if (this.isGetter) return this.action.getParams;
+      if (Array.isArray(this.action.setParams)) {
+        return this.action.setParams.reduce(function(result, item) {
+          var key = Object.keys(item)[0]; //first property: a, b, c
+          result[key] = item[key];
+          return result;
+        }, {});
+      }
       return this.action.setParams;
     },
     action: function() {
-      return actions.find(action => this.step.action === action.id);
+      return this.actions.find(action => this.step.action === action.id);
     },
     stepMap: function() {
       if (this.isGetter) return this.getMap;

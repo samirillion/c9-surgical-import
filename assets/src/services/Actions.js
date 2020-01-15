@@ -8,13 +8,7 @@ import {
 } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
-export const acfFields = async () => {
-  return { cool: "cool" };
-  // const acfFields = await WpApi.acfFields;
-  // return acfFields;
-};
-
-export const actions = [
+let baseActions = [
   {
     id: "create_post",
     displayName: "create post",
@@ -50,7 +44,8 @@ export const actions = [
   {
     id: "taxonomy",
     displayName: "add categories, tags, etc",
-    getParams: getPost
+    getParams: getPost,
+    setParams: { custom: "taxonomies" }
   },
   {
     id: "add_post_meta",
@@ -65,15 +60,26 @@ export const actions = [
     setParams: { null: "null" }
   },
   {
-    id: "add_acf_post",
-    displayName: "add acf data to post",
+    id: "add_acf",
+    displayName: "add acf data",
     getParams: getPost,
-    setParams: { null: "null" }
-  },
-  {
-    id: "add_acf_user",
-    type: "acf",
-    displayName: "add acf data to user",
-    getParams: getUser
+    setParams: { custom: "acfFields" }
   }
 ];
+
+// Add Custom Params
+export const getActions = async () => {
+  let params = await WpApi.importParams();
+  let hydratedActions = baseActions.map(action => {
+    let container = action;
+    if (
+      undefined !== action.setParams &&
+      undefined !== action.setParams.custom
+    ) {
+      container.setParams = params[action.setParams.custom];
+    }
+    return container;
+  });
+  console.log(hydratedActions);
+  return hydratedActions;
+};

@@ -59,7 +59,10 @@ class ENDPOINTS
                 ),
             ),
         ));
-
+        register_rest_route($this->namespace, '/get-params', array(
+            'methods' => 'GET',
+            'callback' => [$this, 'get_params'],
+        ));
         register_rest_route($this->namespace, '/get-post-types', array(
             'methods' => 'GET',
             'callback' => [$this, 'get_post_types'],
@@ -81,8 +84,14 @@ class ENDPOINTS
         return current_user_can('manage_options');
     }
 
-    public function get_and_parse_csv($attachment_id)
+    public function get_params()
     {
+        $params = array();
+        $params['postTypes'] = $this->get_post_types();
+        $params['taxonomies'] = $this->get_taxonomies();
+        $params['acfFields'] = $this->get_acf_fields();
+
+        return $params;
     }
 
     public function get_post_types()
@@ -96,9 +105,14 @@ class ENDPOINTS
 
     public function get_taxonomies()
     {
+        $tax_obj = array();
         global $wpdb;
         $results = $wpdb->get_results("SELECT DISTINCT taxonomy FROM {$wpdb->prefix}term_taxonomy");
-        return $results;
+        foreach ($results as $result) {
+            $taxonomy = $result->taxonomy;
+            $tax_obj[$taxonomy] = $taxonomy;
+        }
+        return $tax_obj;
     }
 
     public function get_acf_fields()
@@ -119,7 +133,7 @@ class ENDPOINTS
                 'update_post_meta_cache' => false
             ));
             foreach ($fields as $field) {
-                $options[$field->post_title] = $field->post_name;
+                $options[$field->post_name] = $field->post_title;
             }
         }
 
