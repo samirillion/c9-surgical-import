@@ -32,7 +32,7 @@
           <select
             name="mapRowType"
             v-model="mapRow.type"
-            @click="updateOptions(mapRow.type)"
+            @change="updateOptions(mapRow.type)"
           >
             <option v-if="'post_type' === mapRow.left" value="postType"
               >post type</option
@@ -49,8 +49,6 @@
           <label for="mapRowRight">Value</label>
           <v-select
             name="mapRowRight"
-            taggable
-            resetOnOptionsChange
             :options="valueOptions"
             v-model="mapRow.right"
             v-if="'string' !== mapRow.type"
@@ -131,6 +129,7 @@ export default {
       this.postTypes = Object.values(response);
     },
     updateOptions(type) {
+      console.log(type);
       if ("postType" === type) this.valueOptions = this.postTypes;
       if ("csvValue" === type) this.valueOptions = store.state.checkedFields;
       if ("stepId" === type) this.valueOptions = this.stepIds;
