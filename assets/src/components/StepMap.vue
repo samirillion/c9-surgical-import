@@ -53,6 +53,7 @@
             v-model="mapRow.right"
             v-if="'string' !== mapRow.type"
             @input="updateOptions(mapRow.type)"
+            :key="checkedFields.length"
           />
           <input type="text" name="mapRowRight" v-model="mapRow.right" v-else />
         </div>
@@ -87,7 +88,6 @@ export default {
   data() {
     return {
       step: store.state.steps[this.index],
-      setMap: store.state.steps[this.index].setMap,
       getMap: store.state.steps[this.index].getMap,
       valueOptions: [],
       postTypes: ["page", "post", "comment"]
@@ -98,8 +98,15 @@ export default {
   },
   // need to throw some extra conditionals in here because this map works for setting and getting values
   computed: {
+    checkedFields: {
+      get: () => store.state.checkedFields,
+      set: value => store.commit("updateCheckedFields", value)
+    },
     params: function() {
       if (this.isGetter) return this.action.getParams;
+      return this.setParams;
+    },
+    setParams: function() {
       if (Array.isArray(this.action.setParams)) {
         return this.action.setParams.reduce(function(result, item) {
           var key = Object.keys(item)[0]; //first property: a, b, c
@@ -111,6 +118,9 @@ export default {
     },
     action: function() {
       return this.actions.find(action => this.step.action === action.id);
+    },
+    setMap: function() {
+      return store.state.steps[this.index].setMap;
     },
     stepMap: function() {
       if (this.isGetter) return this.getMap;
@@ -129,9 +139,8 @@ export default {
       this.postTypes = Object.values(response);
     },
     updateOptions(type) {
-      console.log(type);
       if ("postType" === type) this.valueOptions = this.postTypes;
-      if ("csvValue" === type) this.valueOptions = store.state.checkedFields;
+      if ("csvValue" === type) this.valueOptions = this.checkedFields;
       if ("stepId" === type) this.valueOptions = this.stepIds;
       if ("customVar" === type) this.valueOptions = store.getters.customVars;
     },

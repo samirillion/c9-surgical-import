@@ -14,7 +14,7 @@ const getDefaultState = () => {
         setMap: [{}]
       }
     ],
-    checkedFields: ["cool"],
+    checkedFields: [""],
     customVars: [{}]
   };
 };
@@ -32,6 +32,56 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    presets: (state, obj) => {
+      let index = obj.index;
+      let setMap = {};
+      let getMap = {};
+
+      // populate set params
+      if (obj.setParams) {
+        let setters = Object.keys(obj.setParams).filter(
+          key => obj.setParams[key].indexOf("required") !== -1
+        );
+        if (setters.length > 0) {
+          setters.forEach(param => {
+            setMap.push({ left: param });
+          });
+        }
+      }
+
+      // populate get params
+      if (obj.getParams) {
+        let getter = Object.keys(obj.getParams).filter(
+          key => obj.setParams[key].indexOf("required") !== -1
+        );
+        if (setters.length > 0) {
+          setters.forEach(param => {
+            setMap.push({ left: param });
+          });
+        }
+      }
+
+      state.steps[index].setMap = setMap;
+      state.steps[index].getMap = getMap;
+      state.steps[index].id = state.steps[index].action + "_" + index;
+
+      // let newMap = [];
+
+      // setMap.forEach((object, index) => {
+      //   if (Object.keys(params).indexOf(object.left) !== -1) {
+      //     delete setmap[index];
+      //   }
+      // });
+
+      // if (setMap.length === 0) {
+      //   setMap.push({});
+      // }
+    },
+    clearMap(state, index) {
+      state.steps[index].setMap = {};
+      state.steps[index].getMap = {};
+    },
+    populateSetMap(state) {},
     resetState(state) {
       Object.assign(state, getDefaultState());
     },
@@ -40,9 +90,6 @@ export default new Vuex.Store({
     },
     updateCheckedFields(state, checkedFields) {
       state.checkedFields = checkedFields;
-    },
-    setStepId(state, index) {
-      state.steps[index].id = state.steps[index].action + "_" + index;
     },
     addStep(state, stepLength) {
       state.steps.splice(stepLength + 1, 0, {

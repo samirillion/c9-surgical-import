@@ -35,7 +35,7 @@
                 index="id"
                 label="displayName"
                 v-model="step.action"
-                @input="setStepId(stepIndex)"
+                @input="presets(stepIndex, step.action)"
               ></v-select>
             </div>
           </div>
@@ -75,11 +75,9 @@ export default {
   components: {
     StepMap
   },
-  props: ["checkedFields"],
   data() {
     return {
       steps: store.state.steps,
-      customFields: [],
       actions: []
     };
   },
@@ -96,9 +94,6 @@ export default {
       return this.actions
         .filter(action => "setParams" in action)
         .map(action => action.id);
-    },
-    fields: function() {
-      return this.checkedFields.concat(this.customFields);
     }
   },
   methods: {
@@ -106,8 +101,13 @@ export default {
       const actions = await getActions();
       this.actions = actions;
     },
-    setStepId: function(index) {
-      store.commit("setStepId", index);
+    presets: function(index, action) {
+      console.log(this.actions);
+      store.commit("presets", {
+        index,
+        getParams: action.getParams,
+        setParams: action.setParams
+      });
     },
     stepPlusOne: function(index) {
       return index + 1;

@@ -1,82 +1,19 @@
 <template>
   <div class="import">
     <FileUploader @uploaded="onUpload" />
-
-    <details v-if="parsedCsv.length > 1" open>
-      <summary>Import fields (pick some!)</summary>
-      <div class="ifm-table-wrapper">
-        <table class="csv-table striped">
-          <tbody>
-            <tr>
-              <th>
-                <label for="select-all">Select all</label>
-                <input
-                  type="checkbox"
-                  name="select-all"
-                  @change="toggleSelect"
-                  v-model="allSelected"
-                />
-              </th>
-              <th
-                v-for="(column, columnIndex) in parsedCsv[0]"
-                :key="columnIndex"
-              >
-                <input
-                  type="checkbox"
-                  :name="column"
-                  :value="column"
-                  v-model="checkedFields"
-                  @change="updateCheckedFields"
-                />
-                <label :for="column">{{ column }} ({{ columnIndex }})</label>
-              </th>
-            </tr>
-            <!-- prettier-ignore-attribute -->
-            <tr
-              v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
-              :key="exampleIndex"
-            >
-              <td></td>
-              <td v-for="(td, tdIndex) in example" :key="tdIndex">
-                <div class="cell-content" style="height:100%;width:100%;">
-                  {{ td.substring(0, exampleEntryLength) }}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <span class="preview-details" v-if="parsedCsv.length > 0">
-        Previewing the first
-        <input
-          type="number"
-          name="entryLength"
-          min="10"
-          class="entry-length"
-          v-model="exampleEntryLength"
-        />
-        characters of
-        <select v-model="exampleEntries">
-          <option v-for="index in parsedCsv.length" :key="index">{{
-            index
-          }}</option>
-        </select>
-        of {{ parsedCsv.length }} total Entries
-      </span>
-    </details>
-    <div v-if="checkedFields.length > 0">
+    <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
+    <div v-if="checkedFields && checkedFields.length > 0">
       <hr />
       <div class="ifm-steps-and-vars">
-        <ImportSteps :checkedFields="checkedFields" />
-        <VarBuilder />
+        <ImportSteps />
+        <div class="submit-wrapper">
+          <button class="button button-secondary">Validate Input</button>
+          <button class="button button-primary" @click="runImport">
+            Run Import
+          </button>
+        </div>
       </div>
-    </div>
-    <hr />
-    <div class="row">
-      <button class="button button-primary">Validate Input</button>
-      <button class="button button-primary" @click="runImport">
-        Run Import
-      </button>
+      <VarBuilder />
     </div>
   </div>
 </template>
@@ -89,6 +26,7 @@ import { CsvToArray } from "@/utils/CsvToArray";
 import FileUploader from "@/components/FileUploader.vue";
 import ImportSteps from "@/components/ImportSteps.vue";
 import VarBuilder from "@/components/VarBuilder.vue";
+import CsvPreview from "@/components/CsvPreview.vue";
 
 import store from "@/store";
 
@@ -97,29 +35,27 @@ export default {
   components: {
     FileUploader,
     ImportSteps,
-    VarBuilder
+    VarBuilder,
+    CsvPreview
   },
   data() {
     return {
-      allSelected: false,
       file: [],
       uploadObject: {},
       rawCsv: {},
-      parsedCsv: [],
-      checkedFields: store.state.checkedFields,
-      exampleEntries: 1,
-      exampleEntryLength: 25
+      parsedCsv: []
     };
   },
   computed: {
+    checkedFields: {
+      get: () => store.state.checkedFields,
+      set: value => store.commit("updateCheckedFields", value)
+    },
     exampleStepper: function() {
       return parsedCsv.slice(1, parseInt(exampleEntries) + 1);
     }
   },
   methods: {
-    updateCheckedFields() {
-      store.commit("updateCheckedFields", this.checkedFields);
-    },
     async runImport() {
       const response = await WpApi.runImport().param(
         "import_maps"
@@ -127,22 +63,13 @@ export default {
       );
       console.log(response);
     },
-    toggleSelect() {
-      if (!this.allSelected) {
-        this.checkedFields = [];
-        this.updateCheckedFields();
-      } else {
-        this.checkedFields = this.parsedCsv[0];
-        this.updateCheckedFields();
-      }
-    },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);
       // StepsStore.setFileId(uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
       this.checkedFields = [];
-      this.updateCheckedFields();
+      store.commit("updateCheckedFields", this.checkedFields);
       this.allSelected = false;
     },
     async getObjectFromId(fileId) {

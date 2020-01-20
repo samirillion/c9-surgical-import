@@ -10,11 +10,11 @@ export const getUser = {
 };
 export const getPost = { id: "post id", title: "post title", slug: " post slug" };
 export const createUser = {
-  user_pass: "user pasword",
-  user_login: "user login",
+  user_pass: "user password (required)",
+  user_login: "username (required)",
   user_nicename: "user nicename",
   user_url: "user url",
-  user_email: "user email",
+  user_email: "user email (recommended)",
   display_name: "user display name",
   nickname: "user nickname",
   first_name: "user first name",
