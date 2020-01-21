@@ -1,5 +1,3 @@
-import WpApi from "@/services/WpApi";
-
 export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
@@ -8,7 +6,11 @@ export const getUser = {
   email: "user email",
   login: "user login"
 };
-export const getPost = { id: "post id", title: "post title", slug: " post slug" };
+export const getPost = {
+  id: "post id",
+  title: "post title",
+  slug: " post slug"
+};
 export const createUser = {
   user_pass: "user password (required)",
   user_login: "username (required)",

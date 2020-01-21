@@ -69,6 +69,7 @@
 import store from "@/store";
 import StepMap from "@/components/StepMap.vue";
 import { getActions } from "@/services/Actions";
+import { getActionByName } from "@/services/Helpers";
 
 export default {
   name: "ImportSteps",
@@ -101,13 +102,15 @@ export default {
       const actions = await getActions();
       this.actions = actions;
     },
-    presets: function(index, action) {
-      console.log(this.actions);
-      store.commit("presets", {
-        index,
-        getParams: action.getParams,
-        setParams: action.setParams
-      });
+    presets: function(index, actionName) {
+      let action = getActionByName(actionName, this.actions);
+      if (undefined !== action) {
+        store.commit("presets", {
+          index,
+          getParams: action.getParams,
+          setParams: action.setParams
+        });
+      }
     },
     stepPlusOne: function(index) {
       return index + 1;

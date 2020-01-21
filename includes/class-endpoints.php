@@ -78,7 +78,7 @@ class ENDPOINTS
             'callback' => [$this, 'get_taxonomies'],
         ));
     }
-
+    
     public function is_admin($request)
     {
         return current_user_can('manage_options');

@@ -50,18 +50,13 @@ export default {
     checkedFields: {
       get: () => store.state.checkedFields,
       set: value => store.commit("updateCheckedFields", value)
-    },
-    exampleStepper: function() {
-      return parsedCsv.slice(1, parseInt(exampleEntries) + 1);
     }
   },
   methods: {
     async runImport() {
-      const response = await WpApi.runImport().param(
-        "import_maps"
-        // StepsStore.getSteps()
-      );
-      console.log(response);
+      const response = await WpApi.runImport()
+        .param("upload_object", this.uploadObject)
+        .param("import_steps", store.getters.steps);
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

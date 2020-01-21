@@ -17,22 +17,14 @@ class WpImporter
     public $records;
     public $record;
 
-
-    public static $import_methods = [
-        'get_user_by_email',
-        'create_post',
-        'update_user_meta',
-        'add_post_terms',
-        'add_acf_meta',
-        'update_post',
-        'create_user'
-    ];
+    // Find all import methods in Actions.js 
 
     // maintain an array of ids to reference in later steps _on the same record_
     public $ids = array();
 
     public function __construct()
-    { }
+    {
+    }
 
     public function setup($file, $steps, $offset = 0, $limit = -1)
     {
@@ -60,9 +52,10 @@ class WpImporter
     //     return $methods;
     // }
 
-    public function readCSV($file, $limit, $offset)
+    public function readCSV($file_id, $limit, $offset)
     {
-        $csv = Reader::createFromFileObject($file);
+        $attached_file = get_attached_file($file_id);
+        $csv = Reader::createFromPath($attached_file, 'r');
         $csv->setHeaderOffset(0);
         $this->header = $csv->getHeader();
 
@@ -78,6 +71,8 @@ class WpImporter
 
     public function run()
     {
+        xdebug_break();
+
         foreach ($this->records as $record) {
             $this->record = $record;
             $this->ids = array();

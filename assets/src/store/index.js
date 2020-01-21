@@ -29,20 +29,23 @@ export default new Vuex.Store({
     },
     stepIds: state => {
       return state.steps.map(step => step.id);
+    },
+    steps: state => {
+      return JSON.stringify(state.steps);
     }
   },
   mutations: {
     presets: (state, obj) => {
       let index = obj.index;
-      let setMap = {};
-      let getMap = {};
+      let setMap = [{}];
+      let getMap = [{}];
 
-      // populate set params
       if (obj.setParams) {
-        let setters = Object.keys(obj.setParams).filter(
-          key => obj.setParams[key].indexOf("required") !== -1
+        let setters = Object.keys(obj.setParams).filter(key =>
+          /(required|recommended)/.test(obj.setParams[key])
         );
         if (setters.length > 0) {
+          setMap = [];
           setters.forEach(param => {
             setMap.push({ left: param });
           });
@@ -51,12 +54,13 @@ export default new Vuex.Store({
 
       // populate get params
       if (obj.getParams) {
-        let getter = Object.keys(obj.getParams).filter(
-          key => obj.setParams[key].indexOf("required") !== -1
+        let getters = Object.keys(obj.getParams).filter(
+          key => obj.getParams[key].indexOf("required") !== -1
         );
-        if (setters.length > 0) {
-          setters.forEach(param => {
-            setMap.push({ left: param });
+        if (getters.length > 0) {
+          getMap = [];
+          getters.forEach(param => {
+            getMap.push({ left: param });
           });
         }
       }
@@ -64,18 +68,6 @@ export default new Vuex.Store({
       state.steps[index].setMap = setMap;
       state.steps[index].getMap = getMap;
       state.steps[index].id = state.steps[index].action + "_" + index;
-
-      // let newMap = [];
-
-      // setMap.forEach((object, index) => {
-      //   if (Object.keys(params).indexOf(object.left) !== -1) {
-      //     delete setmap[index];
-      //   }
-      // });
-
-      // if (setMap.length === 0) {
-      //   setMap.push({});
-      // }
     },
     clearMap(state, index) {
       state.steps[index].setMap = {};

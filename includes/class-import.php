@@ -26,21 +26,22 @@ class Import
     protected $first_line = 0;
     protected $last_line = -1;
 
-    public function run()
+    public function run(\WP_REST_Request $request)
     {
-        $this->edit_steps = $this->get_edit_steps();
-        // $this->edit_steps = $this->get_import_steps();
-        // $this->csv = $this->get_csv();
 
-        // $transient = 'import_process_0_6';
-        // if (current_user_can('manage_options') && !get_transient($transient)) :
-        //     set_transient($transient, 'locked', 6000); // lock function for 10 Minutes
-        // endif;
-        // $importer = new WpImporter();
-        // $importer->setup($this->csv, $this->import_steps);
-        // $importer->run();
+        // wp_handle_sideload();
+        $params = $request->get_params();
 
-        return "toit";
+        $steps = json_decode($params["import_steps"]);
+        $file_id = $params["upload_object"]["id"];
+
+        $importer = new WpImporter;
+
+        $importer->setup($file_id, $steps);
+
+        $importer->run();
+
+        return "cool!";
     }
 
     public function get_available_methods()

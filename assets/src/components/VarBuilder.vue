@@ -14,7 +14,7 @@
             <label for="varType">Type</label>
             <select name="varType">
               <option></option>
-              <option value="string">String</option>
+              <option value="string">Concatenation</option>
               <option value="regex">Regex Pattern</option>
             </select>
           </div>
