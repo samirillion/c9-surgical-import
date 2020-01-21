@@ -71,7 +71,7 @@ class WpImporter
 
     public function run()
     {
-        xdebug_break();
+        // xdebug_break();
 
         foreach ($this->records as $record) {
             $this->record = $record;
