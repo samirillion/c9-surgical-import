@@ -42,7 +42,7 @@
               >previous step id</option
             >
             <option value="string">string</option>
-            <option value="customVar">complex variable</option>
+            <option value="customVar">complex value</option>
           </select>
         </div>
         <div class="ifm-input-wrapper">

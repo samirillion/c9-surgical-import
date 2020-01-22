@@ -105,7 +105,7 @@ export default {
     presets: function(index, actionName) {
       let action = getActionByName(actionName, this.actions);
       if (undefined !== action) {
-        store.commit("presets", {
+        store.commit("stepPresets", {
           index,
           getParams: action.getParams,
           setParams: action.setParams

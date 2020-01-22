@@ -15,7 +15,12 @@ const getDefaultState = () => {
       }
     ],
     checkedFields: [""],
-    customVars: [{}]
+    customVars: [
+      {
+        id: "",
+        map: [{}]
+      }
+    ]
   };
 };
 
@@ -25,7 +30,7 @@ export default new Vuex.Store({
   state,
   getters: {
     customVars: state => {
-      return state.customVars.map(customVar => customVar.name);
+      return state.customVars.map(customVar => customVar.id);
     },
     stepIds: state => {
       return state.steps.map(step => step.id);
@@ -35,7 +40,30 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    presets: (state, obj) => {
+    setFileId(state, id) {
+      state.uploadedFileId = id;
+    },
+    updateCheckedFields(state, checkedFields) {
+      state.checkedFields = checkedFields;
+    },
+    addVar(state, index) {
+      state.customVars.splice(index + 1, 0, {
+        id: "",
+        map: [{}]
+      });
+    },
+    removeVar(state, varIndex) {
+      state.customVars.splice(varIndex, 1);
+    },
+    addVarSegment(state, varArgs) {
+      state.customVars[varArgs.varIndex].splice(
+        varArgs.segmentLength + 1,
+        0,
+        {}
+      );
+    },
+    removeVarSegment(state, varArgs) {},
+    stepPresets: (state, obj) => {
       let index = obj.index;
       let setMap = [{}];
       let getMap = [{}];
@@ -68,20 +96,6 @@ export default new Vuex.Store({
       state.steps[index].setMap = setMap;
       state.steps[index].getMap = getMap;
       state.steps[index].id = state.steps[index].action + "_" + index;
-    },
-    clearMap(state, index) {
-      state.steps[index].setMap = {};
-      state.steps[index].getMap = {};
-    },
-    populateSetMap(state) {},
-    resetState(state) {
-      Object.assign(state, getDefaultState());
-    },
-    setFileId(state, id) {
-      state.uploadedFileId = id;
-    },
-    updateCheckedFields(state, checkedFields) {
-      state.checkedFields = checkedFields;
     },
     addStep(state, stepLength) {
       state.steps.splice(stepLength + 1, 0, {
@@ -121,12 +135,6 @@ export default new Vuex.Store({
           1
         );
       }
-    },
-    updateEntity(stepIndex, verb) {
-      state.steps[stepIndex].entity = verb;
-    },
-    addBaseFields(type, field) {
-      state.fields.push(field);
     }
   }
 });

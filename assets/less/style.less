@@ -85,7 +85,7 @@ Global Elements
     .highlight {
       background: @blue;
     }
-    .highlight>a {
+    .highlight > a {
       background: @blue;
     }
   }
@@ -293,11 +293,12 @@ Ifm Steps
     margin: 5px;
     margin-top: 0;
     margin-bottom: 0;
-    padding-top: 0;
     border: 1px solid @lighter-grey;
+    background: @lightest-grey;
     .ifm-input-wrapper {
       padding-bottom: 0;
       margin-top: 5px;
+      background: @lightest-grey;
     }
   }
   .delete-map-row {
@@ -401,49 +402,9 @@ Ifm Steps
     background: @lightest-grey;
     border: 1px solid @lighter-grey;
   }
-  .ifm-custom-var {
-    padding: 20px;
-    padding-top: 0;
-  }
-  .ifm-custom-var-wrapper {
-    background: white;
-    border-bottom: none;
-    background: @lightest-grey;
-    border: 1px solid @lighter-grey;
-    position: relative;
-    padding: 10px;
-  }
-  .custom-var-header {
-    display: flex;
-  }
-  .custom-var-header label {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .custom-var-header button {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-  }
+
   .add-custom-value {
     margin-top: 10px;
-  }
-  .var-type-wrapper {
-    margin-right: 10px;
-  }
-  .custom-var-header .var-type-wrapper,
-  .custom-var-header .var-name-wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .var-value {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-  .var-input-label {
-    margin-bottom: 10px;
   }
   .ifm-params .button-primary {
     font-size: 10px;
@@ -454,5 +415,95 @@ Ifm Steps
     text-align: center;
     padding: 0;
     padding: 0;
+  }
+
+  /**
+  Custom Var Builder Styles
+  **/
+  .custom-var-header .ifm-params {
+    padding: 10px;
+  }
+  .custom-var-header .ifm-input-wrapper {
+    // padding: 5px;
+    // margin: 5px;
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
+  }
+  .var-name {
+    width: 100%;
+  }
+  .custom-var-header label {
+    margin-bottom: 5px;
+  }
+  .custom-var-header .button-primary {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }
+  .map-wrapper {
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
+    padding: 5px;
+    padding: 10px 5px;
+    .delete-map-row {
+      margin-bottom: 0;
+    }
+    .var-segment {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-grow: 1;
+    }
+    .ifm-params {
+      display: flex;
+      align-items: flex-end;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      border: none;
+      margin-bottom: 3px;
+    }
+    .ifm-input-wrapper {
+      padding: 0;
+      margin-right: 5px;
+      margin-top: 3px;
+      border: none;
+    }
+  }
+  .var-type-wrapper {
+    margin-right: 10px;
+  }
+  .var-value {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .var-input-label {
+    margin-bottom: 10px;
+  }
+  .ifm-custom-var h4 {
+    margin: 10px 0;
+  }
+  .ifm-custom-var {
+    border: 1px solid @dark;
+    margin: 5px;
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    margin-top: 0;
+  }
+  .ifm-custom-var .ifm-custom-var-wrapper {
+    background: white;
+    border-bottom: none;
+    position: relative;
+    padding: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .content-left {
+      flex-grow: 1;
+    }
   }
 }
