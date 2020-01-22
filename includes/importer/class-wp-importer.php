@@ -60,8 +60,6 @@ class WpImporter
 
     public function run()
     {
-        xdebug_break();
-
         foreach ($this->records as $record) {
             $this->record = $record;
             $this->ids = array();
@@ -71,8 +69,9 @@ class WpImporter
                 $this->step = $this->hydrate($step);
 
                 // run function specified in step, e.g., 'get_user_by_email'
-                $step_method = $this->step['method'];
-                $this->$step_method();
+                $step_method = $step->action;
+
+                $this->ids[$step->id] = $this->$step_method();
             }
         }
     }
@@ -84,72 +83,92 @@ class WpImporter
         // goes 2-d right now
         $wet_step = array();
 
-        foreach ($step as $key => $value) {
-            if (is_array($value)) :
-                foreach ($step[$key] as $map_key => $map_value) :
-                    $wet_step[$key][$map_key] = $this->evaluate($map_value);
-                endforeach;
-            else :
-                $wet_step[$key] = $this->evaluate($value);
-            endif;
+        foreach ($step->getMap as $mapRow) {
+            if (!empty((array) $mapRow)) {
+                $wet_step['get'][$mapRow->left] = $this->evaluate($mapRow);
+            }
         }
+
+        foreach ($step->setMap as $mapRow) {
+            if (!empty((array) $mapRow)) {
+                $wet_step['set'][$mapRow->left] = $this->evaluate($mapRow);
+            }
+        }
+
         return $wet_step;
     }
 
-    public function evaluate($value)
+    public function evaluate($mapRow)
     {
+
+        $value = $mapRow->right;
+        $type = $mapRow->type;
         // '@' denotes a reference to a value previously set by the import 
         // process (user or post generated)
-        if ($value[0] === "@") {
-            // get a generated id
-            $id = substr($value, 1, strlen($value) - 1);
-            $wet = array_key_exists($id, $this->ids) ? $this->ids[$id] : null;
+        if ("stepId" === $type) {
 
-            // '$' denotes a value name in the CSV record
-        } elseif ($value[0] === "$") {
+            // the name of id is the value passed
+            $id = $value;
+            $wet = array_key_exists($id, $this->ids) ? $this->ids[$id] : null;
+        } elseif ("csvValue" === $type) {
 
             // get the csv value
-            $value = substr($value, 1, strlen($value) - 1);
             $wet = array_key_exists($value, $this->record) ? $this->record[$value] : null;
+        } elseif ("customVar" === $type) {
+
+            // buid the custom var
+            $wet = $this->build_custom_var($value);
+        } else {
 
             // everything else is a string literal
-        } else {
             $wet = $value;
         }
-
         return $wet;
     }
 
-    public function get_user_by_email()
+    public function build_custom_var($var)
     {
-        $key = $this->step['id'];
-        $email = $this->step['map']['email'];
-        $value = get_user_by_email($email)->ID;
-        $this->ids[$key] = $value;
+        return $var;
     }
 
-    // public function create_user()
-    // {
-    //     $user_id =  wp_insert_user(
-    //         $args
-    //     );
+    public function create_user()
+    {
+        $user_id =  wp_insert_user(
+            $this->step['set']
+        );
 
-    //     return $user_id;
-    // }
+        return $user_id;
+    }
 
     public function create_post()
     {
-        $args = array();
-        foreach ($this->step['map'] as $key => $value) {
-            $args[$key] = $value;
-        }
         $post_id = wp_insert_post(
-            $args
+            $this->step['set']
         );
 
-        $key = $this->step['id'];
+        return $post_id;
+    }
 
-        $this->ids[$key] = $post_id;
+    public function update_post()
+    {
+        $post_id = 0;
+
+        if (array_key_exists('ID', $this->step['get'])) {
+            $post_id = wp_update_post(array_merge($this->step['set'], $this->step['get']));
+        }
+
+        return $post_id;
+    }
+
+    public function update_user()
+    {
+        $user_id = 0;
+
+        if (array_key_exists('ID', $this->step['get'])) {
+            $user_id = wp_update_user(array_merge($this->step['set'], $this->step['get']));
+        }
+
+        return $user_id;
     }
 
     public function update_user_meta()
@@ -163,13 +182,16 @@ class WpImporter
     // public function update_post($post_id)
     // { }
 
-    public function add_post_terms()
-    {
-        $post_id = $this->step['post_id'];
-        $terms = explode(",", $this->step['map']['terms']);
-        $term_type = $this->step['term_type'];
-        wp_set_object_terms($post_id, $terms, $term_type, true);
-    }
+    // Working on this one now! Jan 2020
+    
+    // public function add_post_terms()
+    // {
+    //     $post_id = $this->step['get']->ID;
+    //     foreach ($this->step['set'] as $mapRow) {
+    //         wp_set_object_terms($post_id, $mapRow->right, $mapRow->left, true);
+    //     }
+    //     $term_type = $this->step['term_type'];
+    // }
 
     public function add_acf_meta()
     {

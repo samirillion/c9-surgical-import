@@ -8,22 +8,12 @@ import {
 } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
+// all action names have accompanying functions in class-wp-importer
 let baseActions = [
   {
     id: "create_post",
     displayName: "create post",
     setParams: createPost
-  },
-  {
-    id: "update_post",
-    displayName: "update post",
-    getParams: getPost,
-    setParams: createPost
-  },
-  {
-    id: "get_post",
-    displayName: "get post",
-    getParams: getPost
   },
   {
     id: "create_user",
@@ -35,6 +25,17 @@ let baseActions = [
     displayName: "update user",
     getParams: getUser,
     setParams: createUser
+  },
+  {
+    id: "update_post",
+    displayName: "update post",
+    getParams: getPost,
+    setParams: createPost
+  },
+  {
+    id: "get_post",
+    displayName: "get post",
+    getParams: getPost
   },
   {
     id: "get_user",

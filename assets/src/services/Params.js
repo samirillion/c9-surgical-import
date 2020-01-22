@@ -1,15 +1,15 @@
 export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
-  id: "user id",
-  slug: "user slug",
-  email: "user email",
-  login: "user login"
+  ID: "user id",
+  // user_slug: "user slug",
+  // user_email: "user email",
+  // user_login: "user login"
 };
 export const getPost = {
-  id: "post id",
-  title: "post title",
-  slug: " post slug"
+  ID: "post id",
+  // post_title: "post title",
+  // post_slug: " post slug"
 };
 export const createUser = {
   user_pass: "user password (required)",
