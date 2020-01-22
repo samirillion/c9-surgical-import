@@ -35,7 +35,10 @@ export default new Vuex.Store({
     stepIds: state => {
       return state.steps.map(step => step.id);
     },
-    steps: state => {
+    jsonVars: state => {
+      return JSON.stringify(state.customVars);
+    },
+    jsonSteps: state => {
       return JSON.stringify(state.steps);
     }
   },

@@ -28,16 +28,16 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-
-        // wp_handle_sideload();
         $params = $request->get_params();
 
         $steps = json_decode($params["import_steps"]);
+        $vars = json_decode($params["import_vars"]);
+
         $file_id = $params["upload_object"]["id"];
 
         $importer = new WpImporter;
 
-        $importer->setup($file_id, $steps);
+        $importer->setup($file_id, $steps, $vars);
 
         $importer->run();
 

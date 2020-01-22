@@ -26,7 +26,7 @@ class WpImporter
     {
     }
 
-    public function setup($file, $steps, $offset = 0, $limit = -1)
+    public function setup($file, $steps, $vars, $offset = 0, $limit = -1)
     {
         if (!ini_get("auto_detect_line_endings")) {
             ini_set("auto_detect_line_endings", '1');
@@ -40,17 +40,6 @@ class WpImporter
         $this->steps = $steps;
         $this->readCSV($file, $limit, $offset);
     }
-
-    // public static function get_import_methods() {
-    //     $methods = [];
-    //     foreach (self::$import_methods as $method ) {
-    //         if(true)
-    //         {
-    //             $methods[] = $method;
-    //         }
-    //     }
-    //     return $methods;
-    // }
 
     public function readCSV($file_id, $limit, $offset)
     {
@@ -71,7 +60,7 @@ class WpImporter
 
     public function run()
     {
-        // xdebug_break();
+        xdebug_break();
 
         foreach ($this->records as $record) {
             $this->record = $record;

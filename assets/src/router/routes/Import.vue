@@ -56,7 +56,8 @@ export default {
     async runImport() {
       const response = await WpApi.runImport()
         .param("upload_object", this.uploadObject)
-        .param("import_steps", store.getters.steps);
+        .param("import_steps", store.getters.jsonSteps)
+        .param("import_vars", store.getters.jsonVars);
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

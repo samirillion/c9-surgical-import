@@ -10,7 +10,9 @@
       open
     >
       <summary class="ifm-custom-var-wrapper" open>
-        <div class="content-left">Variable:  {{ customVar.id }}</div>
+        <div class="content-left">
+          {{ customVar.id ? customVar.id : "Unnamed Value" }}
+        </div>
         <button
           class="button button-primary"
           v-if="customVars.length > 1"
