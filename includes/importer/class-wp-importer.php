@@ -183,7 +183,7 @@ class WpImporter
     // { }
 
     // Working on this one now! Jan 2020
-    
+
     // public function add_post_terms()
     // {
     //     $post_id = $this->step['get']->ID;

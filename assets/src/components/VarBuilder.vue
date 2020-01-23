@@ -88,17 +88,21 @@
       </button>
     </details>
     <StepsRaw :open="true" :summary="'View Steps as Json'" />
+    <StringEditor></StringEditor>
   </details>
 </template>
 
 <script>
 import StepsRaw from "@/components/StepsRaw.vue";
+import StringEditor from "@/components/StringEditor.vue";
+
 import store from "@/store";
 
 export default {
   name: "VarBuilder",
   components: {
-    StepsRaw
+    StepsRaw,
+    StringEditor
   },
   data() {
     return {
