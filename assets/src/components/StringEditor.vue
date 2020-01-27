@@ -3,7 +3,7 @@
   <!-- <codemirror v-model="code" :options="cmOptions"></codemirror> -->
   <div class="string-editor-wrapper">
     <codemirror
-      ref="myCm"
+      :ref="id"
       :value="code"
       :options="cmOptions"
       @ready="onCmReady"
@@ -25,6 +25,11 @@ import "@/utils/IfmMode";
 export default {
   components: {
     codemirror
+  },
+  props: {
+    id: {
+      type: String
+    },
   },
   data() {
     return {

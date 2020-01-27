@@ -17,8 +17,8 @@ const getDefaultState = () => {
     checkedFields: [""],
     customVars: [
       {
-        id: "",
-        map: [{}]
+        id: "custom_var_0",
+        script: ""
       }
     ]
   };
