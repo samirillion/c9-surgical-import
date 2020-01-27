@@ -6,6 +6,7 @@ Variables
 @lighter-grey: #e3e3e3;
 @lightest-grey: #f9f9f9;
 @blue: #007cba;
+@red: #a11;
 /** 
 Global Elements
 **/
@@ -506,5 +507,29 @@ Ifm Steps
     .content-left {
       flex-grow: 1;
     }
+  }
+  .CodeMirror {
+    height: auto;
+  }
+  .CodeMirror-lines {
+    cursor: text;
+  }
+  pre.CodeMirror-line {
+    color: @grey;
+  }
+  .cm-variable,
+  .cm-variable_arg {
+    color: green;
+  }
+  .cm-string,
+  .cm-string_arg {
+    color: @red;
+  }
+  .cm-operator {
+    color: @blue;
+  }
+  .cm-function {
+    color: purple;
+    font-weight: bold;
   }
 }
