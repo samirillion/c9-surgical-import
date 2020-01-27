@@ -92,6 +92,9 @@ if (isProduction()) {
 }
 
 module.exports = {
+  node: {
+    fs: "empty"
+  },
   entry: entryPoint,
   mode: process.env.WEBPACK_ENV,
   output: {
