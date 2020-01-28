@@ -18,7 +18,7 @@ const getDefaultState = () => {
     customVars: [
       {
         id: "custom_var_0",
-        script: ""
+        code: "wat"
       }
     ]
   };

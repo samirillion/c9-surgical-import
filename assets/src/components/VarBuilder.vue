@@ -38,7 +38,7 @@
           />
         </div>
       </div>
-      <StringEditor :id="'custom_var_' + varIndex"></StringEditor>
+      <StringEditor :index="varIndex"></StringEditor>
     </details>
     <StepsRaw :open="true" :summary="'View Steps as Json'" />
   </details>
@@ -78,7 +78,7 @@ export default {
     addVar(index) {
       this.customVars.splice(index + 1, 0, {
         id: "custom_var_" + (index + 1),
-        script: ""
+        code: "cool"
       });
     },
     removeVar(index) {

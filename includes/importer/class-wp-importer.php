@@ -5,6 +5,9 @@ namespace IfmImport;
 use League\Csv\Reader;
 use League\Csv\Statement;
 
+require_once('class-var-builder.php');
+
+
 class WpImporter
 {
     public $steps;
@@ -117,7 +120,7 @@ class WpImporter
         } elseif ("customVar" === $type) {
 
             // buid the custom var
-            $wet = $this->build_custom_var($value);
+            $wet = $this->build_custom_var($value, $this->record);
         } else {
 
             // everything else is a string literal
@@ -126,9 +129,9 @@ class WpImporter
         return $wet;
     }
 
-    public function build_custom_var($var)
+    public function build_custom_var($var, $record)
     {
-        return $var;
+        VarBuilder::parseVar($var, $record);
     }
 
     public function create_user()

@@ -503,6 +503,13 @@ Ifm Steps
     .content-left {
       flex-grow: 1;
     }
+    button {
+      border-radius: 3px 0 0 3px;
+    }
+    .add-custom-value {
+      border-radius: 0 3px 3px 0;
+      margin-left: 1px;
+    }
   }
   .custom-var-header .ifm-name {
     padding: 5px 3px;
@@ -536,5 +543,34 @@ Ifm Steps
   .cm-function {
     color: purple;
     font-weight: bold;
+  }
+  .string-editor-header {
+    margin-bottom: 3px;
+    button {
+      margin-right: 2px;
+      margin-bottom: 2px;
+    }
+  }
+  .csv-value-dropdown {
+    position: relative;
+    display: inline-block;
+    button {
+      margin-right: 0;
+    }
+    .form-table {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: auto;
+      background: white;
+      z-index: 5;
+      td:hover {
+        cursor: pointer;
+        color: @blue;
+      }
+    }
+  }
+  .vue-codemirror {
+    border: 1px solid @lighter-grey;
   }
 }
