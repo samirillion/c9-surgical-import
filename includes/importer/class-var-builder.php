@@ -8,8 +8,9 @@ use function Stringy\create as s;
 class VarBuilder
 {
     // should match names in services/StringEdits.js
-    private static $string_functions = '/^(toLower)|(trim)|(toUpper)|(capitalize)|(replace)/';
+    private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace))/';
     private static $string_pattern = '/^\".+?\"/';
+    private static $code = "";
 
     public function __construct()
     {
@@ -17,10 +18,11 @@ class VarBuilder
 
     public static function evaluate($var_name, $record, $custom_vars)
     {
+        self::$code = "";
         $code = self::get_code($var_name, $custom_vars);
         $code_w_csv = self::get_csv_values($code, $record);
-        $variable = self::parse("", $code_w_csv);
-        return $var_name;
+        self::$code = s($code_w_csv);
+        return self::parse();
     }
 
     private static function get_code($var_name, $custom_vars)
@@ -47,68 +49,84 @@ class VarBuilder
         return $code;
     }
 
-    private static function parse($parsed, $code)
+    private static function parse($parsed = "")
     {
-        // if is function, process args
         xdebug_break();
-        if (self::get_func($code)) {
-            $function_name = self::get_func($code);
-            $code = s($code)->slice(strlen($function_name));
 
-            return self::$function_name(self::parse("", $code));
+        if (self::get_func()) {
+
+            $function_name = self::get_func();
+            self::$code = self::$code->slice(strlen($function_name) + 1);
+            $parsed .= self::$function_name(self::parse());
+        } elseif (self::get_string(self::$code)) {
+
+            $string = self::get_string(self::$code);
+            $parsed .= $string;
+            self::$code = self::$code->slice(strlen($string) + 2);
+        } elseif (self::$code->startsWith(",")) {
+            if (is_array($parsed)) {
+                self::$code = self::$code->substr(1);
+                $parsed[] = self::parse();
+            } else {
+                self::$code = self::$code->substr(1);
+                $parsed = array($parsed, self::parse($parsed));
+            }
+        } else {
+
+            self::$code = self::$code->substr(1);
         }
 
-        if (self::get_string($code)) {
-            $parsed .= self::get_string($code);
-        }
+        if ("" == self::$code) {
 
-        if ("" === $code) {
             return $parsed;
-        }
+        } else {
 
-        return self::parse($parsed, $code->substr(1));
+            return self::parse($parsed);
+        }
     }
 
-    private static function get_func($code)
+    private static function get_func()
     {
-        if (preg_match(self::$string_functions, $code)) {
-            preg_match(self::$string_functions, $code, $matches, PREG_OFFSET_CAPTURE);
+        if (preg_match(self::$string_functions, self::$code)) {
+            preg_match(self::$string_functions, self::$code, $matches, PREG_OFFSET_CAPTURE);
             return $matches[0][0];
         } else {
             return false;
         }
     }
 
-    private static function get_string($code)
+    private static function replace($array)
     {
-        if (preg_match(self::$string_pattern, $code, $matches, PREG_OFFSET_CAPTURE)) {
-            return $matches[0][0];
+        if (is_array($array) && count($array) === 3) {
+            return s($array[0])->replace($array[1], $array[2]);
+        } else {
+            return "";
+        }
+    }
+
+    private static function get_string()
+    {
+        if (preg_match(self::$string_pattern, self::$code, $matches, PREG_OFFSET_CAPTURE)) {
+            return s($matches[0][0])->between('"', '"');
         } else {
             return false;
         }
     }
 
-    private static function humanize($code)
+    private static function humanize($string)
     {
-        return s(self::get_string($code))->humanize();
-    }
-    private static function whitespace($variable)
-    {
+        return s($string)->humanize();
     }
 
-    private static function evaluateCsv($value)
-    {
-    }
     private static function trim($variable)
     {
     }
-    private static function toLower($variable)
+    private static function toLower($string)
     {
+        return s($string)->toLowerCase();
     }
-    private static function toUpper($variable)
+    private static function toUpper($string)
     {
-    }
-    private static function replace($variable)
-    {
+        return s($string)->toUpperCase();
     }
 }

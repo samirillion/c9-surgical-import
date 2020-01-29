@@ -12,7 +12,7 @@ CodeMirror.defineSimpleMode("IfmScript", {
     { regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string" },
 
     {
-      regex: /(trim|toLower|toUpper|capitalize|replace)\(\)?/,
+      regex: /(trim|toLower|toUpper|humanize|replace)\(\)?/,
       token: "function",
       push: "args"
     },

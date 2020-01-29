@@ -2,39 +2,34 @@
 
 export const stringFunctions = [
   {
-    name: "+",
-    insert: " + ",
-    description: "concatenate values"
-  },
-  {
     name: "whitespace",
     insert: ' " " ',
     description: "drop in some whitespace"
   },
   {
     name: "toLower",
-    insert: "toLower(string)",
-    description: "make entire string lower case"
+    insert: "toLower(input)",
+    description: "make entire input lower case"
   },
   {
     name: "trim",
-    insert: "trim(string)",
-    description: "remove whitespace from either end of string"
+    insert: "trim(input)",
+    description: "remove whitespace from either end of input"
   },
   {
     name: "toUpper",
-    insert: "toUpper(string)",
-    description: "make entire string uppercase"
+    insert: "toUpper(input)",
+    description: "make entire input uppercase"
   },
   {
     name: "humanize",
-    insert: "humanize(string)",
+    insert: "humanize(input)",
     description:
-      "Capitalizes the first word of the string, replaces underscores with spaces, and strips '_id'"
+      "Capitalizes the first word of the input, replaces underscores with spaces, and strips '_id'"
   },
   {
     name: "replace",
-    insert: "trim(string)",
-    description: "remove whitespace from either end of string"
+    insert: "replace(input, replacePattern, replacer)",
+    description: ""
   }
 ];
