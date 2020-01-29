@@ -19,6 +19,7 @@ class WpImporter
     public $header;
     public $records;
     public $record;
+    public $custom_vars;
 
     // Find all import methods in Actions.js 
 
@@ -29,7 +30,7 @@ class WpImporter
     {
     }
 
-    public function setup($file, $steps, $vars, $offset = 0, $limit = -1)
+    public function setup($file, $steps, $custom_vars, $offset = 0, $limit = -1)
     {
         if (!ini_get("auto_detect_line_endings")) {
             ini_set("auto_detect_line_endings", '1');
@@ -40,6 +41,7 @@ class WpImporter
 
         ini_set('memory_limit', '1024M');
 
+        $this->custom_vars = $custom_vars;
         $this->steps = $steps;
         $this->readCSV($file, $limit, $offset);
     }
@@ -111,27 +113,20 @@ class WpImporter
         if ("stepId" === $type) {
 
             // the name of id is the value passed
-            $id = $value;
-            $wet = array_key_exists($id, $this->ids) ? $this->ids[$id] : null;
+            $wet = array_key_exists($value, $this->ids) ? $this->ids[$value] : null;
         } elseif ("csvValue" === $type) {
 
             // get the csv value
             $wet = array_key_exists($value, $this->record) ? $this->record[$value] : null;
         } elseif ("customVar" === $type) {
-
             // buid the custom var
-            $wet = $this->build_custom_var($value, $this->record);
+            $wet = VarBuilder::evaluate($value, $this->record, $this->custom_vars);
         } else {
 
             // everything else is a string literal
             $wet = $value;
         }
         return $wet;
-    }
-
-    public function build_custom_var($var, $record)
-    {
-        VarBuilder::parseVar($var, $record);
     }
 
     public function create_user()

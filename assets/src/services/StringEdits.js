@@ -27,9 +27,10 @@ export const stringFunctions = [
     description: "make entire string uppercase"
   },
   {
-    name: "capitalize",
-    insert: "capitalize(string)",
-    description: "capitalize all "
+    name: "humanize",
+    insert: "humanize(string)",
+    description:
+      "Capitalizes the first word of the string, replaces underscores with spaces, and strips '_id'"
   },
   {
     name: "replace",
