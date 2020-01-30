@@ -2,9 +2,9 @@
 
 export const stringFunctions = [
   {
-    name: "whitespace",
-    insert: ' " " ',
-    description: "drop in some whitespace"
+    name: "text",
+    insert: '" text goes here "',
+    description: "drop in some text"
   },
   {
     name: "toLower",
@@ -29,7 +29,24 @@ export const stringFunctions = [
   },
   {
     name: "replace",
-    insert: "replace(input, replacePattern, replacer)",
-    description: ""
+    insert: "replace(input, search, replacement)",
+    description: "Replaces all occurrences of search in input by replacement"
+  },
+  {
+    name: "htmlEncode",
+    insert: "htmlEncode(input)",
+    description:
+      "Convert all applicable characters to HTML entities. An alias of htmlentities. "
+  },
+  {
+    name: "htmlDecode",
+    insert: "htmlDecode(input)",
+    description: "Convert all HTML entities to their applicable characters."
+  },
+  {
+    name: "titleize",
+    insert: "titleize(input)",
+    description:
+      "Returns a trimmed string with the first letter of each word capitalized. Ignores connecting words"
   }
 ];

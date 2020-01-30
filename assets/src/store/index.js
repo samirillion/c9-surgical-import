@@ -6,6 +6,7 @@ Vue.use(Vuex);
 const getDefaultState = () => {
   return {
     uploadedFileId: null,
+    csvLength: 0,
     steps: [
       {
         id: "",
@@ -18,7 +19,7 @@ const getDefaultState = () => {
     customVars: [
       {
         id: "custom_var_0",
-        code: "wat"
+        code: ""
       }
     ]
   };

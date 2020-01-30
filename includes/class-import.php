@@ -4,9 +4,12 @@ namespace IfmImport;
 
 require_once(IFM_IMPORT_INCLUDES . '/importer/class-wp-importer.php');
 require_once(IFM_IMPORT_INCLUDES . '/importer/class-csv-edit.php');
+require_once(IFM_IMPORT_INCLUDES . '/importer/class-var-builder.php');
 
 use IfmImport\CsvEdit;
 use IfmImport\WpImporter;
+use IfmImport\VarBuilder;
+use function Stringy\create as s;
 
 require_once(ABSPATH . 'wp-admin/includes/media.php');
 require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -41,12 +44,32 @@ class Import
 
         $importer->run();
 
-        return "cool!";
+        return "success";
     }
 
-    public function get_available_methods()
+    public function preview_custom_var(\WP_REST_Request $request)
     {
-        return WpImporter::$import_methods;
+        $params = $request->get_params();
+        $file_id = $params["upload_id"];
+        $limit = 1;
+        $offset = intval($params["record_index"]);
+        $code = $params["var_code"];
+
+
+        $importer = new WpImporter;
+        
+        $records = $importer->readCSV($file_id, $limit, $offset);
+
+        // stupid way to get val from limit iterator
+        foreach($records as $record) {
+            $record = $record;
+        }
+        xdebug_break();
+
+        $code_w_csv = VarBuilder::get_csv_values($code, $record);
+        VarBuilder::$code = s($code_w_csv);
+
+        return VarBuilder::parse("");
     }
 
     public function get_edit_steps()

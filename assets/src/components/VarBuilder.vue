@@ -40,8 +40,8 @@
       </div>
       <StringEditor :index="varIndex"></StringEditor>
     </details>
-    <StepsRaw :open="true" :summary="'View Steps as Json'" />
   </details>
+  <!-- <StepsRaw :open="true" :summary="'View Steps as Json'" /> -->
 </template>
 
 <script>
@@ -59,7 +59,8 @@ export default {
   data() {
     return {
       customVars: store.state.customVars,
-      valueOptions: []
+      valueOptions: [],
+      customVarPreview: "sick"
     };
   },
   watch: {

@@ -24,4 +24,6 @@ WpApi.acfFields = WpApi.registerRoute("ifm/importer/v1", "/get-acf-fields");
 
 WpApi.taxonomies = WpApi.registerRoute("ifm/importer/v1", "/get-taxonomies");
 
+WpApi.previewCustomVar = WpApi.registerRoute("ifm/importer/v1", "/preview-custom-var");
+
 export { WpApi };

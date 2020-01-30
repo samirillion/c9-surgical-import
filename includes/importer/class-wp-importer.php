@@ -61,6 +61,8 @@ class WpImporter
         } else {
             $this->records = $csv->getRecords();
         }
+
+        return $this->records;
     }
 
     public function run()

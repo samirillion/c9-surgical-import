@@ -78,6 +78,7 @@ export default {
       axios.get(url).then(response => {
         this.rawCsv = response;
         this.parsedCsv = CsvToArray(response.data);
+        store.state.csvLength = this.parsedCsv.length;
       });
     }
   }

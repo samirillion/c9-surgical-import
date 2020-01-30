@@ -20,8 +20,15 @@
         v-for="(stringFunc, funcIndex) in stringFunctions"
         :key="funcIndex"
         @click="insert(stringFunc.insert)"
+        :title="stringFunc.description"
       >
         {{ stringFunc.name }}
+      </button>
+      <button
+        class="button-secondary"
+        @click="previewCustomVar"
+      >
+        Preview Var
       </button>
     </div>
     <codemirror
@@ -33,6 +40,10 @@
       @input="onCmCodeChange"
     >
     </codemirror>
+    <div class="ifm-input-wrapper">
+      <input type="number" v-model="previewRecordIndex" class="entry-length">
+      {{ customVarPreview }}
+    </div>
   </div>
 </template>
 <script>
@@ -44,6 +55,8 @@ import "codemirror/lib/codemirror.css";
 import "@/utils/IfmMode";
 
 import { stringFunctions } from "@/services/StringEdits";
+
+import { WpApi } from "@/services/WpApi";
 
 export default {
   components: {
@@ -58,7 +71,9 @@ export default {
     return {
       fieldsToggled: false,
       stringFunctions,
+      customVarPreview: null,
       variable: store.state.customVars[this.index],
+      previewRecordIndex: 1,
       cmOptions: {
         // codemirror options
         tabSize: 4,
@@ -83,6 +98,12 @@ export default {
     }
   },
   methods: {
+    async previewCustomVar() {
+      this.customVarPreview = await WpApi.previewCustomVar()
+        .param("upload_id", store.state.uploadedFileId)
+        .param("record_index", this.previewRecordIndex + 1)
+        .param("var_code", this.variable.code);
+    },
     insert(value) {
       this.codemirror.replaceSelection(value);
       this.codemirror.focus();
