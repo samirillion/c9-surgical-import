@@ -22,7 +22,7 @@ class VarBuilder
         $code = self::get_code($var_name, $custom_vars);
         $code_w_csv = self::get_csv_values($code, $record);
         self::$code = s($code_w_csv);
-        return self::parse();
+        return self::parse("");
     }
 
     private static function get_code($var_name, $custom_vars)
@@ -49,27 +49,36 @@ class VarBuilder
         return $code;
     }
 
-    private static function parse($parsed = "")
+    private static function parse($parsed)
     {
-        xdebug_break();
 
         if (self::get_func()) {
 
             $function_name = self::get_func();
             self::$code = self::$code->slice(strlen($function_name) + 1);
-            $parsed .= self::$function_name(self::parse());
+            if (is_array($parsed)) {
+                $parsed[] = self::$function_name(self::parse(""));
+            } else {
+                $parsed .= self::$function_name(self::parse(""));
+            }
         } elseif (self::get_string(self::$code)) {
 
             $string = self::get_string(self::$code);
-            $parsed .= $string;
+            if (is_array($parsed)) {
+                $parsed[] = $string;
+            } else {
+                $parsed .= $string;
+            }
             self::$code = self::$code->slice(strlen($string) + 2);
         } elseif (self::$code->startsWith(",")) {
+
+            xdebug_break();
+            self::$code = self::$code->substr(1);
             if (is_array($parsed)) {
-                self::$code = self::$code->substr(1);
-                $parsed[] = self::parse();
+                $parsed[] = self::parse($parsed);
             } else {
-                self::$code = self::$code->substr(1);
-                $parsed = array($parsed, self::parse($parsed));
+                $parsed = [$parsed];
+                self::parse($parsed);
             }
         } else {
 
