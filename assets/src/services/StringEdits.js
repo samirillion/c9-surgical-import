@@ -3,7 +3,7 @@
 export const stringFunctions = [
   {
     name: "text",
-    insert: '" text goes here "',
+    insert: '"text goes here"',
     description: "drop in some text"
   },
   {
@@ -29,7 +29,7 @@ export const stringFunctions = [
   },
   {
     name: "replace",
-    insert: "replace(input, search, replacement)",
+    insert: "replace(csv value, search, replacement)",
     description: "Replaces all occurrences of search in input by replacement"
   },
   {

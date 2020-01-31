@@ -79,7 +79,7 @@ export default {
     addVar(index) {
       this.customVars.splice(index + 1, 0, {
         id: "custom_var_" + (index + 1),
-        code: "cool"
+        code: ""
       });
     },
     removeVar(index) {

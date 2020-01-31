@@ -24,12 +24,6 @@
       >
         {{ stringFunc.name }}
       </button>
-      <button
-        class="button-secondary"
-        @click="previewCustomVar"
-      >
-        Preview Var
-      </button>
     </div>
     <codemirror
       :ref="variable.id"
@@ -40,9 +34,22 @@
       @input="onCmCodeChange"
     >
     </codemirror>
-    <div class="ifm-input-wrapper">
-      <input type="number" v-model="previewRecordIndex" class="entry-length">
-      {{ customVarPreview }}
+    <div
+      class="preview-var-wrapper"
+      v-show="variable.code && variable.code.length"
+    >
+      <hr />
+      <button class="button-secondary" @click="previewCustomVar">
+        Preview
+      </button>
+      <span>for line #</span>
+      <input type="number" v-model="previewRecordIndex" class="entry-length" />
+      <div
+        class="var-preview"
+        v-show="customVarPreview && customVarPreview.length"
+      >
+        {{ customVarPreview }}
+      </div>
     </div>
   </div>
 </template>
@@ -101,7 +108,7 @@ export default {
     async previewCustomVar() {
       this.customVarPreview = await WpApi.previewCustomVar()
         .param("upload_id", store.state.uploadedFileId)
-        .param("record_index", this.previewRecordIndex + 1)
+        .param("record_index", Number(this.previewRecordIndex) - 1)
         .param("var_code", this.variable.code);
     },
     insert(value) {

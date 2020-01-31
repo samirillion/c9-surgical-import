@@ -49,6 +49,7 @@ class Import
 
     public function preview_custom_var(\WP_REST_Request $request)
     {
+
         $params = $request->get_params();
         $file_id = $params["upload_id"];
         $limit = 1;
@@ -64,8 +65,6 @@ class Import
         foreach($records as $record) {
             $record = $record;
         }
-        xdebug_break();
-
         $code_w_csv = VarBuilder::get_csv_values($code, $record);
         VarBuilder::$code = s($code_w_csv);
 

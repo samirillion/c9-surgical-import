@@ -9,7 +9,8 @@ const getDefaultState = () => {
     csvLength: 0,
     steps: [
       {
-        id: "",
+        name: "",
+        id: "0",
         action: "",
         getMap: [{}],
         setMap: [{}]
@@ -18,7 +19,8 @@ const getDefaultState = () => {
     checkedFields: [""],
     customVars: [
       {
-        id: "custom_var_0",
+        name: "",
+        id: "0",
         code: ""
       }
     ]

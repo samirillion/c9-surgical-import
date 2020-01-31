@@ -512,7 +512,7 @@ Ifm Steps
     }
   }
   .custom-var-header .ifm-name {
-    padding: 5px 3px;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -545,18 +545,23 @@ Ifm Steps
     font-weight: bold;
   }
   .string-editor-header {
-    margin-bottom: 3px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 4px;
+    grid-auto-rows: minmax(20px, auto);
+    padding: 5px;
+    background: @lightest-grey;
+    border: 1px solid @lighter-grey;
     button {
-      margin-right: 2px;
-      margin-bottom: 2px;
+      margin-right: 0;
+      height: 25px !important;
+      min-height: 25px !important;
+      line-height: 24px;
     }
   }
   .csv-value-dropdown {
     position: relative;
     display: inline-block;
-    button {
-      margin-right: 0;
-    }
     .form-table {
       position: absolute;
       top: 20px;
@@ -571,6 +576,12 @@ Ifm Steps
     }
   }
   .vue-codemirror {
+    border: 1px solid @lighter-grey;
+  }
+  .var-preview {
+    margin-top: 5px;
+    padding: 5px;
+    background: @lightest-grey;
     border: 1px solid @lighter-grey;
   }
 }
