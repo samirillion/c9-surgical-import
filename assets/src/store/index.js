@@ -7,10 +7,12 @@ const getDefaultState = () => {
   return {
     uploadedFileId: null,
     csvLength: 0,
+    stepIdCount: 0,
+    varIdCount: 0,
     steps: [
       {
         name: "",
-        id: "0",
+        id: 0,
         action: "",
         getMap: [{}],
         setMap: [{}]
@@ -20,7 +22,7 @@ const getDefaultState = () => {
     customVars: [
       {
         name: "",
-        id: "0",
+        id: 0,
         code: ""
       }
     ]
@@ -33,7 +35,7 @@ export default new Vuex.Store({
   state,
   getters: {
     customVars: state => {
-      return state.customVars.map(customVar => customVar.id);
+      return state.customVars.map(customVar => customVar.name + " (" + customVar.id + ")");
     },
     stepIds: state => {
       return state.steps.map(step => step.id);
@@ -46,6 +48,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    incrementVarId(state) {
+      state.varIdCount++;
+    },
     setFileId(state, id) {
       state.uploadedFileId = id;
     },

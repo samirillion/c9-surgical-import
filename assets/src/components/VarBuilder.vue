@@ -11,7 +11,8 @@
     >
       <summary class="ifm-custom-var-wrapper" open>
         <div class="content-left">
-          {{ customVar.id ? customVar.id : "Unnamed Value" }}
+          {{ customVar.name ? customVar.name : "Unnamed Value" }}
+          {{ '(' + customVar.id + ')'}}
         </div>
         <button
           class="button button-primary"
@@ -34,14 +35,14 @@
             type="text"
             name="varName"
             class="var-name"
-            v-model="customVar.id"
+            v-model="customVar.name"
           />
         </div>
       </div>
-      <StringEditor :index="varIndex"></StringEditor>
+      <StringEditor :index="store.state.varIdCount"></StringEditor>
     </details>
+    <StepsRaw :open="true" :summary="'View Steps as Json'" />
   </details>
-  <!-- <StepsRaw :open="true" :summary="'View Steps as Json'" /> -->
 </template>
 
 <script>
@@ -60,7 +61,8 @@ export default {
     return {
       customVars: store.state.customVars,
       valueOptions: [],
-      customVarPreview: "sick"
+      customVarPreview: "sick",
+      store
     };
   },
   watch: {
@@ -77,8 +79,9 @@ export default {
       }
     },
     addVar(index) {
+      store.commit("incrementVarId");
       this.customVars.splice(index + 1, 0, {
-        id: "custom_var_" + (index + 1),
+        id: store.state.varIdCount,
         code: ""
       });
     },

@@ -58,15 +58,18 @@ class Import
 
 
         $importer = new WpImporter;
-        
+
         $records = $importer->readCSV($file_id, $limit, $offset);
 
         // stupid way to get val from limit iterator
-        foreach($records as $record) {
+        foreach ($records as $record) {
             $record = $record;
         }
-        $code_w_csv = VarBuilder::get_csv_values($code, $record);
-        VarBuilder::$code = s($code_w_csv);
+        if ($record) {
+            $code = VarBuilder::get_csv_values($code, $record);
+        }
+
+        VarBuilder::$code = s($code);
 
         return VarBuilder::parse("");
     }

@@ -26,8 +26,8 @@
       </button>
     </div>
     <codemirror
-      :ref="variable.id"
-      :value="variable.code"
+      :ref="customVar.id"
+      :value="customVar.code"
       :options="cmOptions"
       @ready="onCmReady"
       @focus="onCmFocus"
@@ -36,7 +36,7 @@
     </codemirror>
     <div
       class="preview-var-wrapper"
-      v-show="variable.code && variable.code.length"
+      v-show="customVar.code && customVar.code.length"
     >
       <hr />
       <button class="button-secondary" @click="previewCustomVar">
@@ -79,7 +79,6 @@ export default {
       fieldsToggled: false,
       stringFunctions,
       customVarPreview: null,
-      variable: store.state.customVars[this.index],
       previewRecordIndex: 1,
       cmOptions: {
         // codemirror options
@@ -93,13 +92,18 @@ export default {
     };
   },
   computed: {
+    customVar() {
+      return store.state.customVars.find(
+        customVar => customVar.id === this.index
+      );
+    },
     checkedFields: {
       get() {
         return store.state.checkedFields;
       }
     },
     codemirror() {
-      let ref = this.variable.id;
+      let ref = this.customVar.id;
       console.log(this.$refs);
       return this.$refs[ref].codemirror;
     }
@@ -109,7 +113,7 @@ export default {
       this.customVarPreview = await WpApi.previewCustomVar()
         .param("upload_id", store.state.uploadedFileId)
         .param("record_index", Number(this.previewRecordIndex) - 1)
-        .param("var_code", this.variable.code);
+        .param("var_code", this.customVar.code);
     },
     insert(value) {
       this.codemirror.replaceSelection(value);
