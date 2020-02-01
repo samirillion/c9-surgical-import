@@ -71,13 +71,6 @@ export default {
     }
   },
   methods: {
-    updateOptions(type) {
-      if ("csvValue" === type) {
-        this.valueOptions = store.state.checkedFields;
-      } else {
-        this.valueOptions = [];
-      }
-    },
     addVar(index) {
       store.commit("incrementVarId");
       this.customVars.splice(index + 1, 0, {
