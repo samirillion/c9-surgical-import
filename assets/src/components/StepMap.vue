@@ -49,6 +49,8 @@
           <label for="mapRowRight">Value</label>
           <v-select
             name="mapRowRight"
+            label="key"
+            index="value"
             :options="valueOptions"
             v-model="mapRow.right"
             v-if="'string' !== mapRow.type"
@@ -139,9 +141,18 @@ export default {
       this.postTypes = Object.values(response);
     },
     updateOptions(type) {
-      if ("postType" === type) this.valueOptions = this.postTypes;
-      if ("csvValue" === type) this.valueOptions = this.checkedFields;
-      if ("stepId" === type) this.valueOptions = this.stepIds;
+      if ("postType" === type)
+        this.valueOptions = this.postTypes.map(option => {
+          return { key: option, value: option };
+        });
+      if ("csvValue" === type)
+        this.valueOptions = this.checkedFields.map(option => {
+          return { key: option, value: option };
+        });
+      if ("stepId" === type)
+        this.valueOptions = this.stepIds.map(option => {
+          return { key: option, value: option };
+        });
       if ("customVar" === type) this.valueOptions = store.getters.customVars;
     },
     addMapRow(mapLength) {

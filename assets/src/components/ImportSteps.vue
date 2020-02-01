@@ -14,13 +14,13 @@
         <summary>
           <span class="ifm-step-number">Step {{ stepIndex + 1 }}</span>
           <span class="ifm-summary-right">
-            <span class="ifm-step-name">
+            <span class="ifm-step-name" v-show="step.action">
               {{ step.id }}
             </span>
             <button
               @click="deleteStep(stepIndex)"
               v-if="steps.length > 1"
-              class="button button-primary"
+              class="button buttonp-primary"
             >
               -
             </button>
@@ -54,10 +54,7 @@
           :isGetter="false"
           :actions="actions"
         ></StepMap>
-        <button
-          @click="addStep(steps.length)"
-          class="button button-primary wide"
-        >
+        <button @click="addStep(stepIndex)" class="button button-primary wide">
           + Add Step
         </button>
       </details>
@@ -115,8 +112,8 @@ export default {
     stepPlusOne: function(index) {
       return index + 1;
     },
-    addStep(stepLength) {
-      store.commit("addStep", stepLength);
+    addStep(stepIndex) {
+      store.commit("addStep", stepIndex);
     },
     deleteStep(stepIndex) {
       store.commit("removeStep", stepIndex);

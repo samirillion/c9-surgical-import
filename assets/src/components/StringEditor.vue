@@ -26,7 +26,7 @@
       </button>
     </div>
     <codemirror
-      :ref="customVar.id"
+      :ref="ref"
       :value="customVar.code"
       :options="cmOptions"
       @ready="onCmReady"
@@ -48,6 +48,9 @@
         class="var-preview"
         v-show="customVarPreview && customVarPreview.length"
       >
+        <button @click="customVarPreview = null">
+          x
+        </button>
         {{ customVarPreview }}
       </div>
     </div>
@@ -76,6 +79,7 @@ export default {
   },
   data() {
     return {
+      ref: this.index + 1,
       fieldsToggled: false,
       stringFunctions,
       customVarPreview: null,
@@ -93,9 +97,7 @@ export default {
   },
   computed: {
     customVar() {
-      return store.state.customVars.find(
-        customVar => customVar.id === this.index
-      );
+      return store.state.customVars[this.index];
     },
     checkedFields: {
       get() {
@@ -103,9 +105,7 @@ export default {
       }
     },
     codemirror() {
-      let ref = this.customVar.id;
-      console.log(this.$refs);
-      return this.$refs[ref].codemirror;
+      return this.$refs[this.ref].codemirror;
     }
   },
   methods: {

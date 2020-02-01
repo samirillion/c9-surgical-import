@@ -10,6 +10,7 @@ class VarBuilder
     // should match names in services/StringEdits.js
     private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize))/';
     private static $string_pattern = '/^\"([\s\S]*?)\"/';
+    private static $csv_value_regex = '/{{([\w|\s|-]+?)}}/';
     public static $code = "";
 
     public function __construct()
@@ -36,9 +37,10 @@ class VarBuilder
 
     public static function get_csv_values($code, $record)
     {
+        xdebug_break();
 
         $csv_values = array();
-        preg_match_all('/{{(\w+)}}/', $code, $matches, PREG_PATTERN_ORDER);
+        preg_match_all(self::$csv_value_regex, $code, $matches, PREG_PATTERN_ORDER);
 
         foreach ($matches[1] as $index => $csv_value) {
             $csv_values[$matches[0][$index]] = array_key_exists($csv_value, $record) ? $record[$csv_value] : $csv_value;

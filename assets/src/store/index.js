@@ -6,13 +6,13 @@ Vue.use(Vuex);
 const getDefaultState = () => {
   return {
     uploadedFileId: null,
-    csvLength: 0,
-    stepIdCount: 0,
-    varIdCount: 0,
+    csvLength: 1,
+    stepIdCount: 1,
+    varIdCount: 1,
     steps: [
       {
         name: "",
-        id: 0,
+        id: 1,
         action: "",
         getMap: [{}],
         setMap: [{}]
@@ -21,8 +21,8 @@ const getDefaultState = () => {
     checkedFields: [""],
     customVars: [
       {
-        name: "",
-        id: 0,
+        name: "Custom Var",
+        id: 1,
         code: ""
       }
     ]
@@ -35,7 +35,12 @@ export default new Vuex.Store({
   state,
   getters: {
     customVars: state => {
-      return state.customVars.map(customVar => customVar.name + " (" + customVar.id + ")");
+      return state.customVars.map(customVar => {
+        return {
+          key: customVar.name,
+          value: customVar.id
+        };
+      });
     },
     stepIds: state => {
       return state.steps.map(step => step.id);
@@ -106,11 +111,13 @@ export default new Vuex.Store({
 
       state.steps[index].setMap = setMap;
       state.steps[index].getMap = getMap;
-      state.steps[index].id = state.steps[index].action + "_" + index;
+      state.steps[index].id =
+        state.steps[index].action + "_" + state.stepIdCount;
     },
     addStep(state, stepLength) {
+      state.stepIdCount++;
       state.steps.splice(stepLength + 1, 0, {
-        id: "create_post_" + stepLength,
+        id: "create_post_" + state.stepIdCount,
         action: "create_post",
         getMap: [{}],
         setMap: [{}]
