@@ -20,7 +20,7 @@
             <button
               @click="deleteStep(stepIndex)"
               v-if="steps.length > 1"
-              class="button buttonp-primary"
+              class="button button-primary"
             >
               -
             </button>
