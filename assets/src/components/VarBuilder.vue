@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import StepsRaw from "@/components/StepsRaw.vue";
-import StringEditor from "@/components/StringEditor.vue";
-
 import store from "@/store";
+
+import StepsRaw from "@/components/stepper/StepsRaw.vue";
+import StringEditor from "@/components/StringEditor.vue";
 
 export default {
   name: "VarBuilder",
@@ -60,7 +60,6 @@ export default {
   data() {
     return {
       customVars: store.state.customVars,
-      valueOptions: [],
       customVarPreview: "",
       store
     };

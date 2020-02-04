@@ -26,34 +26,7 @@
             </button>
           </span>
         </summary>
-        <div class="ifm-define-action">
-          <h4>Define Action</h4>
-          <div class="ifm-action-wrapper">
-            <div class="ifm-input-wrapper">
-              <v-select
-                :options="actions"
-                index="id"
-                label="displayName"
-                v-model="step.action"
-                @input="presets(stepIndex, step.action)"
-              ></v-select>
-            </div>
-          </div>
-        </div>
-        <StepMap
-          v-if="getterActions.includes(step.action)"
-          :title="'Where'"
-          :index="stepIndex"
-          :isGetter="true"
-          :actions="actions"
-        ></StepMap>
-        <StepMap
-          v-if="setterActions.includes(step.action)"
-          :title="'Set Values'"
-          :index="stepIndex"
-          :isGetter="false"
-          :actions="actions"
-        ></StepMap>
+        <ImportStep :step="step" :stepIndex="stepIndex"></ImportStep>
         <button @click="addStep(stepIndex)" class="button button-primary wide">
           + Add Step
         </button>
@@ -64,14 +37,13 @@
 
 <script>
 import store from "@/store";
-import StepMap from "@/components/StepMap.vue";
-import { getActions } from "@/services/Actions";
-import { getActionByName } from "@/services/Helpers";
+
+import ImportStep from "@/components/stepper/ImportStep.vue";
 
 export default {
   name: "ImportSteps",
   components: {
-    StepMap
+    ImportStep
   },
   data() {
     return {
@@ -79,39 +51,7 @@ export default {
       actions: []
     };
   },
-  mounted() {
-    this.getActions();
-  },
-  computed: {
-    getterActions: function() {
-      return this.actions
-        .filter(action => "getParams" in action)
-        .map(action => action.id);
-    },
-    setterActions: function() {
-      return this.actions
-        .filter(action => "setParams" in action)
-        .map(action => action.id);
-    }
-  },
   methods: {
-    async getActions() {
-      const actions = await getActions();
-      this.actions = actions;
-    },
-    presets: function(index, actionName) {
-      let action = getActionByName(actionName, this.actions);
-      if (undefined !== action) {
-        store.commit("stepPresets", {
-          index,
-          getParams: action.getParams,
-          setParams: action.setParams
-        });
-      }
-    },
-    stepPlusOne: function(index) {
-      return index + 1;
-    },
     addStep(stepIndex) {
       store.commit("addStep", stepIndex);
     },

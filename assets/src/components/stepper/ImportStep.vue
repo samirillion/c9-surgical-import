@@ -1,25 +1,39 @@
 <template>
   <div class="ifm-params">
-    <h4>{{ title }}</h4>
+    <div class="ifm-define-action">
+      <h4>Define Action</h4>
+      <div class="ifm-action-wrapper">
+        <div class="ifm-input-wrapper">
+          <v-select
+            :options="actions"
+            index="id"
+            label="displayName"
+            v-model="step.action"
+            @input="setPresets(stepIndex, step.action)"
+          ></v-select>
+        </div>
+      </div>
+    </div>
     <div
       class="ifm-input-group"
-      v-for="(mapRow, mapIndex) in stepMap"
+      v-for="(mapRow, mapIndex) in setMap"
       :key="mapIndex"
     >
-      <MapRow :stepIndex="index" :mapIndex="mapIndex" :isGetter="isGetter"></MapRow>
+      <StepMapRow
+        :mapRow="mapRow"
+        :stepIndex="stepIndex"
+        :mapIndex="mapIndex"
+        :action="step.action"
+      ></StepMapRow>
       <button
         @click="deleteMapRow(mapIndex)"
-        v-if="stepMap.length > 1"
+        v-if="setMap.length > 1"
         class="delete-map-row button-secondary"
       >
         -
       </button>
     </div>
-    <button
-      @click="addMapRow(stepMap.length)"
-      v-if="!isGetter"
-      class="button-secondary"
-    >
+    <button @click="addMapRow(setMap.length)" class="button-secondary">
       +
     </button>
   </div>
@@ -27,36 +41,39 @@
 
 <script>
 import store from "@/store";
-import { getUser, getPost, createUser, createPost } from "@/services/Params";
+
+import { getActionByName } from "@/services/Helpers";
 import { getActions } from "@/services/Actions";
 import { WpApi } from "@/services/WpApi";
 
+import StepMapRow from "@/components/stepper/StepMapRow.vue";
+
 export default {
   name: "StepMap",
-  props: ["index", "isGetter", "title", "actions"],
+  props: ["step", "stepIndex"],
   components: {
-    MapRow
+    StepMapRow
   },
   data() {
     return {
-      step: store.state.steps[this.index],
-      getMap: store.state.steps[this.index].getMap,
-      valueOptions: [],
-      postTypes: ["page", "post", "comment"]
+      getMap: store.state.steps[this.stepIndex].getMap,
+      setMap: store.state.steps[this.stepIndex].setMap,
+      actions: []
     };
   },
   mounted() {
-    this.getPostTypes();
+    this.getActions();
   },
-  // need to throw some extra conditionals in here because this map works for setting and getting values
   computed: {
-    checkedFields: {
-      get: () => store.state.checkedFields,
-      set: value => store.commit("updateCheckedFields", value)
+    getterActions: function() {
+      return this.actions
+        .filter(action => "getParams" in action)
+        .map(action => action.id);
     },
-    params: function() {
-      if (this.isGetter) return this.action.getParams;
-      return this.setParams;
+    setterActions: function() {
+      return this.actions
+        .filter(action => "setParams" in action)
+        .map(action => action.id);
     },
     setParams: function() {
       if (Array.isArray(this.action.setParams)) {
@@ -67,56 +84,35 @@ export default {
         }, {});
       }
       return this.action.setParams;
-    },
-    action: function() {
-      return this.actions.find(action => this.step.action === action.id);
-    },
-    setMap: function() {
-      return store.state.steps[this.index].setMap;
-    },
-    stepMap: function() {
-      if (this.isGetter) return this.getMap;
-      return this.setMap;
-    },
-    stepIds: function() {
-      return store.getters.stepIds.slice(
-        0,
-        this.index - store.getters.stepIds.length
-      );
     }
   },
   methods: {
-    async getPostTypes() {
-      const response = await WpApi.postTypes();
-      this.postTypes = Object.values(response);
+    async getActions() {
+      const actions = await getActions();
+      this.actions = actions;
     },
-    updateOptions(type) {
-      if ("postType" === type)
-        this.valueOptions = this.postTypes.map(option => {
-          return { key: option, value: option };
+    setPresets(index, actionName) {
+      let action = getActionByName(actionName, this.actions);
+      if (undefined !== action) {
+        store.commit("stepPresets", {
+          index,
+          getParams: action.getParams,
+          setParams: action.setParams
         });
-      if ("csvValue" === type)
-        this.valueOptions = this.checkedFields.map(option => {
-          return { key: option, value: option };
-        });
-      if ("stepId" === type)
-        this.valueOptions = this.stepIds.map(option => {
-          return { key: option, value: option };
-        });
-      if ("customVar" === type) this.valueOptions = store.getters.customVars;
+      }
     },
     addMapRow(mapLength) {
       store.commit("addMapRow", {
-        stepIndex: this.index,
+        stepIndex: this.stepIndex,
         mapLength,
-        isGetter: this.isGetter
+        isGetter: false
       });
     },
     deleteMapRow(mapIndex) {
       store.commit("deleteMapRow", {
-        stepIndex: this.index,
+        stepIndex: this.stepIndex,
         mapIndex,
-        isGetter: this.isGetter
+        isGetter: false
       });
     }
   }

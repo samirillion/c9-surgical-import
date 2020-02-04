@@ -3,7 +3,7 @@
     <div class="ifm-input-wrapper">
       <label for="mapRowLeft">Parameter</label>
       <input
-        v-if="action.id.endsWith('meta') && false === isGetter"
+        v-if="action.endsWith('meta') && false === isGetter"
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"
@@ -58,9 +58,61 @@
 </template>
 
 <script>
+import store from "@/store";
+
+import { getUser, getPost, createUser, createPost } from "@/services/Params";
+
+import { WpApi } from "@/services/WpApi";
+
 export default {
-    name: "MapRow",
-    prop: [""]
+  name: "MapRow",
+  props: ["mapRow", "stepIndex", "mapIndex", "action"],
+  data() {
+    return {
+      postTypes: ["page", "post", "comment"],
+      valueOptions: []
+    };
+  },
+  mounted() {
+    this.getPostTypes();
+  },
+  computed: {
+    params: function() {
+      if (this.isGetter) return this.action.getParams;
+      return this.setParams;
+    },
+    checkedFields: {
+      get: () => store.state.checkedFields,
+      set: value => store.commit("updateCheckedFields", value)
+    },
+    stepIds: function() {
+      return store.getters.stepIds.slice(
+        0,
+        this.stepIndex - store.getters.stepIds.length
+      );
+    }
+  },
+  methods: {
+    async getPostTypes() {
+      const response = await WpApi.postTypes();
+      this.postTypes = Object.values(response);
+    },
+    updateOptions(type) {
+      if ("postType" === type)
+        this.valueOptions = this.postTypes.map(option => {
+          return { key: option, value: option };
+        });
+      if ("csvValue" === type)
+        this.valueOptions = this.checkedFields.map(option => {
+          return { key: option, value: option };
+        });
+      if ("stepId" === type)
+        this.valueOptions = this.stepIds.map(option => {
+          return { key: option, value: option };
+        });
+      if ("customVar" === type) this.valueOptions = store.getters.customVars;
+    }
+  }
 };
 </script>
 

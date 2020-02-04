@@ -19,16 +19,16 @@
 </template>
 
 <script>
-import axios from "axios";
+import store from "@/store";
 
+import axios from "axios";
 import { WpApi } from "@/services/WpApi";
 import { CsvToArray } from "@/utils/CsvToArray";
+
 import FileUploader from "@/components/FileUploader.vue";
-import ImportSteps from "@/components/ImportSteps.vue";
 import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
-
-import store from "@/store";
+import ImportSteps from "@/components/stepper/ImportSteps.vue";
 
 export default {
   name: "Import",
