@@ -7,7 +7,6 @@
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"
-        @change="updateOptions(mapRow.type)"
       />
       <select v-else name="mapRowLeft" v-model="mapRow.left">
         <option
@@ -26,7 +25,7 @@
         <select
           name="mapRowType"
           v-model="mapRow.type"
-          @change="updateOptions(mapRow.type)"
+          @change="updateOptions"
         >
           <option v-if="'post_type' === mapRow.left" value="postType"
             >post type</option
@@ -39,7 +38,7 @@
           <option value="customVar">complex value</option>
         </select>
       </div>
-      <div class="ifm-input-wrapper">
+      <div class="ifm-input-wrapper" v-if="mapRow.type">
         <label for="mapRowRight">Value</label>
         <v-select
           name="mapRowRight"
@@ -48,7 +47,6 @@
           :options="valueOptions"
           v-model="mapRow.right"
           v-if="'string' !== mapRow.type"
-          @input="updateOptions(mapRow.type)"
           :key="checkedFields.length"
         />
         <input type="text" name="mapRowRight" v-model="mapRow.right" v-else />
@@ -69,7 +67,7 @@ export default {
   props: ["mapRow", "stepIndex", "mapIndex", "action", "params"],
   data() {
     return {
-      valueOptions: [],
+      valueOptions: []
     };
   },
   computed: {
@@ -85,7 +83,9 @@ export default {
     }
   },
   methods: {
-    updateOptions(type) {
+    updateOptions() {
+      let type = this.mapRow.type;
+      delete this.mapRow["right"];
       if ("postType" === type)
         this.valueOptions = this.postTypes.map(option => {
           return { key: option, value: option };

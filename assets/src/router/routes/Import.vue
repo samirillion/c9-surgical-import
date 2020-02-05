@@ -7,8 +7,8 @@
       <div class="ifm-steps-and-vars">
         <ImportSteps />
         <div class="submit-wrapper">
-          <button class="button button-secondary">Validate Input</button>
-          <button class="button button-primary" @click="runImport">
+          <button class="button button-secondary" @click="validateInput">Validate Input</button>
+          <button class="button button-primary" @click="runImport" :disabled="!inputValid">
             Run Import
           </button>
         </div>
@@ -43,7 +43,8 @@ export default {
       file: [],
       uploadObject: {},
       rawCsv: {},
-      parsedCsv: []
+      parsedCsv: [],
+      inputValid: true,
     };
   },
   computed: {
@@ -53,6 +54,9 @@ export default {
     }
   },
   methods: {
+    validateInput() {
+      this.inputValid = true;
+    },
     async runImport() {
       const response = await WpApi.runImport()
         .param("upload_object", this.uploadObject)

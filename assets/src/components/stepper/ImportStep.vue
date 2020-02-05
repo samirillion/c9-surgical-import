@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="getters" v-show="action && action.getParams">
+    <div class="getters" v-if="action && action.getParams">
       <h4>Get By</h4>
       <div
         class="ifm-input-group"
@@ -30,7 +30,7 @@
         ></StepMapRow>
       </div>
     </div>
-    <div v-show="action && action.setParams" class="setters">
+    <div v-if="action && action.setParams" class="setters">
       <h4>Set Values</h4>
       <div
         class="ifm-input-group"
@@ -53,7 +53,7 @@
         </button>
       </div>
       <button
-        v-show="'' !== step.action"
+        v-if="'' !== step.action"
         @click="addMapRow(setMap.length)"
         class="button-secondary"
       >
@@ -87,24 +87,14 @@ export default {
     this.getActions();
   },
   computed: {
+    action: function() {
+      return this.actions.find(action => this.step.action === action.id);
+    },
     getMap: function() {
       return store.state.steps[this.stepIndex].getMap;
     },
     setMap: function() {
       return store.state.steps[this.stepIndex].setMap;
-    },
-    action: function() {
-      return this.actions.find(action => this.step.action === action.id);
-    },
-    setParams: function() {
-      if (Array.isArray(this.action.setParams)) {
-        return this.action.setParams.reduce(function(result, item) {
-          var key = Object.keys(item)[0]; //first property: a, b, c
-          result[key] = item[key];
-          return result;
-        }, {});
-      }
-      return this.action.setParams;
     }
   },
   methods: {
@@ -113,12 +103,11 @@ export default {
       this.actions = actions;
     },
     setPresets(index, actionName) {
-      let action = getActionByName(actionName, this.actions);
-      if (undefined !== action) {
+      if (undefined !== this.action) {
         store.commit("stepPresets", {
           index,
-          getParams: action.getParams,
-          setParams: action.setParams
+          getParams: this.action.getParams,
+          setParams: this.action.setParams
         });
       }
     },

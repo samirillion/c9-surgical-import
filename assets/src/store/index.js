@@ -5,7 +5,6 @@ Vue.use(Vuex);
 
 import { WpApi } from "@/services/WpApi";
 
-
 async function getPostTypes() {
   const response = await WpApi.postTypes();
   return response;
@@ -93,6 +92,7 @@ export default new Vuex.Store({
       let index = obj.index;
       let setMap = [{}];
       let getMap = [{}];
+      state.stepIdCount++;
 
       if (obj.setParams) {
         let setters = Object.keys(obj.setParams).filter(key =>
