@@ -102,7 +102,7 @@ Global Elements
     display: flex;
     flex-direction: column;
     margin-right: 5px;
-    min-width: 25%;
+    min-width: 20%;
     flex-grow: 1;
     margin-top: 10px;
     padding-bottom: 5px;
@@ -305,6 +305,8 @@ Ifm Steps
   }
   .map-row {
     display: flex;
+    width: 100%;
+    align-items: flex-end;
   }
   .delete-map-row {
     margin-bottom: 5px;
@@ -330,6 +332,11 @@ Ifm Steps
   .ifm-params button {
     height: 30px;
     width: 30px;
+  }
+  .ifm-params .setters,
+  .ifm-params .getters {
+    padding: 10px;
+    border: 1px solid @lighter-grey;
   }
   .ifm-define-action > select {
     flex-grow: 1;

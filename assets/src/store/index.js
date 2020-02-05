@@ -22,8 +22,7 @@ const getDefaultState = () => {
     varIdCount: 1,
     steps: [
       {
-        name: "",
-        id: 1,
+        id: "create_post_1",
         action: "create_post",
         getMap: [{}],
         setMap: [{}]

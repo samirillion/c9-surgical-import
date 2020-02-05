@@ -3,7 +3,7 @@
     <div class="ifm-input-wrapper">
       <label for="mapRowLeft">Parameter</label>
       <input
-        v-if="action && action.id.endsWith('meta') && false === isGetter"
+        v-if="action && action.id.endsWith('meta')"
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"
@@ -66,17 +66,13 @@ import { WpApi } from "@/services/WpApi";
 
 export default {
   name: "StepMapRow",
-  props: ["mapRow", "stepIndex", "mapIndex", "action"],
+  props: ["mapRow", "stepIndex", "mapIndex", "action", "params"],
   data() {
     return {
       valueOptions: [],
     };
   },
   computed: {
-    params: function() {
-      if (this.isGetter) return this.action.getParams;
-      return this.action.setParams;
-    },
     checkedFields: {
       get: () => store.state.checkedFields,
       set: value => store.commit("updateCheckedFields", value)

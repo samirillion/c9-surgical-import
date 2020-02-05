@@ -14,32 +14,52 @@
         </div>
       </div>
     </div>
-    <div
-      class="ifm-input-group"
-      v-for="(mapRow, mapIndex) in setMap"
-      :key="mapIndex"
-    >
-      <StepMapRow
-        :mapRow="mapRow"
-        :stepIndex="stepIndex"
-        :mapIndex="mapIndex"
-        :action="action"
-      ></StepMapRow>
-      <button
-        @click="deleteMapRow(mapIndex)"
-        v-if="setMap.length > 1"
-        class="delete-map-row button-secondary"
+    <div class="getters" v-show="action && action.getParams">
+      <h4>Get By</h4>
+      <div
+        class="ifm-input-group"
+        v-for="(mapRow, mapIndex) in getMap"
+        :key="mapIndex"
       >
-        -
+        <StepMapRow
+          :mapRow="mapRow"
+          :stepIndex="stepIndex"
+          :mapIndex="mapIndex"
+          :action="action"
+          :params="action.getParams"
+        ></StepMapRow>
+      </div>
+    </div>
+    <div v-show="action && action.setParams" class="setters">
+      <h4>Set Values</h4>
+      <div
+        class="ifm-input-group"
+        v-for="(mapRow, mapIndex) in setMap"
+        :key="mapIndex"
+      >
+        <StepMapRow
+          :mapRow="mapRow"
+          :stepIndex="stepIndex"
+          :mapIndex="mapIndex"
+          :action="action"
+          :params="action.setParams"
+        ></StepMapRow>
+        <button
+          @click="deleteMapRow(mapIndex)"
+          v-show="setMap.length > 1"
+          class="delete-map-row button-secondary"
+        >
+          -
+        </button>
+      </div>
+      <button
+        v-show="'' !== step.action"
+        @click="addMapRow(setMap.length)"
+        class="button-secondary"
+      >
+        +
       </button>
     </div>
-    <button
-      v-show="'' !== step.action"
-      @click="addMapRow(setMap.length)"
-      class="button-secondary"
-    >
-      +
-    </button>
   </div>
 </template>
 
@@ -60,15 +80,19 @@ export default {
   },
   data() {
     return {
-      getMap: store.state.steps[this.stepIndex].getMap,
-      setMap: store.state.steps[this.stepIndex].setMap,
       actions: []
     };
   },
-  mounted() {
+  created() {
     this.getActions();
   },
   computed: {
+    getMap: function() {
+      return store.state.steps[this.stepIndex].getMap;
+    },
+    setMap: function() {
+      return store.state.steps[this.stepIndex].setMap;
+    },
     action: function() {
       return this.actions.find(action => this.step.action === action.id);
     },
