@@ -7,8 +7,14 @@
       <div class="ifm-steps-and-vars">
         <ImportSteps />
         <div class="submit-wrapper">
-          <button class="button button-secondary" @click="validateInput">Validate Input</button>
-          <button class="button button-primary" @click="runImport" :disabled="!inputValid">
+          <button class="button button-secondary" @click="validateInput">
+            Validate Input
+          </button>
+          <button
+            class="button button-primary"
+            @click="runImport"
+            :disabled="!inputValid"
+          >
             Run Import
           </button>
         </div>
@@ -44,7 +50,7 @@ export default {
       uploadObject: {},
       rawCsv: {},
       parsedCsv: [],
-      inputValid: true,
+      inputValid: true
     };
   },
   computed: {
@@ -57,11 +63,21 @@ export default {
     validateInput() {
       this.inputValid = true;
     },
-    async runImport() {
-      const response = await WpApi.runImport()
-        .param("upload_object", this.uploadObject)
-        .param("import_steps", store.getters.jsonSteps)
-        .param("import_vars", store.getters.jsonVars);
+    runImport() {
+      console.log("cool");
+      const sse = new EventSource(WpApi.runImport());
+      // console.log(sse.withCredentials);
+      sse.addEventListener("hello_world", function(e) {
+        console.log(e.data);
+      });
+      // sse.addEventListener("update", function(e) {
+      //   console.log(e.data);
+      // });
+
+      // const response = await WpApi.runImport()
+      //   .param("upload_object", this.uploadObject)
+      //   .param("import_steps", store.getters.jsonSteps)
+      //   .param("import_vars", store.getters.jsonVars);
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

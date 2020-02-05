@@ -2,16 +2,15 @@
 
 namespace IfmImport;
 
-require_once(IFM_IMPORT_INCLUDES . '/importer/class-wp-importer.php');
-require_once(IFM_IMPORT_INCLUDES . '/importer/class-csv-edit.php');
-require_once(IFM_IMPORT_INCLUDES . '/importer/class-var-builder.php');
-
 // use IfmImport\CsvEdit;
 use IfmImport\WpImporter;
 use IfmImport\VarBuilder;
-use function Stringy\create as s;
-use Sse\Event;
+use IfmImport\EventHandler;
+
 use Sse\SSE;
+
+use function Stringy\create as s;
+
 
 require_once(ABSPATH . 'wp-admin/includes/media.php');
 require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -22,7 +21,7 @@ ini_set('memory_limit', '1024M');
 /**
  * REST_API Handler
  */
-class Import implements Event
+class Import
 {
 
     protected $csv = null;
@@ -33,20 +32,24 @@ class Import implements Event
 
     public function run(\WP_REST_Request $request)
     {
-        $params = $request->get_params();
+        xdebug_break();
+        $sse = new SSE(); //create a libSSE instance
+        $sse->addEventListener('hello_world', new EventHandler());//register your event handler
+        $sse->start();//start the event loop
+        // $params = $request->get_params();
 
-        $steps = json_decode($params["import_steps"]);
-        $vars = json_decode($params["import_vars"]);
+        // $steps = json_decode($params["import_steps"]);
+        // $vars = json_decode($params["import_vars"]);
 
-        $file_id = $params["upload_object"]["id"];
+        // $file_id = $params["upload_object"]["id"];
 
-        $importer = new WpImporter;
+        // $importer = new WpImporter;
 
-        $importer->setup($file_id, $steps, $vars);
+        // $importer->setup($file_id, $steps, $vars);
 
-        $importer->run();
+        // $importer->run();
 
-        return "success";
+        // return "success";
     }
 
     public function preview_custom_var(\WP_REST_Request $request)
