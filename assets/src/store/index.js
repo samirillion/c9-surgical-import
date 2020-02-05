@@ -3,18 +3,8 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-import { WpApi } from "@/services/WpApi";
-
-async function getPostTypes() {
-  const response = await WpApi.postTypes();
-  return response;
-}
-
-const postTypes = getPostTypes();
-
 const getDefaultState = () => {
   return {
-    postTypes,
     uploadedFileId: null,
     csvLength: 1,
     stepIdCount: 1,

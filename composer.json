@@ -10,6 +10,7 @@
   ],
   "require": {
     "league/csv": "^9.4",
-    "danielstjules/stringy": "~3.1.0"
+    "danielstjules/stringy": "~3.1.0",
+    "tonyhhyip/sse": "^2.1"
   }
 }

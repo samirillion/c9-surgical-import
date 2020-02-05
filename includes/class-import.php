@@ -6,10 +6,12 @@ require_once(IFM_IMPORT_INCLUDES . '/importer/class-wp-importer.php');
 require_once(IFM_IMPORT_INCLUDES . '/importer/class-csv-edit.php');
 require_once(IFM_IMPORT_INCLUDES . '/importer/class-var-builder.php');
 
-use IfmImport\CsvEdit;
+// use IfmImport\CsvEdit;
 use IfmImport\WpImporter;
 use IfmImport\VarBuilder;
 use function Stringy\create as s;
+use Sse\Event;
+use Sse\SSE;
 
 require_once(ABSPATH . 'wp-admin/includes/media.php');
 require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -20,7 +22,7 @@ ini_set('memory_limit', '1024M');
 /**
  * REST_API Handler
  */
-class Import
+class Import implements Event
 {
 
     protected $csv = null;

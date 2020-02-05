@@ -22,11 +22,7 @@
     <div class="type-and-value">
       <div class="ifm-input-wrapper">
         <label for="mapRowType">Type</label>
-        <select
-          name="mapRowType"
-          v-model="mapRow.type"
-          @change="updateOptions"
-        >
+        <select name="mapRowType" v-model="mapRow.type" @change="updateOptions">
           <option v-if="'post_type' === mapRow.left" value="postType"
             >post type</option
           >
@@ -67,8 +63,12 @@ export default {
   props: ["mapRow", "stepIndex", "mapIndex", "action", "params"],
   data() {
     return {
-      valueOptions: []
+      valueOptions: [],
+      postTypes: ["page", "post", "comment"]
     };
+  },
+  created () {
+    this.getPostTypes();
   },
   computed: {
     checkedFields: {
@@ -83,13 +83,18 @@ export default {
     }
   },
   methods: {
+    async getPostTypes() {
+      const response = await WpApi.postTypes();
+      this.postTypes = Object.values(response);
+    },
     updateOptions() {
       let type = this.mapRow.type;
       delete this.mapRow["right"];
-      if ("postType" === type)
+      if ("postType" === type) {
         this.valueOptions = this.postTypes.map(option => {
           return { key: option, value: option };
         });
+      }
       if ("csvValue" === type)
         this.valueOptions = this.checkedFields.map(option => {
           return { key: option, value: option };
