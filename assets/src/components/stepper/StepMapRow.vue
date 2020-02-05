@@ -1,9 +1,9 @@
 <template>
-  <div class="row">
+  <div class="map-row">
     <div class="ifm-input-wrapper">
       <label for="mapRowLeft">Parameter</label>
       <input
-        v-if="action.endsWith('meta') && false === isGetter"
+        v-if="action && action.id.endsWith('meta') && false === isGetter"
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"
@@ -65,21 +65,17 @@ import { getUser, getPost, createUser, createPost } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
 export default {
-  name: "MapRow",
+  name: "StepMapRow",
   props: ["mapRow", "stepIndex", "mapIndex", "action"],
   data() {
     return {
-      postTypes: ["page", "post", "comment"],
-      valueOptions: []
+      valueOptions: [],
     };
-  },
-  mounted() {
-    this.getPostTypes();
   },
   computed: {
     params: function() {
       if (this.isGetter) return this.action.getParams;
-      return this.setParams;
+      return this.action.setParams;
     },
     checkedFields: {
       get: () => store.state.checkedFields,
@@ -93,10 +89,6 @@ export default {
     }
   },
   methods: {
-    async getPostTypes() {
-      const response = await WpApi.postTypes();
-      this.postTypes = Object.values(response);
-    },
     updateOptions(type) {
       if ("postType" === type)
         this.valueOptions = this.postTypes.map(option => {

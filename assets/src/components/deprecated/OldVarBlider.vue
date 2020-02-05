@@ -132,7 +132,6 @@ export default {
       this.customVars.splice(parseInt(index), 1);
     },
     addVarSegment(varIndex, segmentIndex) {
-      console.log(this.customVars[varIndex]);
       this.customVars[varIndex].map.splice(segmentIndex + 1, 0, {});
     },
     deleteVarSegment(varIndex, segmentIndex) {

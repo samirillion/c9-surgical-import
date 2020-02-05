@@ -23,7 +23,7 @@
         :mapRow="mapRow"
         :stepIndex="stepIndex"
         :mapIndex="mapIndex"
-        :action="step.action"
+        :action="action"
       ></StepMapRow>
       <button
         @click="deleteMapRow(mapIndex)"
@@ -33,7 +33,11 @@
         -
       </button>
     </div>
-    <button @click="addMapRow(setMap.length)" class="button-secondary">
+    <button
+      v-show="'' !== step.action"
+      @click="addMapRow(setMap.length)"
+      class="button-secondary"
+    >
       +
     </button>
   </div>
@@ -49,7 +53,7 @@ import { WpApi } from "@/services/WpApi";
 import StepMapRow from "@/components/stepper/StepMapRow.vue";
 
 export default {
-  name: "StepMap",
+  name: "ImportStep",
   props: ["step", "stepIndex"],
   components: {
     StepMapRow
@@ -65,15 +69,8 @@ export default {
     this.getActions();
   },
   computed: {
-    getterActions: function() {
-      return this.actions
-        .filter(action => "getParams" in action)
-        .map(action => action.id);
-    },
-    setterActions: function() {
-      return this.actions
-        .filter(action => "setParams" in action)
-        .map(action => action.id);
+    action: function() {
+      return this.actions.find(action => this.step.action === action.id);
     },
     setParams: function() {
       if (Array.isArray(this.action.setParams)) {
