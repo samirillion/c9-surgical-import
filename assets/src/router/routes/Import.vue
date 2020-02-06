@@ -63,21 +63,21 @@ export default {
     validateInput() {
       this.inputValid = true;
     },
-    runImport() {
-      console.log("cool");
-      const sse = new EventSource(WpApi.runImport());
-      // console.log(sse.withCredentials);
-      sse.addEventListener("hello_world", function(e) {
-        console.log(e.data);
-      });
+    async runImport() {
+      // console.log("cool")
+      // const sse = new EventSource(WpApi.runImport());
+      // console.log(sse);
+      // sse.addEventListener("hello_world", function(e) {
+      //   console.log(e.data);
+      // });
       // sse.addEventListener("update", function(e) {
       //   console.log(e.data);
       // });
 
-      // const response = await WpApi.runImport()
-      //   .param("upload_object", this.uploadObject)
-      //   .param("import_steps", store.getters.jsonSteps)
-      //   .param("import_vars", store.getters.jsonVars);
+      const response = await WpApi.runImport()
+        .param("upload_object", this.uploadObject)
+        .param("import_steps", store.getters.jsonSteps)
+        .param("import_vars", store.getters.jsonVars);
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

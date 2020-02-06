@@ -32,7 +32,6 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-        xdebug_break();
         $sse = new SSE(); //create a libSSE instance
         $sse->addEventListener('hello_world', new EventHandler());//register your event handler
         $sse->start();//start the event loop
