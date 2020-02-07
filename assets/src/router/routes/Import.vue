@@ -36,29 +36,24 @@ import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
 
-const evtSource = new EventSource(WpApi.auth().runImport(), {
-  withCredentials: true
-});
-evtSource.addEventListener(
-  "new-msgs",
-  function(event) {
-    console.log(event.data); //get data
-  },
-  false
-);
+// const evtSource = new EventSource(WpApi.auth().runImport(), {
+//   withCredentials: true
+// });
+// evtSource.addEventListener(
+//   "new-msgs",
+//   function(event) {
+//     console.log(event.data); //get data
+//   },
+//   false
+// );
 
-evtSource.onmessage = function(e) {
-  console.log(e.data);
-};
+// evtSource.onmessage = function(e) {
+//   console.log(e.data);
+// };
 
-evtSource.onerror = function() {
-  console.log("EventSource failed.");
-};
-
-button.onclick = function() {
-  console.log("Connection closed");
-  evtSource.close();
-};
+// evtSource.onerror = function() {
+//   console.log("EventSource failed.");
+// };
 
 export default {
   name: "Import",
