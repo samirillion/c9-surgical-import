@@ -40,15 +40,12 @@ const evtSource = new EventSource(WpApi.auth().runImport(), {
   withCredentials: true
 });
 evtSource.addEventListener(
-  "message",
-  function(e) {
-    console.log(e.data);
+  "new-msgs",
+  function(event) {
+    console.log(event.data); //get data
   },
   false
 );
-evtSource.onopen = function() {
-  console.log("Connection to server opened.");
-};
 
 evtSource.onmessage = function(e) {
   console.log(e.data);
@@ -56,6 +53,11 @@ evtSource.onmessage = function(e) {
 
 evtSource.onerror = function() {
   console.log("EventSource failed.");
+};
+
+button.onclick = function() {
+  console.log("Connection closed");
+  evtSource.close();
 };
 
 export default {

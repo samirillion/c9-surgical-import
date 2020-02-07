@@ -7,7 +7,8 @@ use IfmImport\WpImporter;
 use IfmImport\VarBuilder;
 use IfmImport\EventHandler;
 
-use Sse\SSE;
+use Hhxsv5\SSE\SSE;
+use Hhxsv5\SSE\Update;
 
 use function Stringy\create as s;
 
@@ -33,9 +34,23 @@ class Import
     {
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
-        $time = date('r');
-        echo "data: The server time is: {$time}\n\n";
-        flush();
+        header('Connection: keep-alive');
+        header('X-Accel-Buffering: no'); //Nginx: unbuffered responses suitable for Comet and HTTP streaming applications
+
+        (new SSE())->start(new Update(function () {
+            $id = mt_rand(1, 1000);
+            $newMsgs = [
+                [
+                    'id'      => $id,
+                    'title'   => 'title' . $id,
+                    'content' => 'content' . $id,
+                ],
+            ]; //get data from database or service.
+            if (!empty($newMsgs)) {
+                echo json_encode(['newMsgs' => $newMsgs]);
+            }
+            echo false; //return false if no new messages
+        }), 'new-msgs');
 
 
 
