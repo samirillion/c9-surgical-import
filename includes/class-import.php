@@ -17,7 +17,6 @@ require_once(ABSPATH . 'wp-admin/includes/file.php');
 require_once(ABSPATH . 'wp-admin/includes/image.php');
 ini_set('memory_limit', '1024M');
 
-
 /**
  * REST_API Handler
  */
@@ -32,9 +31,19 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-        $sse = new SSE(); //create a libSSE instance
-        $sse->addEventListener('hello_world', new EventHandler());//register your event handler
-        $sse->start();//start the event loop
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+        $time = date('r');
+        echo "data: The server time is: {$time}\n\n";
+        flush();
+
+
+
+        // Function to send data in format "ticket:price".
+
+        // $sse = new SSE(); //create a libSSE instance
+        // $sse->addEventListener('hello_world', new EventHandler()); //register your event handler
+        // $sse->start(); //start the event loop
         // $params = $request->get_params();
 
         // $steps = json_decode($params["import_steps"]);

@@ -3,7 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import menuFix from "./utils/admin-menu-fix";
 
+import VueSSE from "vue-sse";
 import vSelect from "vue-select";
+
+Vue.use(VueSSE);
 
 Vue.component("v-select", vSelect);
 

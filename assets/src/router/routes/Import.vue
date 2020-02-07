@@ -36,6 +36,28 @@ import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
 
+const evtSource = new EventSource(WpApi.auth().runImport(), {
+  withCredentials: true
+});
+evtSource.addEventListener(
+  "message",
+  function(e) {
+    console.log(e.data);
+  },
+  false
+);
+evtSource.onopen = function() {
+  console.log("Connection to server opened.");
+};
+
+evtSource.onmessage = function(e) {
+  console.log(e.data);
+};
+
+evtSource.onerror = function() {
+  console.log("EventSource failed.");
+};
+
 export default {
   name: "Import",
   components: {
@@ -64,17 +86,11 @@ export default {
       this.inputValid = true;
     },
     async runImport() {
-      // console.log("cool")
-      // const sse = new EventSource(WpApi.runImport());
-      // console.log(sse);
-      // sse.addEventListener("hello_world", function(e) {
-      //   console.log(e.data);
-      // });
-      // sse.addEventListener("update", function(e) {
-      //   console.log(e.data);
-      // });
-
-      const response = await WpApi.runImport()
+      sse.addEventListener("update", function(e) {
+        console.log(e.data);
+      });
+      const response = await WpApi.auth()
+        .runImport()
         .param("upload_object", this.uploadObject)
         .param("import_steps", store.getters.jsonSteps)
         .param("import_vars", store.getters.jsonVars);
