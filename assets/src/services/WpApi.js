@@ -17,6 +17,7 @@ WpApi.myPosts = WpApi.registerRoute("ifm/importer/v1", "/author/(?P<id>)");
 WpApi.getCsv = WpApi.registerRoute("ifm/importer/v1", "/getcsv");
 
 WpApi.runImport = WpApi.registerRoute("ifm/importer/v1", "/run");
+WpApi.getProgress = WpApi.registerRoute("ifm/importer/v1", "/get-progress");
 
 WpApi.importParams = WpApi.registerRoute("ifm/importer/v1", "/get-params");
 

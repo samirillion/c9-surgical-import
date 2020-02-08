@@ -28,6 +28,11 @@ class ENDPOINTS
             }
         ));
 
+        register_rest_route('ifm/importer/v1', '/get-progress', array(
+            'methods' => 'GET',
+            'callback' => [new Import, 'get_progress']
+        ));
+
         register_rest_route($this->namespace, '/methods', array(
             'methods' => 'GET',
             'callback' => [new Import, 'get_available_methods'],

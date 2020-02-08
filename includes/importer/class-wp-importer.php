@@ -5,9 +5,6 @@ namespace IfmImport;
 use League\Csv\Reader;
 use League\Csv\Statement;
 
-require_once('class-var-builder.php');
-
-
 class WpImporter
 {
     public $steps;
@@ -80,6 +77,7 @@ class WpImporter
 
                 $this->ids[$step->id] = $this->$step_method();
             }
+            sleep(2);
         }
     }
 

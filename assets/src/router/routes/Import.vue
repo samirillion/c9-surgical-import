@@ -12,7 +12,7 @@
           </button>
           <button
             class="button button-primary"
-            @click="runImport"
+            @click="getProgress"
             :disabled="!inputValid"
           >
             Run Import
@@ -35,25 +35,6 @@ import FileUploader from "@/components/FileUploader.vue";
 import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
-
-// const evtSource = new EventSource(WpApi.auth().runImport(), {
-//   withCredentials: true
-// });
-// evtSource.addEventListener(
-//   "new-msgs",
-//   function(event) {
-//     console.log(event.data); //get data
-//   },
-//   false
-// );
-
-// evtSource.onmessage = function(e) {
-//   console.log(e.data);
-// };
-
-// evtSource.onerror = function() {
-//   console.log("EventSource failed.");
-// };
 
 export default {
   name: "Import",
@@ -82,15 +63,42 @@ export default {
     validateInput() {
       this.inputValid = true;
     },
-    async runImport() {
-      sse.addEventListener("update", function(e) {
-        console.log(e.data);
+    getProgress() {
+      var evtSource = new EventSource(WpApi.getProgress(), {
+        withCredentials: true
       });
-      const response = await WpApi.auth()
-        .runImport()
-        .param("upload_object", this.uploadObject)
-        .param("import_steps", store.getters.jsonSteps)
-        .param("import_vars", store.getters.jsonVars);
+      console.log(evtSource.withCredentials);
+      console.log(evtSource.readyState);
+      console.log(evtSource.url);
+
+      evtSource.onopen = function() {
+        console.log("Connection to server opened.");
+      };
+
+      evtSource.onmessage = function(e) {
+        console.log("on message", e.data);
+      };
+
+      evtSource.onerror = function() {
+        console.log("EventSource failed.");
+      };
+
+      evtSource.addEventListener(
+        "ping",
+        function(e) {
+          console.log("on ping", e.data);
+        },
+        false
+      );
+    },
+    async runImport() {
+      this.getProgress();
+      // const response = await WpApi.auth()
+      //   .runImport()
+      //   .param("upload_object", this.uploadObject)
+      //   .param("import_steps", store.getters.jsonSteps)
+      //   .param("import_vars", store.getters.jsonVars);
+      // return response;
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

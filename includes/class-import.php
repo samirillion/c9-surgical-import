@@ -7,9 +7,6 @@ use IfmImport\WpImporter;
 use IfmImport\VarBuilder;
 use IfmImport\EventHandler;
 
-use Hhxsv5\SSE\SSE;
-use Hhxsv5\SSE\Update;
-
 use function Stringy\create as s;
 
 
@@ -32,47 +29,62 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        $params = $request->get_params();
+
+        $steps = json_decode($params["import_steps"]);
+        $vars = json_decode($params["import_vars"]);
+
+        $file_id = $params["upload_object"]["id"];
+
+        $importer = new WpImporter;
+
+        $importer->setup($file_id, $steps, $vars);
+
+        $importer->run();
+
+        return "success";
+    }
+
+    public function get_progress()
+    {
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
         header('Connection: keep-alive');
         header('X-Accel-Buffering: no'); //Nginx: unbuffered responses suitable for Comet and HTTP streaming applications
 
-        (new SSE())->start(new Update(function () {
-            $id = mt_rand(1, 1000);
-            $newMsgs = [
-                [
-                    'id'      => $id,
-                    'title'   => 'title' . $id,
-                    'content' => 'content' . $id,
-                ],
-            ]; //get data from database or service.
-            if (!empty($newMsgs)) {
-                echo json_encode(['newMsgs' => $newMsgs]);
+        $counter = rand(1, 10); // a random counter
+        while (1) {
+            // 1 is always true, so repeat the while loop forever (aka event-loop)
+
+            $curDate = date(DATE_ISO8601);
+            echo "event: ping\n",
+                'data: {"time": "' . $curDate . '"}',
+                "\n\n";
+
+            // Send a simple message at random intervals.
+
+            $counter--;
+
+            if (!$counter) {
+                echo 'data: This is a message at time ' . $curDate, "\n\n";
+                $counter = rand(1, 10); // reset random counter
             }
-            echo false; //return false if no new messages
-        }), 'new-msgs');
 
+            // flush the output buffer and send echoed messages to the browser
 
+            while (ob_get_level() > 0) {
+                ob_end_flush();
+            }
+            flush();
 
-        // Function to send data in format "ticket:price".
+            // break the loop if the client aborted the connection (closed the page)
 
-        // $sse = new SSE(); //create a libSSE instance
-        // $sse->addEventListener('hello_world', new EventHandler()); //register your event handler
-        // $sse->start(); //start the event loop
-        // $params = $request->get_params();
+            if (connection_aborted()) break;
 
-        // $steps = json_decode($params["import_steps"]);
-        // $vars = json_decode($params["import_vars"]);
+            // sleep for 1 second before running the loop again
 
-        // $file_id = $params["upload_object"]["id"];
-
-        // $importer = new WpImporter;
-
-        // $importer->setup($file_id, $steps, $vars);
-
-        // $importer->run();
-
-        // return "success";
+            sleep(2);
+        }
     }
 
     public function preview_custom_var(\WP_REST_Request $request)

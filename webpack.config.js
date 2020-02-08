@@ -39,16 +39,16 @@ plugins.push(extractCss);
 //     minChunks: ({ resource }) => /node_modules/.test(resource),
 // }));
 
-plugins.push(
-  new BrowserSyncPlugin({
-    proxy: {
-      target: config.proxyURL
-    },
-    files: ["**/*.php"],
-    cors: true,
-    reloadDelay: 0
-  })
-);
+// plugins.push(
+//   new BrowserSyncPlugin({
+//     proxy: {
+//       target: config.proxyURL
+//     },
+//     files: ["**/*.php"],
+//     cors: true,
+//     reloadDelay: 0
+//   })
+// );
 
 // Generate a 'manifest' chunk to be inlined in the HTML template
 // plugins.push(new webpack.optimize.CommonsChunkPlugin('manifest'));
