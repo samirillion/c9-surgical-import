@@ -26,14 +26,13 @@
       </button>
     </div>
     <codemirror
-      :ref="'cool'"
+      ref="myCm"
       :value="customVar.code"
       :options="cmOptions"
       @ready="onCmReady"
       @focus="onCmFocus"
       @input="onCmCodeChange"
-    >
-    </codemirror>
+    ></codemirror>
     <div
       class="preview-var-wrapper"
       v-show="customVar.code && customVar.code.length"
@@ -95,19 +94,6 @@ export default {
       }
     };
   },
-  computed: {
-    customVar() {
-      return store.state.customVars[this.index];
-    },
-    checkedFields: {
-      get() {
-        return store.state.checkedFields;
-      }
-    },
-    codemirror() {
-      return this.$refs["cool"].codemirror;
-    }
-  },
   methods: {
     async previewCustomVar() {
       this.customVarPreview = await WpApi.previewCustomVar()
@@ -132,6 +118,19 @@ export default {
     onCmCodeChange(newCode) {
       console.log("this is new code", newCode);
       store.state.customVars[this.index].code = newCode;
+    }
+  },
+  computed: {
+    customVar() {
+      return store.state.customVars[this.index];
+    },
+    checkedFields: {
+      get() {
+        return store.state.checkedFields;
+      }
+    },
+    codemirror() {
+      return this.$refs.myCm.codemirror;
     }
   }
 };
