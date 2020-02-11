@@ -3,16 +3,18 @@
 namespace IfmImport;
 
 // use IfmImport\CsvEdit;
+require_once 'importer/class-wp-importer.php';
+require_once 'importer/class-var-builder.php';
+
 use IfmImport\WpImporter;
 use IfmImport\VarBuilder;
-use IfmImport\EventHandler;
 
 use function Stringy\create as s;
 
 
-require_once(ABSPATH . 'wp-admin/includes/media.php');
-require_once(ABSPATH . 'wp-admin/includes/file.php');
-require_once(ABSPATH . 'wp-admin/includes/image.php');
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
 ini_set('memory_limit', '1024M');
 
 /**
@@ -29,6 +31,8 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        xdebug_break();
+
         $params = $request->get_params();
 
         $steps = json_decode($params["import_steps"]);
@@ -42,7 +46,7 @@ class Import
 
         $importer->run();
 
-        return "success";
+        return json_encode("success");
     }
 
     public function get_progress()
@@ -51,24 +55,22 @@ class Import
         header('Cache-Control: no-cache');
         header('Connection: keep-alive');
         header('X-Accel-Buffering: no'); //Nginx: unbuffered responses suitable for Comet and HTTP streaming applications
+        xdebug_break();
+        $x = 0;
 
-        $counter = rand(1, 10); // a random counter
-        while (1) {
+        while ($x < 2) {
+            $x++;
+
+            $step = WpImporter::$step;
             // 1 is always true, so repeat the while loop forever (aka event-loop)
-
-            $curDate = date(DATE_ISO8601);
+            // $step = "toit";
             echo "event: ping\n",
-                'data: {"time": "' . $curDate . '"}',
+                'data: {"time": "' . $step . '"}',
                 "\n\n";
 
             // Send a simple message at random intervals.
 
-            $counter--;
-
-            if (!$counter) {
-                echo 'data: This is a message at time ' . $curDate, "\n\n";
-                $counter = rand(1, 10); // reset random counter
-            }
+            echo 'data: This is a message at time ' . $step, "\n\n";
 
             // flush the output buffer and send echoed messages to the browser
 
@@ -83,7 +85,7 @@ class Import
 
             // sleep for 1 second before running the loop again
 
-            sleep(2);
+            sleep(1);
         }
     }
 

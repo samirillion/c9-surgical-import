@@ -4,7 +4,6 @@ namespace IfmImport;
 
 require_once('class-import.php');
 
-
 /**
  * REST_API Handler
  */

@@ -12,7 +12,7 @@
           </button>
           <button
             class="button button-primary"
-            @click="getProgress"
+            @click="runImport"
             :disabled="!inputValid"
           >
             Run Import
@@ -93,12 +93,12 @@ export default {
     },
     async runImport() {
       this.getProgress();
-      // const response = await WpApi.auth()
-      //   .runImport()
-      //   .param("upload_object", this.uploadObject)
-      //   .param("import_steps", store.getters.jsonSteps)
-      //   .param("import_vars", store.getters.jsonVars);
-      // return response;
+      let response = await WpApi.auth()
+        .runImport()
+        .param("upload_object", this.uploadObject)
+        .param("import_steps", store.getters.jsonSteps)
+        .param("import_vars", store.getters.jsonVars);
+      console.log(response.data);
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

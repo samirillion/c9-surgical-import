@@ -7,21 +7,23 @@ use League\Csv\Statement;
 
 class WpImporter
 {
-    public $steps;
+    public static $steps;
+    public static $step = "";
 
     public $file_path;
     public $limit;
     public $offset;
+    public static $custom_vars;
 
-    public $header;
-    public $records;
-    public $record;
-    public $custom_vars;
+
+    public static $header;
+    public static $records;
+    public static $record;
 
     // Find all import methods in Actions.js 
 
     // maintain an array of ids to reference in later steps _on the same record_
-    public $ids = array();
+    public static $ids = array();
 
     public function __construct()
     {
@@ -32,14 +34,11 @@ class WpImporter
         if (!ini_get("auto_detect_line_endings")) {
             ini_set("auto_detect_line_endings", '1');
         }
-        require_once(ABSPATH . 'wp-admin/includes/media.php');
-        require_once(ABSPATH . 'wp-admin/includes/file.php');
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
 
         ini_set('memory_limit', '1024M');
 
-        $this->custom_vars = $custom_vars;
-        $this->steps = $steps;
+        self::$custom_vars = $custom_vars;
+        self::$steps = $steps;
         $this->readCSV($file, $limit, $offset);
     }
 
@@ -48,38 +47,47 @@ class WpImporter
         $attached_file = get_attached_file($file_id);
         $csv = Reader::createFromPath($attached_file, 'r');
         $csv->setHeaderOffset(0);
-        $this->header = $csv->getHeader();
+        self::$header = $csv->getHeader();
 
         if ($limit >= 0) {
             $stmt = (new Statement())
                 ->offset($offset)
                 ->limit($limit);
-            $this->records = $stmt->process($csv);
+            self::$records = $stmt->process($csv);
         } else {
-            $this->records = $csv->getRecords();
+            self::$records = $csv->getRecords();
         }
 
-        return $this->records;
+        return self::$records;
     }
 
     public function run()
     {
-        foreach ($this->records as $record) {
-            $this->record = $record;
-            $this->ids = array();
-            foreach ($this->steps as $step) {
+        foreach (self::$records as $record) {
+            self::sendMessage($record);
+            self::$record = $record;
+            self::$ids = array();
+            foreach (self::$steps as $step) {
                 // set wet_map to map containing values drawn from
                 // csv records or posts/users created while processing record
-                $this->step = $this->hydrate($step);
+                self::$step = $this->hydrate($step);
 
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
 
-                $this->ids[$step->id] = $this->$step_method();
+                self::$ids[$step->id] = $this->$step_method();
             }
-            sleep(2);
+            sleep(1);
         }
     }
+
+    public static function sendMessage($record)
+    {
+        echo "data:" . $record->White . "\n\n";
+        ob_flush();
+        flush();
+    }
+
 
     public function hydrate($step)
     {
@@ -113,14 +121,14 @@ class WpImporter
         if ("stepId" === $type) {
 
             // the name of id is the value passed
-            $wet = array_key_exists($value, $this->ids) ? $this->ids[$value] : null;
+            $wet = array_key_exists($value, self::$ids) ? self::$ids[$value] : null;
         } elseif ("csvValue" === $type) {
 
             // get the csv value
-            $wet = array_key_exists($value, $this->record) ? $this->record[$value] : null;
+            $wet = array_key_exists($value, self::$record) ? self::$record[$value] : null;
         } elseif ("customVar" === $type) {
             // buid the custom var
-            $wet = VarBuilder::evaluate($value, $this->record, $this->custom_vars);
+            $wet = VarBuilder::evaluate($value, self::$record, self::$custom_vars);
         } else {
 
             // everything else is a string literal
@@ -132,7 +140,7 @@ class WpImporter
     public function create_user()
     {
         $user_id =  wp_insert_user(
-            $this->step['set']
+            self::$step['set']
         );
 
         return $user_id;
@@ -141,7 +149,7 @@ class WpImporter
     public function create_post()
     {
         $post_id = wp_insert_post(
-            $this->step['set']
+            self::$step['set']
         );
 
         return $post_id;
@@ -151,8 +159,8 @@ class WpImporter
     {
         $post_id = 0;
 
-        if (array_key_exists('ID', $this->step['get'])) {
-            $post_id = wp_update_post(array_merge($this->step['set'], $this->step['get']));
+        if (array_key_exists('ID', self::$step['get'])) {
+            $post_id = wp_update_post(array_merge(self::$step['set'], self::$step['get']));
         }
 
         return $post_id;
@@ -162,8 +170,8 @@ class WpImporter
     {
         $user_id = 0;
 
-        if (array_key_exists('ID', $this->step['get'])) {
-            $user_id = wp_update_user(array_merge($this->step['set'], $this->step['get']));
+        if (array_key_exists('ID', self::$step['get'])) {
+            $user_id = wp_update_user(array_merge(self::$step['set'], self::$step['get']));
         }
 
         return $user_id;
@@ -171,8 +179,8 @@ class WpImporter
 
     public function update_user_meta()
     {
-        $user_id = $this->step['user_id'];
-        foreach ($this->step['map'] as $key => $value) {
+        $user_id = self::$step['user_id'];
+        foreach (self::$step['map'] as $key => $value) {
             update_user_meta($user_id, $key, $value);
         }
     }
@@ -184,18 +192,18 @@ class WpImporter
 
     // public function add_post_terms()
     // {
-    //     $post_id = $this->step['get']->ID;
-    //     foreach ($this->step['set'] as $mapRow) {
+    //     $post_id = self::$step['get']->ID;
+    //     foreach (self::$step['set'] as $mapRow) {
     //         wp_set_object_terms($post_id, $mapRow->right, $mapRow->left, true);
     //     }
-    //     $term_type = $this->step['term_type'];
+    //     $term_type = self::$step['term_type'];
     // }
 
     public function add_acf_meta()
     {
-        $post_id = $this->step['post_id'];
+        $post_id = self::$step['post_id'];
 
-        foreach ($this->step['map'] as $key => $value) :
+        foreach (self::$step['map'] as $key => $value) :
 
             $field_object = get_field_object($key);
             $type = $field_object['type'];
