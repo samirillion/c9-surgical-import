@@ -12,12 +12,13 @@
           </button>
           <button
             class="button button-primary"
-            @click="runImport"
+            @click="handleImport"
             :disabled="!inputValid"
           >
             Run Import
           </button>
         </div>
+        <h3>{{ progress }}</h3>
       </div>
       <VarBuilder />
     </div>
@@ -50,7 +51,9 @@ export default {
       uploadObject: {},
       rawCsv: {},
       parsedCsv: [],
-      inputValid: true
+      inputValid: true,
+      progress: "",
+      importComplete: false
     };
   },
   computed: {
@@ -63,46 +66,31 @@ export default {
     validateInput() {
       this.inputValid = true;
     },
-    getProgress() {
-      var evtSource = new EventSource(WpApi.getProgress(), {
-        withCredentials: true
-      });
-      console.log(evtSource.withCredentials);
-      console.log(evtSource.readyState);
-      console.log(evtSource.url);
-
-      evtSource.onopen = function() {
-        console.log("Connection to server opened.");
-      };
-
-      evtSource.onmessage = function(e) {
-        console.log("on message", e.data);
-      };
-
-      evtSource.onerror = function() {
-        console.log("EventSource failed.");
-      };
-
-      evtSource.addEventListener(
-        "ping",
-        function(e) {
-          console.log("on ping", e.data);
-        },
-        false
-      );
+    async handleImport() {
+      this.getProgress();
+      this.runImport();
+    },
+    timeout(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+    async getProgress() {
+      while (false === this.importComplete) {
+        await this.timeout(500);
+        let state = await WpApi.getProgress().auth();
+        this.progress = state;
+      }
+      this.progress = "Complete!";
     },
     async runImport() {
-      this.getProgress();
-      let response = await WpApi.auth()
+      await WpApi.auth()
         .runImport()
         .param("upload_object", this.uploadObject)
         .param("import_steps", store.getters.jsonSteps)
         .param("import_vars", store.getters.jsonVars);
-      console.log(response.data);
+      this.importComplete = true;
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);
-      // StepsStore.setFileId(uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
       this.checkedFields = [];

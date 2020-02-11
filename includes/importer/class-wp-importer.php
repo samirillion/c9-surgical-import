@@ -64,8 +64,8 @@ class WpImporter
     public function run()
     {
         foreach (self::$records as $record) {
-            self::sendMessage($record);
             self::$record = $record;
+            set_transient("ifm_record", $record, 3600);
             self::$ids = array();
             foreach (self::$steps as $step) {
                 // set wet_map to map containing values drawn from
@@ -79,13 +79,6 @@ class WpImporter
             }
             sleep(1);
         }
-    }
-
-    public static function sendMessage($record)
-    {
-        echo "data:" . $record->White . "\n\n";
-        ob_flush();
-        flush();
     }
 
 

@@ -26,7 +26,7 @@
       </button>
     </div>
     <codemirror
-      :ref="ref"
+      :ref="'cool'"
       :value="customVar.code"
       :options="cmOptions"
       @ready="onCmReady"
@@ -105,7 +105,7 @@ export default {
       }
     },
     codemirror() {
-      return this.$refs[this.ref].codemirror;
+      return this.$refs["cool"].codemirror;
     }
   },
   methods: {

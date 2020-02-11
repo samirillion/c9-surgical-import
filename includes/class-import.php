@@ -31,8 +31,6 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-        xdebug_break();
-
         $params = $request->get_params();
 
         $steps = json_decode($params["import_steps"]);
@@ -42,51 +40,18 @@ class Import
 
         $importer = new WpImporter;
 
-        $importer->setup($file_id, $steps, $vars);
-
-        $importer->run();
-
-        return json_encode("success");
+        try {
+            $importer->setup($file_id, $steps, $vars);
+            $importer->run();
+            return json_encode(array("success"));
+        } catch (\Exception $e) {
+            return json_encode(array("Exception" => $e->getMessage()));
+        }
     }
 
     public function get_progress()
     {
-        header('Content-Type: text/event-stream');
-        header('Cache-Control: no-cache');
-        header('Connection: keep-alive');
-        header('X-Accel-Buffering: no'); //Nginx: unbuffered responses suitable for Comet and HTTP streaming applications
-        xdebug_break();
-        $x = 0;
-
-        while ($x < 2) {
-            $x++;
-
-            $step = WpImporter::$step;
-            // 1 is always true, so repeat the while loop forever (aka event-loop)
-            // $step = "toit";
-            echo "event: ping\n",
-                'data: {"time": "' . $step . '"}',
-                "\n\n";
-
-            // Send a simple message at random intervals.
-
-            echo 'data: This is a message at time ' . $step, "\n\n";
-
-            // flush the output buffer and send echoed messages to the browser
-
-            while (ob_get_level() > 0) {
-                ob_end_flush();
-            }
-            flush();
-
-            // break the loop if the client aborted the connection (closed the page)
-
-            if (connection_aborted()) break;
-
-            // sleep for 1 second before running the loop again
-
-            sleep(1);
-        }
+        return get_transient("ifm_record")["Name"];
     }
 
     public function preview_custom_var(\WP_REST_Request $request)
