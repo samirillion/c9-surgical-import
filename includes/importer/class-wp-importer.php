@@ -14,6 +14,7 @@ class WpImporter
     public $limit;
     public $offset;
     public static $custom_vars;
+    public static $progress;
 
 
     public static $header;
@@ -64,8 +65,7 @@ class WpImporter
     public function run()
     {
         foreach (self::$records as $record) {
-            set_transient("")
-            set_transient("ifm_progress", $progress, 3600);
+            set_transient("ifm_progress", self::$progress, 0);
             self::$record = $record;
             self::$ids = array();
             foreach (self::$steps as $step) {

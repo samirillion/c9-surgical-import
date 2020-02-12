@@ -31,6 +31,7 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        xdebug_break();
         delete_transient("ifm_progress");
         $params = $request->get_params();
 
@@ -46,11 +47,12 @@ class Import
         $importer = new WpImporter;
 
         try {
+            set_transient("ifm_progress", "pending", 0);
             $importer->setup($file_id, $steps, $vars);
             $importer->run();
-            set_transient("ifm_progress", "complete", 3600);
+            set_transient("ifm_progress", "complete", 0);
         } catch (\Exception $e) {
-            return "something went wrong with the import";
+            set_transient("ifm_progress", "error", 0);
         }
     }
 

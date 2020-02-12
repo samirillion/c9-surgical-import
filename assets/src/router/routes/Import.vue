@@ -24,10 +24,6 @@
         <template v-slot:header>
           <h1>Progress</h1>
         </template>
-
-        <p>A paragraph for the main content.</p>
-        <p>And another one.</p>
-
         <template v-slot:body>
           <div>{{ progress }}</div>
         </template>
