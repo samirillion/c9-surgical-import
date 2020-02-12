@@ -37,8 +37,6 @@ class VarBuilder
 
     public static function get_csv_values($code, $record)
     {
-        xdebug_break();
-
         $csv_values = array();
         preg_match_all(self::$csv_value_regex, $code, $matches, PREG_PATTERN_ORDER);
 

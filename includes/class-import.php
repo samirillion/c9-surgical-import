@@ -85,7 +85,9 @@ class Import
 
         VarBuilder::$code = s($code);
 
-        return VarBuilder::parse("");
+        $output = VarBuilder::parse("");
+
+        return $output ? $output : _e("Something went wrong or you're passing an empty string");
     }
 
     public function get_edit_steps()

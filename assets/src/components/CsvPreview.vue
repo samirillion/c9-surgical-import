@@ -6,13 +6,13 @@
         <tbody>
           <tr>
             <th>
-              <label for="select-all">Select all</label>
               <input
                 type="checkbox"
                 name="select-all"
                 @change="toggleSelect"
                 v-model="allSelected"
               />
+              <label for="select-all">Select all</label>
             </th>
             <th
               v-for="(column, columnIndex) in parsedCsv[0]"

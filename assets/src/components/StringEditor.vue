@@ -109,14 +109,9 @@ export default {
     toggleFields() {
       this.fieldsToggled = !this.fieldsToggled;
     },
-    onCmReady(cm) {
-      console.log("the editor is readied!", cm);
-    },
-    onCmFocus(cm) {
-      console.log("the editor is focus!", cm);
-    },
+    onCmReady(cm) {},
+    onCmFocus(cm) {},
     onCmCodeChange(newCode) {
-      console.log("this is new code", newCode);
       store.state.customVars[this.index].code = newCode;
     }
   },

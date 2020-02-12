@@ -85,11 +85,7 @@ class ENDPOINTS
         register_rest_route($this->namespace, '/preview-custom-var', array(
             'methods' => 'GET',
             'callback' => [new Import, 'preview_custom_var'],
-            'permission_callback' => [$this, 'is_admin'],
-            'validate_callback' => function ($param, $request, $key) {
-                // ifm_tasklist_add_validation_logic
-                return true;
-            }
+            'permission_callback' => [$this, 'is_admin']
         ));
     }
 

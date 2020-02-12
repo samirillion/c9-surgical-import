@@ -14,10 +14,10 @@ const getDefaultState = () => {
         id: "create_post_1",
         action: "create_post",
         getMap: [{}],
-        setMap: [{}]
+        setMap: [{ left: "post_type" }]
       }
     ],
-    checkedFields: [""],
+    checkedFields: [],
     customVars: [
       {
         name: "Custom Var",
@@ -120,7 +120,7 @@ export default new Vuex.Store({
         id: "create_post_" + state.stepIdCount,
         action: "create_post",
         getMap: [{}],
-        setMap: [{}]
+        setMap: [{ left: "post_type" }]
       });
     },
     removeStep(state, stepIndex) {
