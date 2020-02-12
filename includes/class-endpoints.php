@@ -23,7 +23,7 @@ class ENDPOINTS
             'callback' => [new Import, 'run'],
             'validate_callback' => function ($param, $request, $key) {
                 // ifm_tasklist_add_validation_logic
-                return true;
+                return current_user_can('manage_options');
             }
         ));
 

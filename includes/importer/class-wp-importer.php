@@ -64,9 +64,9 @@ class WpImporter
     public function run()
     {
         foreach (self::$records as $record) {
+            set_transient("")
+            set_transient("ifm_progress", $progress, 3600);
             self::$record = $record;
-            xdebug_break();
-            set_transient("ifm_record", $record, 3600);
             self::$ids = array();
             foreach (self::$steps as $step) {
                 // set wet_map to map containing values drawn from

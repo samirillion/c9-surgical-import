@@ -18,9 +18,25 @@
             Run Import
           </button>
         </div>
-        <h3>{{ progress }}</h3>
       </div>
       <VarBuilder />
+      <ProgressModal v-if="showModal" @close="showModal = false">
+        <template v-slot:header>
+          <h1>Progress</h1>
+        </template>
+
+        <p>A paragraph for the main content.</p>
+        <p>And another one.</p>
+
+        <template v-slot:body>
+          <div>{{ progress }}</div>
+        </template>
+        <template v-slot:footer>
+          <button class="button-primary" @click="closeModal">
+            X
+          </button>
+        </template>
+      </ProgressModal>
     </div>
   </div>
 </template>
@@ -36,6 +52,7 @@ import FileUploader from "@/components/FileUploader.vue";
 import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
+import ProgressModal from "@/components/ProgressModal.vue";
 
 export default {
   name: "Import",
@@ -43,7 +60,8 @@ export default {
     FileUploader,
     ImportSteps,
     VarBuilder,
-    CsvPreview
+    CsvPreview,
+    ProgressModal
   },
   data() {
     return {
@@ -53,7 +71,8 @@ export default {
       parsedCsv: [],
       inputValid: true,
       progress: "",
-      importComplete: false
+      importComplete: false,
+      showModal: false
     };
   },
   computed: {
@@ -63,10 +82,15 @@ export default {
     }
   },
   methods: {
+    closeModal() {
+      this.showModal = false;
+      this.progress = "";
+    },
     validateInput() {
       this.inputValid = true;
     },
     async handleImport() {
+      this.showModal = true;
       this.getProgress();
       this.runImport();
     },
@@ -74,20 +98,29 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     async getProgress() {
+      await this.timeout(500);
       while (false === this.importComplete) {
-        await this.timeout(500);
         let state = await WpApi.getProgress().auth();
         this.progress = state;
       }
-      this.progress = "Complete!";
     },
     async runImport() {
-      await WpApi.auth()
-        .runImport()
-        .param("upload_object", this.uploadObject)
-        .param("import_steps", store.getters.jsonSteps)
-        .param("import_vars", store.getters.jsonVars);
-      this.importComplete = true;
+      try {
+        let request = await WpApi.auth()
+          .runImport()
+          .param("upload_object", this.uploadObject)
+          .param("import_steps", store.getters.jsonSteps)
+          .param("import_vars", store.getters.jsonVars);
+        if (true == request) {
+          this.progress = "Complete!";
+        } else {
+          this.progress = request;
+        }
+        this.importComplete = true;
+      } catch (err) {
+        this.progress = err;
+        this.importComplete = true;
+      }
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);

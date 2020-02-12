@@ -31,6 +31,7 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        delete_transient("ifm_progress");
         $params = $request->get_params();
 
         $steps = json_decode($params["import_steps"]);
@@ -38,20 +39,24 @@ class Import
 
         $file_id = $params["upload_object"]["id"];
 
+        if (!$file_id) {
+            return 'Looks like you dont have any csv file uploaded';
+        }
+
         $importer = new WpImporter;
 
         try {
             $importer->setup($file_id, $steps, $vars);
             $importer->run();
-            return json_encode(array("success"));
+            set_transient("ifm_progress", "complete", 3600);
         } catch (\Exception $e) {
-            return json_encode(array("Exception" => $e->getMessage()));
+            return "something went wrong with the import";
         }
     }
 
     public function get_progress()
     {
-        return get_transient("ifm_record")["Name"];
+        return json_encode(get_transient("ifm_progress"));
     }
 
     public function preview_custom_var(\WP_REST_Request $request)
