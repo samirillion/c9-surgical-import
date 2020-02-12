@@ -41,7 +41,7 @@
       </div>
       <StringEditor :index="varIndex"></StringEditor>
     </details>
-    <StepsRaw :open="true" :summary="'View Steps as Json'" />
+    <StepsRaw :open="false" :summary="'View Steps as Json'" />
   </details>
 </template>
 

@@ -65,6 +65,7 @@ class WpImporter
     {
         foreach (self::$records as $record) {
             self::$record = $record;
+            xdebug_break();
             set_transient("ifm_record", $record, 3600);
             self::$ids = array();
             foreach (self::$steps as $step) {
@@ -77,7 +78,6 @@ class WpImporter
 
                 self::$ids[$step->id] = $this->$step_method();
             }
-            sleep(1);
         }
     }
 
