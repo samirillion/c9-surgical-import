@@ -8,7 +8,7 @@ use League\Csv\Statement;
 class WpImporter
 {
     public static $steps;
-    public static $step = "";
+    public static $step = null;
 
     public $file_path;
     public $limit;
@@ -64,20 +64,23 @@ class WpImporter
 
     public function run()
     {
-        foreach (self::$records as $record) {
-            set_transient("ifm_progress", self::$progress, 0);
+        $progress = array();
+        foreach (self::$records as $index => $record) {
             self::$record = $record;
             self::$ids = array();
+            set_transient("ifm_progress", $progress, 36000);
             foreach (self::$steps as $step) {
                 // set wet_map to map containing values drawn from
                 // csv records or posts/users created while processing record
                 self::$step = $this->hydrate($step);
+                $progress[$index][] = self::$step;
 
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
 
                 self::$ids[$step->id] = $this->$step_method();
             }
+            sleep(1);
         }
     }
 

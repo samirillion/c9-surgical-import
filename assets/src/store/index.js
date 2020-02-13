@@ -9,6 +9,11 @@ const getDefaultState = () => {
     csvLength: 1,
     stepIdCount: 1,
     varIdCount: 1,
+    import: {
+      error: false,
+      complete: false,
+      progress: ""
+    },
     steps: [
       {
         id: "create_post_1",
@@ -17,7 +22,7 @@ const getDefaultState = () => {
         setMap: [{ left: "post_type" }]
       }
     ],
-    checkedFields: [],
+    checkedFields: [""],
     customVars: [
       {
         name: "Custom Var",

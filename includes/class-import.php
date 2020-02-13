@@ -31,8 +31,11 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-        xdebug_break();
         delete_transient("ifm_progress");
+        delete_transient("ifm_error");
+        delete_transient("ifm_complete");
+        $importer = new WpImporter;
+
         $params = $request->get_params();
 
         $steps = json_decode($params["import_steps"]);
@@ -41,24 +44,28 @@ class Import
         $file_id = $params["upload_object"]["id"];
 
         if (!$file_id) {
-            return 'Looks like you dont have any csv file uploaded';
+            set_transient("ifm_error", "The importer cannot find a CSV");
+            wp_die("error");
         }
-
-        $importer = new WpImporter;
-
         try {
-            set_transient("ifm_progress", "pending", 0);
             $importer->setup($file_id, $steps, $vars);
             $importer->run();
-            set_transient("ifm_progress", "complete", 0);
+            set_transient("ifm_complete", true, 0);
         } catch (\Exception $e) {
-            set_transient("ifm_progress", "error", 0);
+            set_transient("ifm_error", $e->getMessage(), 0);
+            wp_die("error");
         }
     }
 
     public function get_progress()
     {
-        return json_encode(get_transient("ifm_progress"));
+        return json_encode(
+            array(
+                "complete" => get_transient("ifm_complete"),
+                "progress" => get_transient("ifm_progress"),
+                "error" => get_transient("ifm_error"),
+            ),
+        );
     }
 
     public function preview_custom_var(\WP_REST_Request $request)
@@ -69,7 +76,6 @@ class Import
         $limit = 1;
         $offset = intval($params["record_index"]);
         $code = $params["var_code"];
-
 
         $importer = new WpImporter;
 

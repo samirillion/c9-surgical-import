@@ -128,7 +128,7 @@ class ENDPOINTS
     public function get_acf_fields()
     {
         $options = array();
-        $field_groups = acf_get_field_groups();
+        $field_groups = function_exists('acf_get_field_groups') ? \acf_get_field_groups() : array();
         foreach ($field_groups as $group) {
             // DO NOT USE here: $fields = acf_get_fields($group['key']);
             // because it causes repeater field bugs and returns "trashed" fields
