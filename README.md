@@ -55,9 +55,9 @@ You can stack on any other steps you'd like, but one of the main strengths of th
 To the right, you'll see a dropdown for creating custom vars, which you can build up from CSV values and various string manipulation functions. Your named var will then be available to the importer. More options to be added soon.<br>
 <img width="100%" style="padding-right:10px;" src="assets/readme/var-builder.png">
 
-### 4 Run Import
+### Step 4: Run Import
 
-Progress monitoring currently under development.
+"Progress monitoring" currently under development.
 
 ## Tools Used
 
