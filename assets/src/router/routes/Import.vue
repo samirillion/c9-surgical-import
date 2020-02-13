@@ -67,7 +67,7 @@ export default {
       parsedCsv: [],
       inputValid: true,
       progress: "pending",
-      importComplete: "false",
+      importComplete: false,
       error: null,
       showModal: false,
       err: false
@@ -89,17 +89,19 @@ export default {
     },
     async handleImport() {
       this.showModal = true;
-      this.runImport();
       this.getProgress();
+      this.runImport();
     },
     timeout(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     async getProgress() {
+
       while (false === this.importComplete) {
-        await this.timeout(500);
+        await this.timeout(200);
         let state = await WpApi.getProgress().auth();
-        this.progress = this.parseProgress(state);
+        console.log(state);
+        this.progress = state;
       }
     },
     parseProgress(progress) {
@@ -112,9 +114,9 @@ export default {
           .param("upload_object", this.uploadObject)
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars);
-        this.progress = this.parseProgress(request);
+        this.progress = request;
       } catch (err) {
-        this.progress = this.parseProgress(err);
+        this.progress = err;
       }
     },
     async onUpload(uploadId) {

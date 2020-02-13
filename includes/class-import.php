@@ -59,12 +59,18 @@ class Import
 
     public function get_progress()
     {
+        xdebug_break();
+        $stuff = array(
+            "complete" => get_transient("ifm_complete") ? get_transient("ifm_complete"): "",
+            "progress" => get_transient("ifm_progress") ? get_transient("ifm_progress"): "",
+            "error" => get_transient("ifm_error") ? get_transient("ifm_error"): "",
+        );
         return json_encode(
             array(
                 "complete" => get_transient("ifm_complete"),
                 "progress" => get_transient("ifm_progress"),
                 "error" => get_transient("ifm_error"),
-            ),
+            )
         );
     }
 
