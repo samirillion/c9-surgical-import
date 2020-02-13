@@ -21,11 +21,14 @@
       </div>
       <VarBuilder />
       <ProgressModal v-if="showModal" @close="showModal = false">
-        <template v-slot:header>
-          <h1>Progress</h1>
-        </template>
         <template v-slot:body>
-          <div>{{ progress }}</div>
+          <details open>
+            <summary>
+              Progress : {{ importComplete ? "Complete" : "Pending" }}
+              {{ err ? err : "" }}
+            </summary>
+            {{ progress }}
+          </details>
         </template>
         <template v-slot:footer>
           <button class="button-primary" @click="closeModal">
@@ -68,7 +71,6 @@ export default {
       inputValid: true,
       progress: "pending",
       importComplete: false,
-      error: null,
       showModal: false,
       err: false
     };
@@ -89,6 +91,8 @@ export default {
     },
     async handleImport() {
       this.showModal = true;
+      this.importComplete = false;
+      this.err = false;
       this.getProgress();
       this.runImport();
     },
@@ -96,16 +100,24 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     async getProgress() {
-
-      while (false === this.importComplete) {
+      while (false === this.importComplete && false === this.err) {
         await this.timeout(200);
         let state = await WpApi.getProgress().auth();
-        console.log(state);
-        this.progress = state;
+        this.parseProgress(state);
       }
     },
-    parseProgress(progress) {
-      return progress;
+    parseProgress(state) {
+      state = JSON.parse(state);
+      if (state.complete) {
+        this.importComplete = true;
+      }
+      if (state.err) {
+        this.err = true;
+      }
+      this.progress =
+        state && state.progress && state.progress.length > 0
+          ? state.progress
+          : "";
     },
     async runImport() {
       try {
@@ -114,9 +126,9 @@ export default {
           .param("upload_object", this.uploadObject)
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars);
-        this.progress = request;
       } catch (err) {
-        this.progress = err;
+        console.log("err", err);
+        this.err = err;
       }
     },
     async onUpload(uploadId) {

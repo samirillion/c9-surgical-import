@@ -32,8 +32,8 @@ class Import
     public function run(\WP_REST_Request $request)
     {
         delete_transient("ifm_progress");
-        delete_transient("ifm_error");
-        delete_transient("ifm_complete");
+        set_transient("ifm_error", false, 3600);
+        set_transient("ifm_complete", false, 3600);
         $importer = new WpImporter;
 
         $params = $request->get_params();
@@ -51,6 +51,7 @@ class Import
             $importer->setup($file_id, $steps, $vars);
             $importer->run();
             set_transient("ifm_complete", true, 0);
+            return $this->get_progress();
         } catch (\Exception $e) {
             set_transient("ifm_error", $e->getMessage(), 0);
             wp_die("error");
@@ -59,18 +60,13 @@ class Import
 
     public function get_progress()
     {
-        xdebug_break();
-        $stuff = array(
-            "complete" => get_transient("ifm_complete") ? get_transient("ifm_complete"): "",
-            "progress" => get_transient("ifm_progress") ? get_transient("ifm_progress"): "",
-            "error" => get_transient("ifm_error") ? get_transient("ifm_error"): "",
-        );
         return json_encode(
             array(
                 "complete" => get_transient("ifm_complete"),
                 "progress" => get_transient("ifm_progress"),
-                "error" => get_transient("ifm_error"),
-            )
+                "err" => get_transient("ifm_error"),
+            ),
+            3
         );
     }
 
