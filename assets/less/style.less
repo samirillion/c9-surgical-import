@@ -626,6 +626,7 @@ Ifm Steps
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
+    max-height: 100vh;
   }
 
   .modal-header h3 {
@@ -645,6 +646,12 @@ Ifm Steps
     float: right;
   }
 
+  .modal-details-body {
+    max-height: 75vh;
+    display: block;
+    overflow: scroll;
+    border: 1px solid @lighter-grey;
+  }
   /*
    * The following styles are auto-applied to elements with
    * transition="modal" when their visibility is toggled

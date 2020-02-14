@@ -58,7 +58,7 @@
           index
         }}</option>
       </select>
-      of {{ parsedCsv.length }} total Entries
+      of {{ parseInt(parsedCsv.length) - 1 }} total Entries
     </span>
   </details>
 </template>

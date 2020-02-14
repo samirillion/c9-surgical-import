@@ -34,7 +34,7 @@ export const createUser = {
 export const createPost = {
   post_author: "post author",
   post_name: "post name",
-  post_type: "post type (required)",
+  post_type: "post type",
   post_title: "post title",
   post_date: "post date",
   post_date_gmt: "post date gmt",

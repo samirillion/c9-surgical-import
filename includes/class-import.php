@@ -49,9 +49,9 @@ class Import
         }
         try {
             $importer->setup($file_id, $steps, $vars);
-            $importer->run();
+            $output = $importer->run();
+            return $output;
             set_transient("ifm_complete", true, 0);
-            return $this->get_progress();
         } catch (\Exception $e) {
             set_transient("ifm_error", $e->getMessage(), 0);
             wp_die("error");

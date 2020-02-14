@@ -24,9 +24,39 @@
         <template v-slot:body>
           <details open>
             <summary> Progress : {{ importState }} </summary>
-            <span v-for="(value, index) in progress" :key="index">
-              Record {{ parseInt(index) }} {{ value }}
-            </span>
+            <div class="modal-details-body">
+              <br />
+              <span
+                v-for="(record, recordIndex) in progress"
+                :key="recordIndex"
+              >
+                {{
+                  Math.round(
+                    ((parseInt(recordIndex) + 1) / (parsedCsv.length - 1)) * 100
+                  )
+                }}% {{ parseInt(recordIndex) + 1 }}/{{ parsedCsv.length - 1 }}
+                <br />
+                <span v-for="(step, stepIndex) in record" :key="stepIndex"
+                  >{{ step.id }}
+                  <span
+                    v-show="step.get"
+                    v-for="(value, param) in step.get"
+                    :key="param"
+                  >
+                    <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                  </span>
+                  <br />
+                  <span
+                    v-show="step.set"
+                    v-for="(value, param) in step.set"
+                    :key="param"
+                  >
+                    <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                  </span>
+                  <br />
+                </span>
+              </span>
+            </div>
           </details>
         </template>
         <template v-slot:footer>
@@ -70,8 +100,10 @@ export default {
       inputValid: true,
       progress: null,
       importComplete: false,
+      requestContent: "",
       showModal: false,
-      err: false
+      err: false,
+      importLogs: false
     };
   },
   computed: {
@@ -108,21 +140,22 @@ export default {
     },
     async getProgress() {
       while (false === this.importComplete && false === this.err) {
-        await this.timeout(200);
         let state = await WpApi.getProgress().auth();
         this.parseProgress(state);
+        await this.timeout(200);
       }
     },
     parseProgress(state) {
       state = JSON.parse(state);
+      console.log(state);
       if (state.complete) {
         this.importComplete = true;
-      }
-      if (state.err) {
-        console.log("error", state);
+        this.progress = this.importLogs;
+      } else if (state.err) {
         this.err = state.err;
+      } else {
+        this.progress = state.progress;
       }
-      this.progress = state.progress;
     },
     async runImport() {
       try {
@@ -131,6 +164,8 @@ export default {
           .param("upload_object", this.uploadObject)
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars);
+        this.importLogs = JSON.parse(request).progress;
+        this.progress = JSON.parse(request).progress;
       } catch (err) {
         this.err = err;
       }

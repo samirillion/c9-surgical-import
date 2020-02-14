@@ -80,10 +80,17 @@ class WpImporter
 
                 $progress[$recordIndex][$stepIndex] = self::$step;
                 $progress[$recordIndex][$stepIndex]["id"] = $step->id;
-                xdebug_break();
-                set_transient("ifm_progress", $progress, 36000);
+                $progress_line = array($recordIndex => array("id" => $step->id, "step" => self::$step));
+                set_transient("ifm_progress", $progress_line, 36000);
             }
         }
+        return json_encode(
+            array(
+                "complete" => true,
+                "progress" => $progress,
+                "err" => get_transient("ifm_error"),
+            )
+        );
     }
 
 
