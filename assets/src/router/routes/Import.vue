@@ -25,7 +25,6 @@
           <details open>
             <summary> Progress : {{ importState }} </summary>
             <div class="modal-details-body">
-              <br />
               <span
                 v-for="(record, recordIndex) in progress"
                 :key="recordIndex"
@@ -35,26 +34,23 @@
                     ((parseInt(recordIndex) + 1) / (parsedCsv.length - 1)) * 100
                   )
                 }}% {{ parseInt(recordIndex) + 1 }}/{{ parsedCsv.length - 1 }}
-                <br />
-                <span v-for="(step, stepIndex) in record" :key="stepIndex"
-                  >{{ step.id }}
-                  <span
+                <div v-for="(step, stepIndex) in record" :key="stepIndex">
+                  {{ step.id }}
+                  <div
                     v-show="step.get"
                     v-for="(value, param) in step.get"
                     :key="param"
                   >
                     <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
-                  </span>
-                  <br />
-                  <span
+                  </div>
+                  <div
                     v-show="step.set"
                     v-for="(value, param) in step.set"
                     :key="param"
                   >
                     <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
-                  </span>
-                  <br />
-                </span>
+                  </div>
+                </div>
               </span>
             </div>
           </details>
@@ -102,8 +98,7 @@ export default {
       importComplete: false,
       requestContent: "",
       showModal: false,
-      err: false,
-      importLogs: false
+      err: false
     };
   },
   computed: {
@@ -147,15 +142,10 @@ export default {
     },
     parseProgress(state) {
       state = JSON.parse(state);
-      console.log(state);
-      if (state.complete) {
-        this.importComplete = true;
-        this.progress = this.importLogs;
-      } else if (state.err) {
+      if (state.err) {
         this.err = state.err;
-      } else {
-        this.progress = state.progress;
       }
+      this.progress = state.progress;
     },
     async runImport() {
       try {
@@ -164,8 +154,8 @@ export default {
           .param("upload_object", this.uploadObject)
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars);
+        this.importComplete = true;
         this.importLogs = JSON.parse(request).progress;
-        this.progress = JSON.parse(request).progress;
       } catch (err) {
         this.err = err;
       }
