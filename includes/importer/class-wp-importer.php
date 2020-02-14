@@ -65,22 +65,24 @@ class WpImporter
     public function run()
     {
         $progress = array();
-        foreach (self::$records as $index => $record) {
+        foreach (self::$records as $recordIndex => $record) {
             self::$record = $record;
             self::$ids = array();
-            set_transient("ifm_progress", $progress, 36000);
-            foreach (self::$steps as $step) {
+            foreach (self::$steps as $stepIndex => $step) {
                 // set wet_map to map containing values drawn from
                 // csv records or posts/users created while processing record
                 self::$step = $this->hydrate($step);
-                $progress[$index][] = self::$step;
 
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
 
                 self::$ids[$step->id] = $this->$step_method();
+
+                $progress[$recordIndex][$stepIndex] = self::$step;
+                $progress[$recordIndex][$stepIndex]["id"] = $step->id;
+                xdebug_break();
+                set_transient("ifm_progress", $progress, 36000);
             }
-            sleep(1);
         }
     }
 

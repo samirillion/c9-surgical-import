@@ -23,16 +23,15 @@
       <ProgressModal v-if="showModal" @close="showModal = false">
         <template v-slot:body>
           <details open>
-            <summary>
-              Progress : {{ importComplete ? "Complete" : "Pending" }}
-              {{ err ? err : "" }}
-            </summary>
-            {{ progress }}
+            <summary> Progress : {{ importState }} </summary>
+            <span v-for="(value, index) in progress" :key="index">
+              Record {{ parseInt(index) }} {{ value }}
+            </span>
           </details>
         </template>
         <template v-slot:footer>
           <button class="button-primary" @click="closeModal">
-            X
+            x
           </button>
         </template>
       </ProgressModal>
@@ -69,7 +68,7 @@ export default {
       rawCsv: {},
       parsedCsv: [],
       inputValid: true,
-      progress: "pending",
+      progress: null,
       importComplete: false,
       showModal: false,
       err: false
@@ -79,6 +78,14 @@ export default {
     checkedFields: {
       get: () => store.state.checkedFields,
       set: value => store.commit("updateCheckedFields", value)
+    },
+    importState() {
+      if (this.importComplete) {
+        return "Complete";
+      } else if (this.err) {
+        return this.err;
+      }
+      return "Pending";
     }
   },
   methods: {
@@ -112,12 +119,10 @@ export default {
         this.importComplete = true;
       }
       if (state.err) {
-        this.err = true;
+        console.log("error", state);
+        this.err = state.err;
       }
-      this.progress =
-        state && state.progress && state.progress.length > 0
-          ? state.progress
-          : "";
+      this.progress = state.progress;
     },
     async runImport() {
       try {
@@ -127,7 +132,6 @@ export default {
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars);
       } catch (err) {
-        console.log("err", err);
         this.err = err;
       }
     },
