@@ -52,7 +52,6 @@ class VarBuilder
 
     public static function parse($parsed)
     {
-
         if (")" == self::$code->first(1)) {
 
             self::$code = self::$code->substr(1);
@@ -107,18 +106,21 @@ class VarBuilder
         }
     }
 
-    private static function formatDate($string)
+    private static function formatDate($args)
     {
-        xdebug_break();
-        $d = new \DateTime($string);
-        return ;
+        $array = s($args)->split(",,args,,");
+        if (is_array($array) && count($array) === 2) {
+            $d = new \DateTime($array[0]);
+            return $d->format($array[1]);
+        } else {
+            return "";
+        }
     }
 
     private static function replace($args)
     {
         $array = s($args)->split(",,args,,");
         if (is_array($array) && count($array) === 3) {
-            $my_array = $array;
             return s($array[0])->regexReplace(strval($array[1]), $array[2]);
         } else {
             return "";

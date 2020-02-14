@@ -24,6 +24,18 @@
       >
         {{ stringFunc.name }}
       </button>
+      <div class="csv-value-dropdown">
+        <button class="button-secondary" @click="toggleFormats">
+          Date Formats
+        </button>
+        <table class="form-table" v-show="formatsToggled">
+          <tr valign="top" v-for="(format, index) in dateFormats" :key="index">
+            <td scope="row" @click="insertFormat(format)">
+              {{ format }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
     <codemirror
       ref="myCm"
@@ -63,7 +75,7 @@ import "codemirror/lib/codemirror.css";
 //custom codemirror language mode
 import "@/utils/IfmMode";
 
-import { stringFunctions } from "@/services/StringEdits";
+import { stringFunctions, dateFormats } from "@/services/StringEdits";
 
 import { WpApi } from "@/services/WpApi";
 
@@ -80,6 +92,8 @@ export default {
     return {
       ref: this.index + 1,
       fieldsToggled: false,
+      formatsToggled: false,
+      dateFormats,
       stringFunctions,
       customVarPreview: null,
       previewRecordIndex: 1,
@@ -96,6 +110,7 @@ export default {
   },
   methods: {
     async previewCustomVar() {
+      this.customVarPreview = null;
       this.customVarPreview = await WpApi.previewCustomVar()
         .param("upload_id", store.state.uploadedFileId)
         .param("record_index", Number(this.previewRecordIndex) - 1)
@@ -106,8 +121,16 @@ export default {
       this.codemirror.focus();
       this.fieldsToggled = false;
     },
+    insertFormat(format) {
+      this.codemirror.replaceSelection('"' + format + '"');
+      this.codemirror.focus();
+      this.formatsToggled = false;
+    },
     toggleFields() {
       this.fieldsToggled = !this.fieldsToggled;
+    },
+    toggleFormats() {
+      this.formatsToggled = !this.formatsToggled;
     },
     onCmReady(cm) {},
     onCmFocus(cm) {},
