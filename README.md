@@ -21,7 +21,7 @@ You can select as many fields as you like to be available to your import steps. 
 
 ### Step 3: Create Import Steps
 
-Build your import by steps. Current available actions are as pictured. I plan on expanding these in latter versions.
+Build your import by steps. Current available actions are as pictured. I plan on expanding these in later versions.
 
 - create post
 - create user
@@ -36,18 +36,18 @@ Build your import by steps. Current available actions are as pictured. I plan on
 
 Choose an action, then start setting parameters, value-types, and values. The base value types are:
 
-- csv value (_column names drawn from the uploaded csv_)
-- string (_short bit of text, like "publish" for post status_)
-- step id (_see section 3.1_)
-- complex value (_see section 3.2_)
-<br>
+- csv value -- _column names drawn from the uploaded csv_
+- string -- _short bit of text, like "publish" for post status_
+- step id -- _see section 3.1_
+- complex value -- _see section 3.2_
+  <br>
 
 <img height="250" style="padding-right:10px" src="assets/readme/define-action.png">
 <img height="250px" src="assets/readme/set-values.png">
 
 ### 3.1 Adding Steps
 
-You can stack on any other steps you'd like, but one of the main strengths of this importer is that it can specifically reference the output value from a previous step to add more complex information, like Advanced Custom Fields, or post meta. So in this case, you can add ACF data to a post that you get by post id, from a previous create or get post step. Same for any meta data, or even connecting users to posts or what-have-you.
+You can stack on any other steps you'd like, but one of the main strengths of this importer is that it can specifically reference the output value from a previous step to add more complex information, like Advanced Custom Fields, or post meta. So in this case, you can add ACF data to a post that you get by post id, from a previous `create post` or `get post` action/step. Same for any meta data, or anything else you can imagine.
 <br>
 
 <img width="80%" style="padding-right:10px;" src="assets/readme/add-acf-data.png">

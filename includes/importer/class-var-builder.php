@@ -8,7 +8,7 @@ use function Stringy\create as s;
 class VarBuilder
 {
     // should match names in services/StringEdits.js
-    private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize))/';
+    private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize)|(formatDate))/';
     private static $string_pattern = '/^\"([\s\S]*?)\"/';
     private static $csv_value_regex = '/{{([\w|\s|-]+?)}}/';
     public static $code = "";
@@ -107,11 +107,19 @@ class VarBuilder
         }
     }
 
+    private static function formatDate($string)
+    {
+        xdebug_break();
+        $d = new \DateTime($string);
+        return ;
+    }
+
     private static function replace($args)
     {
         $array = s($args)->split(",,args,,");
         if (is_array($array) && count($array) === 3) {
-            return s($array[0])->replace($array[1], $array[2]);
+            $my_array = $array;
+            return s($array[0])->regexReplace(strval($array[1]), $array[2]);
         } else {
             return "";
         }

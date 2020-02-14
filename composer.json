@@ -11,6 +11,7 @@
   "require": {
     "league/csv": "^9.4",
     "danielstjules/stringy": "~3.1.0",
-    "hhxsv5/php-sse": "~1.0"
+    "hhxsv5/php-sse": "~1.0",
+    "nesbot/carbon": "^2.30"
   }
 }

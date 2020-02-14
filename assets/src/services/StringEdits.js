@@ -48,5 +48,10 @@ export const stringFunctions = [
     insert: "titleize(input)",
     description:
       "Returns a trimmed string with the first letter of each word capitalized. Ignores connecting words"
+  },
+  {
+    name: "formatDate",
+    insert: "formatDate(input)",
+    description: "Parses the date the best it knows how"
   }
 ];
