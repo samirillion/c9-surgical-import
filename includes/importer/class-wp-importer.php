@@ -65,6 +65,7 @@ class WpImporter
     public function run()
     {
         $progress = array();
+
         foreach (self::$records as $recordIndex => $record) {
             self::$record = $record;
             self::$ids = array();

@@ -38,6 +38,8 @@ class Import
 
         $params = $request->get_params();
 
+        $offset = json_decode($params["offset"]);
+        $limit = json_decode($params["limit"]);
         $steps = json_decode($params["import_steps"]);
         $vars = json_decode($params["import_vars"]);
 
@@ -47,8 +49,11 @@ class Import
             set_transient("ifm_error", "The importer cannot find a CSV");
             wp_die("error");
         }
+        if (0 === $limit) {
+            $limit -= 1;
+        }
         try {
-            $importer->setup($file_id, $steps, $vars);
+            $importer->setup($file_id, $steps, $vars, $offset, $limit);
             $output = $importer->run();
             return $output;
             set_transient("ifm_complete", true, 0);

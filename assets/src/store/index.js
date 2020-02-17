@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 const getDefaultState = () => {
   return {
+    importOffset: 0,
+    importLimit: 0,
     uploadedFileId: null,
     csvLength: 1,
     stepIdCount: 1,
@@ -57,6 +59,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateOffset(state, value) {
+      state.importOffset = value;
+    },
+    updateLimit(state, value) {
+      state.importLimit = value;
+    },
     incrementVarId(state) {
       state.varIdCount++;
     },

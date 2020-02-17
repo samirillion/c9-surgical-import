@@ -23,7 +23,7 @@
       <ProgressModal v-if="showModal" @close="showModal = false">
         <template v-slot:body>
           <details open>
-            <summary> Progress : {{ importState }} </summary>
+            <summary>Progress : {{ importState }} </summary>
             <div class="modal-details-body">
               <span
                 v-for="(record, recordIndex) in progress"
@@ -31,9 +31,9 @@
               >
                 {{
                   Math.round(
-                    ((parseInt(recordIndex) + 1) / (parsedCsv.length - 1)) * 100
+                    (parseInt(recordIndex) / (parsedCsv.length - 1)) * 100
                   )
-                }}% {{ parseInt(recordIndex) + 1 }}/{{ parsedCsv.length - 1 }}
+                }}% {{ parseInt(recordIndex) }}/{{ parsedCsv.length - 1 }}
                 <div v-for="(step, stepIndex) in record" :key="stepIndex">
                   {{ step.id }}
                   <div
@@ -142,10 +142,13 @@ export default {
     },
     parseProgress(state) {
       state = JSON.parse(state);
+
       if (state.err) {
         this.err = state.err;
       }
-      this.progress = state.progress;
+      if (false === this.importComplete) {
+        this.progress = state.progress;
+      }
     },
     async runImport() {
       try {
@@ -153,9 +156,11 @@ export default {
           .runImport()
           .param("upload_object", this.uploadObject)
           .param("import_steps", store.getters.jsonSteps)
-          .param("import_vars", store.getters.jsonVars);
+          .param("import_vars", store.getters.jsonVars)
+          .param("offset", store.state.importOffset)
+          .param("limit", store.state.importLimit);
+        this.parseProgress(request);
         this.importComplete = true;
-        this.importLogs = JSON.parse(request).progress;
       } catch (err) {
         this.err = err;
       }

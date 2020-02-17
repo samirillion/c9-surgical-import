@@ -1,6 +1,23 @@
 <template>
   <details open>
     <summary>Import fields (pick some!)</summary>
+    <span class="preview-details" v-if="parsedCsv.length > 0">
+      Previewing the first
+      <input
+        type="number"
+        name="entryLength"
+        min="10"
+        class="entry-length"
+        v-model="exampleEntryLength"
+      />
+      characters of
+      <select v-model="exampleEntries">
+        <option v-for="index in parsedCsv.length - 1" :key="index">{{
+          index
+        }}</option>
+      </select>
+      of {{ parseInt(parsedCsv.length) - 1 }} total Entries
+    </span>
     <div class="ifm-table-wrapper">
       <table class="csv-table striped">
         <tbody>
@@ -44,21 +61,24 @@
       </table>
     </div>
     <span class="preview-details" v-if="parsedCsv.length > 0">
-      Previewing the first
+      Start with record:
       <input
         type="number"
-        name="entryLength"
-        min="10"
-        class="entry-length"
-        v-model="exampleEntryLength"
+        name="importOffset"
+        min="0"
+        :max="parsedCsv.length - 1"
+        class="import-offset"
+        v-model="importOffset"
       />
-      characters of
-      <select v-model="exampleEntries">
-        <option v-for="index in parsedCsv.length" :key="index">{{
-          index
-        }}</option>
-      </select>
-      of {{ parseInt(parsedCsv.length) - 1 }} total Entries
+      End with record:
+      <input
+        type="number"
+        name="importLimit"
+        :min="importOffset"
+        :max="parsedCsv.length - 1"
+        class="import-limit"
+        v-model="importLimit"
+      />
     </span>
   </details>
 </template>
@@ -80,6 +100,19 @@ export default {
       exampleEntryLength: 25,
       checkedFields: store.state.checkedFields
     };
+  },
+  mounted () {
+    this.importLimit = this.parsedCsv.length - 1;
+  },
+  computed: {
+    importOffset: {
+      get: () => parseInt(store.state.importOffset),
+      set: value => store.commit("updateOffset", parseInt(value))
+    },
+    importLimit: {
+      get: () => parseInt(store.state.importLimit),
+      set: value => store.commit("updateLimit", parseInt(value))
+    }
   },
   methods: {
     updateCheckedFields() {

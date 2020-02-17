@@ -10,7 +10,7 @@ class VarBuilder
     // should match names in services/StringEdits.js
     private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize)|(formatDate))/';
     private static $string_pattern = '/^\"([\s\S]*?)\"/';
-    private static $csv_value_regex = '/{{([\w|\s|-]+?)}}/';
+    private static $csv_value_regex = '/{{([\w|\s|-|\.]+?)}}/';
     public static $code = "";
 
     public function __construct()
