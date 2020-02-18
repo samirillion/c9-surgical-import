@@ -27,12 +27,16 @@ Global Elements
   tr th,
   tr td,
   tfoot tr {
-    min-width: 130px;
+    min-width: 110px;
     border: 1px solid @dark;
     text-align: left;
     border-collapse: collapse;
     padding: 3px;
     text-align: center;
+  }
+  tr td:first-child,
+  tr th:first-child {
+    min-width: 20px;
   }
   tfoot tr td {
     colspan: "100%";
@@ -249,7 +253,8 @@ Import Fields Element
     margin-top: 4px;
     margin-bottom: 4px;
   }
-  .import-limit, .import-offset {
+  .import-limit,
+  .import-offset {
     width: 100px;
   }
   .import-list {

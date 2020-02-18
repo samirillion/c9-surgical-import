@@ -64,7 +64,7 @@ export default {
     return {
       valueOptions: [],
       postTypes: ["page", "post", "comment"],
-      checkedFields: store.state.checkedFields
+      csvFields: store.state.csvFields
     };
   },
   created() {
@@ -92,7 +92,7 @@ export default {
         });
       }
       if ("csvValue" === type)
-        this.valueOptions = this.checkedFields.map(option => {
+        this.valueOptions = this.csvFields.map(option => {
           return { key: option, value: option };
         });
       if ("stepId" === type)

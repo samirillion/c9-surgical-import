@@ -2,7 +2,7 @@
   <div class="import">
     <FileUploader @uploaded="onUpload" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <div v-if="checkedFields && checkedFields.length > 0">
+    <div v-if="csvFields && csvFields.length > 0">
       <hr />
       <div class="ifm-steps-and-vars">
         <ImportSteps />
@@ -106,9 +106,9 @@ export default {
     };
   },
   computed: {
-    checkedFields: {
-      get: () => store.state.checkedFields,
-      set: value => store.commit("updateCheckedFields", value)
+    csvFields: {
+      get: () => store.state.csvFields,
+      set: value => store.commit("updateCsvFields", value)
     },
     importState() {
       if (this.importComplete) {
@@ -173,8 +173,8 @@ export default {
       store.commit("setFileId", uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
-      this.checkedFields = [];
-      store.commit("updateCheckedFields", this.checkedFields);
+      this.csvFields = [];
+      store.commit("updateCsvFields", this.csvFields);
       this.allSelected = false;
     },
     async getObjectFromId(fileId) {
@@ -187,6 +187,7 @@ export default {
       axios.get(url).then(response => {
         this.rawCsv = response;
         this.parsedCsv = CsvToArray(response.data);
+        store.commit("updateCsvFields", this.parsedCsv[0]);
         store.state.csvLength = this.parsedCsv.length;
       });
     }

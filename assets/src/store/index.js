@@ -24,7 +24,7 @@ const getDefaultState = () => {
         setMap: [{ left: "post_type" }]
       }
     ],
-    checkedFields: [""],
+    csvFields: [],
     customVars: [
       {
         name: "Custom Var",
@@ -71,8 +71,8 @@ export default new Vuex.Store({
     setFileId(state, id) {
       state.uploadedFileId = id;
     },
-    updateCheckedFields(state, checkedFields) {
-      state.checkedFields = checkedFields;
+    updateCsvFields(state, csvFields) {
+      state.csvFields = csvFields;
     },
     addVar(state, index) {
       state.customVars.splice(index + 1, 0, {

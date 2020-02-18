@@ -3,12 +3,12 @@
   <!-- <codemirror v-model="code" :options="cmOptions"></codemirror> -->
   <div class="string-editor-wrapper">
     <div class="string-editor-header">
-      <div class="csv-value-dropdown" v-show="checkedFields.length > 0">
+      <div class="csv-value-dropdown" v-show="csvFields.length > 0">
         <button class="button-secondary" @click="toggleFields">
           Csv Value
         </button>
         <table class="form-table" v-show="fieldsToggled">
-          <tr valign="top" v-for="(field, index) in checkedFields" :key="index">
+          <tr valign="top" v-for="(field, index) in csvFields" :key="index">
             <td scope="row" @click="insert('{{' + field + '}}')">
               {{ field }}
             </td>
@@ -142,9 +142,9 @@ export default {
     customVar() {
       return store.state.customVars[this.index];
     },
-    checkedFields: {
+    csvFields: {
       get() {
-        return store.state.checkedFields;
+        return store.state.csvFields;
       }
     },
     codemirror() {

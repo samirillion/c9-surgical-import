@@ -117,7 +117,7 @@ export default {
   methods: {
     updateOptions(type) {
       if ("csvValue" === type) {
-        this.valueOptions = store.state.checkedFields;
+        this.valueOptions = store.state.csvFields;
       } else {
         this.valueOptions = [];
       }

@@ -23,25 +23,12 @@
         <tbody>
           <tr>
             <th>
-              <input
-                type="checkbox"
-                name="select-all"
-                @change="toggleSelect"
-                v-model="allSelected"
-              />
-              <label for="select-all">Select all</label>
+              <label for="select-all">#</label>
             </th>
             <th
               v-for="(column, columnIndex) in parsedCsv[0]"
               :key="columnIndex"
             >
-              <input
-                type="checkbox"
-                :name="column"
-                :value="column"
-                v-model="checkedFields"
-                @change="updateCheckedFields"
-              />
               <label :for="column">{{ column }} ({{ columnIndex }})</label>
             </th>
           </tr>
@@ -50,7 +37,7 @@
             v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
             :key="exampleIndex"
           >
-            <td></td>
+            <td>{{ exampleIndex }}</td>
             <td v-for="(td, tdIndex) in example" :key="tdIndex">
               <div class="cell-content" style="height:100%;width:100%;">
                 {{ td.substring(0, exampleEntryLength) }}
@@ -98,10 +85,10 @@ export default {
       allSelected: false,
       exampleEntries: 1,
       exampleEntryLength: 25,
-      checkedFields: store.state.checkedFields
+      csvFields: store.state.csvFields
     };
   },
-  mounted () {
+  mounted() {
     this.importLimit = this.parsedCsv.length - 1;
   },
   computed: {
@@ -112,20 +99,6 @@ export default {
     importLimit: {
       get: () => parseInt(store.state.importLimit),
       set: value => store.commit("updateLimit", parseInt(value))
-    }
-  },
-  methods: {
-    updateCheckedFields() {
-      store.commit("updateCheckedFields", this.checkedFields);
-    },
-    toggleSelect() {
-      if (!this.allSelected) {
-        this.checkedFields = [];
-        store.commit("updateCheckedFields", this.checkedFields);
-      } else {
-        this.checkedFields = this.parsedCsv[0];
-        store.commit("updateCheckedFields", this.checkedFields);
-      }
     }
   }
 };
