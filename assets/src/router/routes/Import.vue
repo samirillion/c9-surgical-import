@@ -7,9 +7,9 @@
       <div class="ifm-steps-and-vars">
         <ImportSteps />
         <div class="submit-wrapper">
-          <button class="button button-secondary" @click="validateInput">
+          <!-- <button class="button button-secondary" @click="validateInput">
             Validate Input
-          </button>
+          </button> -->
           <button
             class="button button-primary"
             @click="handleImport"
@@ -127,7 +127,7 @@ export default {
       this.showModal = true;
       this.importComplete = false;
       this.err = false;
-      this.getProgress();
+      // this.getProgress();
       this.runImport();
     },
     timeout(ms) {

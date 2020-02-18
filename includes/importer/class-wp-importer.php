@@ -119,7 +119,6 @@ class WpImporter
 
     public function evaluate($mapRow)
     {
-
         $value = $mapRow->right;
         $type = $mapRow->type;
         // '@' denotes a reference to a value previously set by the import 
