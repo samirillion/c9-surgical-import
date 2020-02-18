@@ -7,6 +7,7 @@ Variables
 @lightest-grey: #f9f9f9;
 @blue: #007cba;
 @red: #a11;
+@error: lighten(@red, 10%);
 /** 
 Global Elements
 **/
@@ -682,5 +683,15 @@ Ifm Steps
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+  }
+  .record-out {
+    border-top: 1px solid @lighter-grey;
+    border-bottom: 1px solid @lighter-grey;
+    padding: 10px;
+  }
+  .record-out .failed {
+    background: @error;
+    padding: 5px;
+    color: white;
   }
 }

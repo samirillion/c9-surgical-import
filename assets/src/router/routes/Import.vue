@@ -25,20 +25,27 @@
           <details open>
             <summary>Progress : {{ importState }} </summary>
             <div class="modal-details-body">
-              <span
+              <div
                 v-for="(record, recordIndex) in progress"
                 :key="recordIndex"
+                class="record-out"
               >
                 {{
                   Math.round(
-                    (parseInt(recordIndex) / (parsedCsv.length - 1)) * 100
+                    (parseInt(recordIndex) / (parseInt(importLimit) - 1)) * 100
                   )
                 }}% Record: {{ parseInt(recordIndex) }}/{{
-                  parsedCsv.length - 1
+                  parseInt(importLimit) - 1
                 }}
 
-                <div v-for="(step, stepIndex) in record" :key="stepIndex">
-                  Step id: {{ step.id }} Success:
+                {{ parseInt(importLimit) }}
+
+                <div
+                  v-for="(step, stepIndex) in record"
+                  v-bind:class="{ failed: !step.success }"
+                  :key="stepIndex"
+                >
+                  <b>Step id:</b> {{ step.id }} <b>Success:</b>
                   {{ step.success ? "true" : "false" }}
                   <div
                     v-show="step.get"
@@ -55,7 +62,7 @@
                     <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
                   </div>
                 </div>
-              </span>
+              </div>
             </div>
           </details>
         </template>
@@ -106,6 +113,9 @@ export default {
     };
   },
   computed: {
+    importLimit() {
+      return store.state.importLimit;
+    },
     csvFields: {
       get: () => store.state.csvFields,
       set: value => store.commit("updateCsvFields", value)
@@ -131,7 +141,7 @@ export default {
       this.showModal = true;
       this.importComplete = false;
       this.err = false;
-      // this.getProgress();
+      this.getProgress();
       this.runImport();
     },
     timeout(ms) {
@@ -166,7 +176,8 @@ export default {
         this.parseProgress(request);
         this.importComplete = true;
       } catch (err) {
-        this.err = err;
+        console.log(err.rawResponse);
+        this.err = JSON.parse(err);
       }
     },
     async onUpload(uploadId) {

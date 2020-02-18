@@ -4,7 +4,8 @@ import {
   getUser,
   getPost,
   createUser,
-  createPost
+  createPost,
+  updateUser
 } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
@@ -24,7 +25,7 @@ let baseActions = [
     id: "update_user",
     displayName: "update user",
     getParams: getUser,
-    setParams: createUser
+    setParams: updateUser
   },
   {
     id: "update_post",
@@ -44,7 +45,7 @@ let baseActions = [
   },
   {
     id: "taxonomy",
-    displayName: "add categories, tags, etc",
+    displayName: "add categories, tags, etc., to post",
     getParams: getPost,
     setParams: { custom: "taxonomies" }
   },

@@ -2,14 +2,31 @@ export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
   ID: "user id",
-  // user_slug: "user slug",
-  // user_email: "user email",
-  // user_login: "user login"
+  user_email: "user email",
+  user_login: "user login"
 };
 export const getPost = {
   ID: "post id",
-  // post_title: "post title",
-  // post_slug: " post slug"
+  post_title: "post title"
+};
+export const updateUser = {
+  user_pass: "user password",
+  user_login: "username",
+  user_nicename: "user nicename",
+  user_url: "user url",
+  user_email: "user email",
+  display_name: "user display name",
+  nickname: "user nickname",
+  first_name: "user first name",
+  last_name: "user last name",
+  description: "user description",
+  rich_editing: "rich editing",
+  user_registered: "user registered",
+  role: "role",
+  jabber: "jabber",
+  aim: "aim",
+  yim: "yim",
+  locale: "locale"
 };
 export const createUser = {
   user_pass: "user password (required)",

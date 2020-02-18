@@ -84,8 +84,8 @@ class WpImporter
 
 
                 $success = false;
-                xdebug_break();
-                if ($step_output) {
+
+                if (intval($step_output)) {
                     $success = true;
                 }
 
@@ -171,6 +171,26 @@ class WpImporter
         );
 
         return $post_id;
+    }
+
+    public function get_post()
+    {
+        xdebug_break();
+        $key = key(self::$step['get']);
+        switch ($key):
+            case 'ID':
+                return get_post(self::$step['get']->$key)->ID;
+                break;
+            case 'post_title':
+                return get_page_by_title(self::$step['get']->$key)->ID;
+                break;
+            default:
+                return 0;
+        endswitch;
+    }
+    public function get_user()
+    {
+        return "cool";
     }
 
     public function update_post()
