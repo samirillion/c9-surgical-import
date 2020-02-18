@@ -1,9 +1,10 @@
 <template>
   <div class="map-row">
+    <h2></h2>
     <div class="ifm-input-wrapper">
       <label for="mapRowLeft">Parameter</label>
       <input
-        v-if="action && action.id.endsWith('meta')"
+        v-if="null in params || 'string' === mapRow.left"
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"

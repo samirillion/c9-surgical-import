@@ -39,7 +39,7 @@
                 }}
                 <div
                   v-for="(step, stepIndex) in record"
-                  v-bind:class="{ failed: !step.success }"
+                  v-bind:class="{ progress: true, failed: !step.success }"
                   :key="stepIndex"
                 >
                   <b>Step id:</b> {{ step.id }} <b>Success:</b>

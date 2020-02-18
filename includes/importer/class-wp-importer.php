@@ -192,7 +192,7 @@ class WpImporter
     // }
     // public function get_user()
     // {
-    //     return "cool";
+    //     return "hello user";
     // }
 
     public function update_post()
@@ -217,8 +217,6 @@ class WpImporter
         return $user_id;
     }
 
-
-
     public function update_user_meta()
     {
         $user_id = self::$step['user_id'];
@@ -227,11 +225,6 @@ class WpImporter
         }
     }
 
-    // public function update_post($post_id)
-    // { }
-
-    // Working on this one now! Jan 2020
-
     public function add_post_terms()
     {
         $post_id = self::$step['get']['ID'];
@@ -239,6 +232,34 @@ class WpImporter
         try {
             foreach (self::$step['set'] as $taxonomy => $value) {
                 $taxonomy_obj[$value] = wp_set_object_terms($post_id, $value, $taxonomy, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function add_post_meta()
+    {
+        xdebug_break();
+        $post_id = self::$step['get']['ID'];
+        $meta_obj = array();
+        try {
+            foreach (self::$step['set'] as $meta_key => $meta_value) {
+                $meta_obj[$meta_key] = add_post_meta($post_id, $meta_value, $meta_key, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    public function add_user_meta()
+    {
+        $user_id = self::$step['get']['ID'];
+        $meta_obj = array();
+        try {
+            foreach (self::$step['set'] as $meta_value => $meta_key) {
+                $meta_obj[$meta_key] = add_user_meta($user_id, $meta_value, $meta_key, true);
             }
             return 1;
         } catch (\Exception $e) {
