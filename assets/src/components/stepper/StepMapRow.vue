@@ -43,7 +43,6 @@
           :options="valueOptions"
           v-model="mapRow.right"
           v-if="'string' !== mapRow.type"
-          :key="checkedFields.length"
         />
         <input type="text" name="mapRowRight" v-model="mapRow.right" v-else />
       </div>
@@ -64,17 +63,14 @@ export default {
   data() {
     return {
       valueOptions: [],
-      postTypes: ["page", "post", "comment"]
+      postTypes: ["page", "post", "comment"],
+      checkedFields: store.state.checkedFields
     };
   },
-  created () {
+  created() {
     this.getPostTypes();
   },
   computed: {
-    checkedFields: {
-      get: () => store.state.checkedFields,
-      set: value => store.commit("updateCheckedFields", value)
-    },
     stepIds: function() {
       return store.getters.stepIds.slice(
         0,

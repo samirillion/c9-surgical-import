@@ -47,6 +47,7 @@ class WpImporter
     {
         $attached_file = get_attached_file($file_id);
         $csv = Reader::createFromPath($attached_file, 'r');
+        // wp_delete_attachment($file_id);
         $csv->setHeaderOffset(0);
         self::$header = $csv->getHeader();
 
@@ -78,20 +79,22 @@ class WpImporter
                 $step_method = $step->action;
 
 
-                self::$ids[$step->id] = $this->$step_method();
+                $step_output = $this->$step_method();
+                self::$ids[$step->id] = $step_output;
 
 
-                if ($step->id) {
+                $success = false;
+                xdebug_break();
+                if ($step_output) {
                     $success = true;
-                } else {
-                    $success = false;
                 }
 
+                // slightly repetitive code, refactor at later date
                 $progress[$recordIndex][$stepIndex] = self::$step;
                 $progress[$recordIndex][$stepIndex]["id"] = $step->id;
-                $progress[$recordIndex][$stepIndex]["success"] = false;
+                $progress[$recordIndex][$stepIndex]["success"] = $success;
 
-                $progress_line = array($recordIndex => array("success" => $success, "id" => $step->id, "step" => self::$step));
+                $progress_line = array($recordIndex => array("id" => $step->id, "success" => $success,  "step" => self::$step));
                 set_transient("ifm_progress", $progress_line, 36000);
             }
         }
