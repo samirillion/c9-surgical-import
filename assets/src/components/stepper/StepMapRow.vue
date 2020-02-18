@@ -28,7 +28,7 @@
           >
           <option value="csvValue">csv value</option>
           <option v-if="stepIds.length > 0" value="stepId"
-            >previous step id</option
+            >previous step</option
           >
           <option value="string">string</option>
           <option value="customVar">complex value</option>

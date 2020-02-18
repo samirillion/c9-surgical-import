@@ -2,12 +2,12 @@ export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
   ID: "user id",
-  user_email: "user email",
-  user_login: "user login"
+  // user_email: "user email",
+  // user_login: "user login"
 };
 export const getPost = {
   ID: "post id",
-  post_title: "post title"
+  // post_title: "post title"
 };
 export const updateUser = {
   user_pass: "user password",

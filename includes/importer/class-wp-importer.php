@@ -173,25 +173,27 @@ class WpImporter
         return $post_id;
     }
 
-    public function get_post()
-    {
-        xdebug_break();
-        $key = key(self::$step['get']);
-        switch ($key):
-            case 'ID':
-                return get_post(self::$step['get']->$key)->ID;
-                break;
-            case 'post_title':
-                return get_page_by_title(self::$step['get']->$key)->ID;
-                break;
-            default:
-                return 0;
-        endswitch;
-    }
-    public function get_user()
-    {
-        return "cool";
-    }
+    // public function get_post()
+    // {
+    //     xdebug_break();
+    //     $key = key(self::$step['get']);
+    //     $value = self::$step['get'][$key];
+    //     switch ($key):
+    //         case 'ID':
+    //             return get_post($value)->ID;
+    //             break;
+    //         case 'post_title':
+    //             $post = get_page_by_title($value);
+    //             return $post->ID;
+    //             break;
+    //         default:
+    //             return 0;
+    //     endswitch;
+    // }
+    // public function get_user()
+    // {
+    //     return "cool";
+    // }
 
     public function update_post()
     {
@@ -215,6 +217,8 @@ class WpImporter
         return $user_id;
     }
 
+
+
     public function update_user_meta()
     {
         $user_id = self::$step['user_id'];
@@ -228,14 +232,19 @@ class WpImporter
 
     // Working on this one now! Jan 2020
 
-    // public function add_post_terms()
-    // {
-    //     $post_id = self::$step['get']->ID;
-    //     foreach (self::$step['set'] as $mapRow) {
-    //         wp_set_object_terms($post_id, $mapRow->right, $mapRow->left, true);
-    //     }
-    //     $term_type = self::$step['term_type'];
-    // }
+    public function add_post_terms()
+    {
+        $post_id = self::$step['get']['ID'];
+        $taxonomy_obj = array();
+        try {
+            foreach (self::$step['set'] as $taxonomy => $value) {
+                $taxonomy_obj[$value] = wp_set_object_terms($post_id, $value, $taxonomy, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
     public function add_acf_meta()
     {

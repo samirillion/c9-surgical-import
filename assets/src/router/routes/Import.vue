@@ -32,14 +32,11 @@
               >
                 {{
                   Math.round(
-                    (parseInt(recordIndex) / (parseInt(importLimit) - 1)) * 100
+                    (parseInt(recordIndex) / parseInt(importLimit)) * 100
                   )
                 }}% Record: {{ parseInt(recordIndex) }}/{{
-                  parseInt(importLimit) - 1
+                  parseInt(importLimit)
                 }}
-
-                {{ parseInt(importLimit) }}
-
                 <div
                   v-for="(step, stepIndex) in record"
                   v-bind:class="{ failed: !step.success }"
@@ -52,14 +49,14 @@
                     v-for="(value, param) in step.get"
                     :key="param"
                   >
-                    <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                    <b>Get Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
                   </div>
                   <div
                     v-show="step.set"
                     v-for="(value, param) in step.set"
                     :key="param"
                   >
-                    <b>Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                    <b>Set Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
                   </div>
                 </div>
               </div>
@@ -141,7 +138,7 @@ export default {
       this.showModal = true;
       this.importComplete = false;
       this.err = false;
-      this.getProgress();
+      // this.getProgress();
       this.runImport();
     },
     timeout(ms) {
