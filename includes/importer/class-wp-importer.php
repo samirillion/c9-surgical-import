@@ -77,11 +77,21 @@ class WpImporter
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
 
+
                 self::$ids[$step->id] = $this->$step_method();
+
+
+                if ($step->id) {
+                    $success = true;
+                } else {
+                    $success = false;
+                }
 
                 $progress[$recordIndex][$stepIndex] = self::$step;
                 $progress[$recordIndex][$stepIndex]["id"] = $step->id;
-                $progress_line = array($recordIndex => array("id" => $step->id, "step" => self::$step));
+                $progress[$recordIndex][$stepIndex]["success"] = false;
+
+                $progress_line = array($recordIndex => array("success" => $success, "id" => $step->id, "step" => self::$step));
                 set_transient("ifm_progress", $progress_line, 36000);
             }
         }

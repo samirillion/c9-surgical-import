@@ -33,7 +33,8 @@
                   Math.round(
                     (parseInt(recordIndex) / (parsedCsv.length - 1)) * 100
                   )
-                }}% {{ parseInt(recordIndex) }}/{{ parsedCsv.length - 1 }}
+                }}% Record: {{ parseInt(recordIndex) }}/{{ parsedCsv.length - 1 }}
+                
                 <div v-for="(step, stepIndex) in record" :key="stepIndex">
                   {{ step.id }}
                   <div
