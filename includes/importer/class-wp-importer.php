@@ -269,7 +269,6 @@ class WpImporter
 
     public function add_featured_image()
     {
-        xdebug_break();
         $post_id = self::$step['get']['ID'];
         $image_url = self::$step['set']['url'] ? self::$step['set']['url'] : "";
         if (isset(self::$step['set']['url']) && "" !== self::$step['set']['url']) {
