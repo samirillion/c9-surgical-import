@@ -63,7 +63,7 @@ export const stringFunctions = [
   },
   {
     name: "replace",
-    insert: "replace(csv value, search, replacement)",
+    insert: "replace(string content, search, replacement)",
     description: "Replaces all occurrences of search in input by replacement"
   },
   {

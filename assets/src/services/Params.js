@@ -9,7 +9,7 @@ export const getUser = {
 export const addFeatured = {
   url: "image url (required)",
   default_url: "default image url",
-  description: "image description"
+  img_name: "image name"
 };
 export const getPost = {
   ID: "post id"

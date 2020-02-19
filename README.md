@@ -77,5 +77,5 @@ To the right, you'll see a dropdown for creating custom vars, which you can buil
 
 1. Clone this repository in your plugins folder.
 1. Run `npm install` and `composer install`
-1. To start developing, run `npm run start` 🤘
-1. For production build, run `npm run build` 👍
+1. To develop: run `npm run start`
+1. For production build, run `npm run build` and `composer install --save-dev`

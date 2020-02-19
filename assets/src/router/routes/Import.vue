@@ -138,7 +138,7 @@ export default {
       this.showModal = true;
       this.importComplete = false;
       this.err = false;
-      // this.getProgress();
+      this.getProgress();
       this.runImport();
     },
     timeout(ms) {
