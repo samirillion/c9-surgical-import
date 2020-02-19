@@ -5,7 +5,8 @@ import {
   getPost,
   createUser,
   createPost,
-  updateUser
+  updateUser,
+  addFeatured
 } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
@@ -15,6 +16,12 @@ let baseActions = [
     id: "create_post",
     displayName: "create post",
     setParams: createPost
+  },
+  {
+    id: "add_featured_image",
+    displayName: "add featured image",
+    getParams: getPost,
+    setParams: addFeatured
   },
   {
     id: "create_user",

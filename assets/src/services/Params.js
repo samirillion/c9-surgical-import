@@ -1,12 +1,18 @@
 export const postMeta = { post_id: "post id", meta_id: "meta id" };
 export const userMeta = { user_id: "user id", meta_id: "meta id" };
 export const getUser = {
-  ID: "user id",
+  ID: "user id"
   // user_email: "user email",
   // user_login: "user login"
 };
+
+export const addFeatured = {
+  url: "image url (required)",
+  default_url: "default image url",
+  description: "image description"
+};
 export const getPost = {
-  ID: "post id",
+  ID: "post id"
   // post_title: "post title"
 };
 export const updateUser = {
@@ -52,7 +58,7 @@ export const createPost = {
   post_author: "post author",
   post_name: "post name",
   post_type: "post type",
-  post_title: "post title",
+  post_title: "post title (required)",
   post_date: "post date",
   post_date_gmt: "post date gmt",
   post_content: "post content",
