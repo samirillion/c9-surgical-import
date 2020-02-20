@@ -1,6 +1,6 @@
 # Ideal Forum Importer
 
-Turn flat CSVs into complexly related data. Alpha version; powerful, but can be buggy.
+Turn flat CSVs into complexly related data. Alpha version; powerful, but under active development.
 
 ## Key Features
 
