@@ -9,9 +9,7 @@ Turn flat CSVs into complexly related data. Alpha version; powerful, but can be 
 
 ## Using the Plugin
 
-### Step 1: Upload to Wordpress and activate.
-
-Download the zip, upload to WordPress via the plugin installer and activate.
+### Step 1: Add to Wordpress and activate.
 
 ### Step 2: Upload CSV
 
