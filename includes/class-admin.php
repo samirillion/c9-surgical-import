@@ -29,7 +29,7 @@ class Admin
 
         if (current_user_can($capability)) {
             $submenu[$slug][] = array(__('Import', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/');
-            $submenu[$slug][] = array(__('Settings', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/settings');
+            // $submenu[$slug][] = array(__('Settings', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/settings');
         }
 
         add_action('load-' . $hook, [$this, 'init_hooks']);
@@ -54,7 +54,7 @@ class Admin
     public function localize_scripts()
     {
         wp_localize_script('ifm-importer-admin', 'WP_API_Settings', array(
-            'root' => esc_url_raw( rest_url() ),
+            'root' => esc_url_raw(rest_url()),
             'nonce' => wp_create_nonce('wp_rest')
         ));
     }

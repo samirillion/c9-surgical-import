@@ -11,11 +11,6 @@ export default new Router({
             path: '/',
             name: 'Import',
             component: Import
-        },
-        {
-            path: '/settings',
-            name: 'Settings',
-            component: Settings
-        },
+        }
     ]
 })

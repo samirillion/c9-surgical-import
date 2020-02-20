@@ -4,7 +4,7 @@ Turn flat CSVs into complexly related data. Alpha version; powerful, but can be 
 
 ## Key Features
 
-- "Remembers" data from previous steps, allowing you to dynamically create, get, and update posts with the CSV data.
+- "Remembers" data from previous steps, allowing you to dynamically create and update posts with the CSV data.
 - Custom scripting language for CSV value manipulation.
 
 ## Using the Plugin
@@ -78,4 +78,4 @@ To the right, you'll see a dropdown for creating custom vars, which you can buil
 1. Clone this repository in your plugins folder.
 1. Run `npm install` and `composer install`
 1. To develop: run `npm run start`
-1. For production build, run `npm run build` and `composer install --save-dev`
+1. For production build, run `npm run build` and `composer install --save-dev`, then change the asset names in `includes/class-assets.php` from admin.js to admin.min.js, etc.
