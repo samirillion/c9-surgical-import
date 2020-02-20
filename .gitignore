@@ -8,4 +8,4 @@ csv/*/vendor
 /nbproject/private/
 .DS_Store
 node_modules
-/assets/*.min.js
+/assets/**/*.min.js
