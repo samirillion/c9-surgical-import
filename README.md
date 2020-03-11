@@ -1,4 +1,4 @@
-# Ideal Forum Importer
+# WordPress Importer
 
 Turn flat CSVs into complexly related data. Alpha version; powerful, but under active development.
 
@@ -9,7 +9,7 @@ Turn flat CSVs into complexly related data. Alpha version; powerful, but under a
 
 ## Using the Plugin
 
-### Step 1: Add to Wordpress and activate.
+### Step 1: Add to WordPress and activate.
 
 ### Step 2: Upload CSV
 
