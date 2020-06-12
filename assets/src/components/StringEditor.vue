@@ -142,9 +142,9 @@ export default {
     customVar() {
       return store.state.customVars[this.index];
     },
-    checkedFields: {
+    csvFields: {
       get() {
-        return store.state.checkedFields;
+        return store.state.csvFields;
       }
     },
     codemirror() {
