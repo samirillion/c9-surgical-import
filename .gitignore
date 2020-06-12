@@ -3,6 +3,7 @@
 .phpunit.result.cache
 build
 composer.lock
+/vendor
 /vendorcsv/docs/_site
 csv/*/vendor
 /nbproject/private/
