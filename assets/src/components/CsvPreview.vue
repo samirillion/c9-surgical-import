@@ -1,48 +1,6 @@
 <template>
   <details open>
     <summary>Import fields (pick some!)</summary>
-    <div class="ifm-table-wrapper">
-      <table class="csv-table striped">
-        <tbody>
-          <tr>
-            <th>
-              <label for="select-all">Select all</label>
-              <input
-                type="checkbox"
-                name="select-all"
-                @change="toggleSelect"
-                v-model="allSelected"
-              />
-            </th>
-            <th
-              v-for="(column, columnIndex) in parsedCsv[0]"
-              :key="columnIndex"
-            >
-              <input
-                type="checkbox"
-                :name="column"
-                :value="column"
-                v-model="checkedFields"
-                @change="updateCheckedFields"
-              />
-              <label :for="column">{{ column }} ({{ columnIndex }})</label>
-            </th>
-          </tr>
-          <!-- prettier-ignore-attribute -->
-          <tr
-            v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
-            :key="exampleIndex"
-          >
-            <td></td>
-            <td v-for="(td, tdIndex) in example" :key="tdIndex">
-              <div class="cell-content" style="height:100%;width:100%;">
-                {{ td.substring(0, exampleEntryLength) }}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     <span class="preview-details" v-if="parsedCsv.length > 0">
       Previewing the first
       <input
@@ -54,11 +12,60 @@
       />
       characters of
       <select v-model="exampleEntries">
-        <option v-for="index in parsedCsv.length" :key="index">{{
+        <option v-for="index in parsedCsv.length - 1" :key="index">{{
           index
         }}</option>
       </select>
-      of {{ parsedCsv.length }} total Entries
+      of {{ parseInt(parsedCsv.length) - 1 }} total Entries
+    </span>
+    <div class="ifm-table-wrapper">
+      <table class="csv-table striped">
+        <tbody>
+          <tr>
+            <th>
+              <label for="select-all">#</label>
+            </th>
+            <th
+              v-for="(column, columnIndex) in parsedCsv[0]"
+              :key="columnIndex"
+            >
+              <label :for="column">{{ column }} ({{ columnIndex }})</label>
+            </th>
+          </tr>
+          <!-- prettier-ignore-attribute -->
+          <tr
+            v-for="(example, exampleIndex) in parsedCsv.slice(1, parseInt(exampleEntries) + 1)"
+            :key="exampleIndex"
+          >
+            <td>{{ exampleIndex }}</td>
+            <td v-for="(td, tdIndex) in example" :key="tdIndex">
+              <div class="cell-content" style="height:100%;width:100%;">
+                {{ td.substring(0, exampleEntryLength) }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="preview-details" v-if="parsedCsv.length > 0">
+      Start with record:
+      <input
+        type="number"
+        name="importOffset"
+        min="0"
+        :max="parsedCsv.length - 1"
+        class="import-offset"
+        v-model="importOffset"
+      />
+      End with record:
+      <input
+        type="number"
+        name="importLimit"
+        :min="importOffset"
+        :max="parsedCsv.length - 1"
+        class="import-limit"
+        v-model="importLimit"
+      />
     </span>
   </details>
 </template>
@@ -78,21 +85,20 @@ export default {
       allSelected: false,
       exampleEntries: 1,
       exampleEntryLength: 25,
-      checkedFields: store.state.checkedFields
+      csvFields: store.state.csvFields
     };
   },
-  methods: {
-    updateCheckedFields() {
-      store.commit("updateCheckedFields", this.checkedFields);
+  mounted() {
+    this.importLimit = this.parsedCsv.length - 1;
+  },
+  computed: {
+    importOffset: {
+      get: () => parseInt(store.state.importOffset),
+      set: value => store.commit("updateOffset", parseInt(value))
     },
-    toggleSelect() {
-      if (!this.allSelected) {
-        this.checkedFields = [];
-        store.commit("updateCheckedFields", this.checkedFields);
-      } else {
-        this.checkedFields = this.parsedCsv[0];
-        store.commit("updateCheckedFields", this.checkedFields);
-      }
+    importLimit: {
+      get: () => parseInt(store.state.importLimit),
+      set: value => store.commit("updateLimit", parseInt(value))
     }
   }
 };

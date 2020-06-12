@@ -5,19 +5,26 @@ Vue.use(Vuex);
 
 const getDefaultState = () => {
   return {
+    importOffset: 0,
+    importLimit: 0,
     uploadedFileId: null,
     csvLength: 1,
     stepIdCount: 1,
     varIdCount: 1,
+    import: {
+      error: false,
+      complete: false,
+      progress: ""
+    },
     steps: [
       {
         id: "create_post_1",
         action: "create_post",
         getMap: [{}],
-        setMap: [{}]
+        setMap: [{ left: "post_type" }]
       }
     ],
-    checkedFields: [""],
+    csvFields: [],
     customVars: [
       {
         name: "Custom Var",
@@ -52,14 +59,20 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateOffset(state, value) {
+      state.importOffset = value;
+    },
+    updateLimit(state, value) {
+      state.importLimit = value;
+    },
     incrementVarId(state) {
       state.varIdCount++;
     },
     setFileId(state, id) {
       state.uploadedFileId = id;
     },
-    updateCheckedFields(state, checkedFields) {
-      state.checkedFields = checkedFields;
+    updateCsvFields(state, csvFields) {
+      state.csvFields = csvFields;
     },
     addVar(state, index) {
       state.customVars.splice(index + 1, 0, {
@@ -120,7 +133,7 @@ export default new Vuex.Store({
         id: "create_post_" + state.stepIdCount,
         action: "create_post",
         getMap: [{}],
-        setMap: [{}]
+        setMap: [{ left: "post_type" }]
       });
     },
     removeStep(state, stepIndex) {

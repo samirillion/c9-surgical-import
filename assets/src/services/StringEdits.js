@@ -1,5 +1,39 @@
 // should match the regex specified in utils/IfmMode.js
+export const dateFormats = [
+  "Y-m-d",
+  "H:i:s",
+  "Y-m-d T H:i:s O",
+  "D, Y-m-d H:i:s O",
+  "l, Y-m-d H:i:s T",
+  "D, d M y H:i:s O",
+  "Y-m-dTH:i:sP",
+  "Y-m-dTH:i:s.vP",
+  "D, d M Y H:i:s O",
+  "Y-m-dTH:i:sP"
+];
 
+export const replaceExamples = [
+  {
+    name: "getDate",
+    insert: 'replace(date, "(d+)[-./](d+)[-./](d+)", "/1/2/3")',
+    description: "Extract date from string"
+  },
+  {
+    name: "getDate",
+    insert: "getDate(date)",
+    description: "Extract date from string"
+  },
+  {
+    name: "getDate",
+    insert: "getDate(date)",
+    description: "Extract date from string"
+  },
+  {
+    name: "getDate",
+    insert: "getDate(date)",
+    description: "Extract date from string"
+  }
+];
 export const stringFunctions = [
   {
     name: "text",
@@ -29,7 +63,7 @@ export const stringFunctions = [
   },
   {
     name: "replace",
-    insert: "replace(csv value, search, replacement)",
+    insert: "replace(string content, search, replacement)",
     description: "Replaces all occurrences of search in input by replacement"
   },
   {
@@ -48,5 +82,10 @@ export const stringFunctions = [
     insert: "titleize(input)",
     description:
       "Returns a trimmed string with the first letter of each word capitalized. Ignores connecting words"
+  },
+  {
+    name: "formatDate",
+    insert: "formatDate(date, dateFormat)",
+    description: "Parses the date the best it knows how"
   }
 ];

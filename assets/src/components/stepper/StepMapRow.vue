@@ -1,9 +1,10 @@
 <template>
   <div class="map-row">
+    <h2></h2>
     <div class="ifm-input-wrapper">
       <label for="mapRowLeft">Parameter</label>
       <input
-        v-if="action && action.id.endsWith('meta')"
+        v-if="null in params || 'string' === mapRow.left"
         type="text"
         name="mapRowLeft"
         v-model="mapRow.left"
@@ -28,7 +29,7 @@
           >
           <option value="csvValue">csv value</option>
           <option v-if="stepIds.length > 0" value="stepId"
-            >previous step id</option
+            >previous step</option
           >
           <option value="string">string</option>
           <option value="customVar">complex value</option>
@@ -43,7 +44,6 @@
           :options="valueOptions"
           v-model="mapRow.right"
           v-if="'string' !== mapRow.type"
-          :key="checkedFields.length"
         />
         <input type="text" name="mapRowRight" v-model="mapRow.right" v-else />
       </div>
@@ -64,17 +64,14 @@ export default {
   data() {
     return {
       valueOptions: [],
-      postTypes: ["page", "post", "comment"]
+      postTypes: ["page", "post", "comment"],
+      csvFields: store.state.csvFields
     };
   },
-  created () {
+  created() {
     this.getPostTypes();
   },
   computed: {
-    checkedFields: {
-      get: () => store.state.checkedFields,
-      set: value => store.commit("updateCheckedFields", value)
-    },
     stepIds: function() {
       return store.getters.stepIds.slice(
         0,
@@ -96,7 +93,7 @@ export default {
         });
       }
       if ("csvValue" === type)
-        this.valueOptions = this.checkedFields.map(option => {
+        this.valueOptions = this.csvFields.map(option => {
           return { key: option, value: option };
         });
       if ("stepId" === type)

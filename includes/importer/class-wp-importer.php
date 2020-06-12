@@ -8,12 +8,13 @@ use League\Csv\Statement;
 class WpImporter
 {
     public static $steps;
-    public static $step = "";
+    public static $step = null;
 
     public $file_path;
     public $limit;
     public $offset;
     public static $custom_vars;
+    public static $progress;
 
 
     public static $header;
@@ -46,6 +47,7 @@ class WpImporter
     {
         $attached_file = get_attached_file($file_id);
         $csv = Reader::createFromPath($attached_file, 'r');
+        // wp_delete_attachment($file_id);
         $csv->setHeaderOffset(0);
         self::$header = $csv->getHeader();
 
@@ -63,11 +65,12 @@ class WpImporter
 
     public function run()
     {
-        foreach (self::$records as $record) {
+        $progress = array();
+
+        foreach (self::$records as $recordIndex => $record) {
             self::$record = $record;
-            set_transient("ifm_record", $record, 3600);
             self::$ids = array();
-            foreach (self::$steps as $step) {
+            foreach (self::$steps as $stepIndex => $step) {
                 // set wet_map to map containing values drawn from
                 // csv records or posts/users created while processing record
                 self::$step = $this->hydrate($step);
@@ -75,10 +78,34 @@ class WpImporter
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
 
-                self::$ids[$step->id] = $this->$step_method();
+                xdebug_break();
+
+                $step_output = $this->$step_method();
+                self::$ids[$step->id] = $step_output;
+
+
+                $success = false;
+
+                if (intval($step_output)) {
+                    $success = true;
+                }
+
+                // slightly repetitive code, refactor at later date
+                $progress[$recordIndex][$stepIndex] = self::$step;
+                $progress[$recordIndex][$stepIndex]["id"] = $step->id;
+                $progress[$recordIndex][$stepIndex]["success"] = $success;
+
+                $progress_line = array($recordIndex => array($stepIndex => array("id" => $step->id, "success" => $success, self::$step)));
+                set_transient("ifm_progress", $progress_line, 36000);
             }
-            sleep(1);
         }
+        return json_encode(
+            array(
+                "complete" => true,
+                "progress" => $progress,
+                "err" => get_transient("ifm_error"),
+            )
+        );
     }
 
 
@@ -106,7 +133,6 @@ class WpImporter
 
     public function evaluate($mapRow)
     {
-
         $value = $mapRow->right;
         $type = $mapRow->type;
         // '@' denotes a reference to a value previously set by the import 
@@ -148,6 +174,28 @@ class WpImporter
         return $post_id;
     }
 
+    // public function get_post()
+    // {
+    //     xdebug_break();
+    //     $key = key(self::$step['get']);
+    //     $value = self::$step['get'][$key];
+    //     switch ($key):
+    //         case 'ID':
+    //             return get_post($value)->ID;
+    //             break;
+    //         case 'post_title':
+    //             $post = get_page_by_title($value);
+    //             return $post->ID;
+    //             break;
+    //         default:
+    //             return 0;
+    //     endswitch;
+    // }
+    // public function get_user()
+    // {
+    //     return "hello user";
+    // }
+
     public function update_post()
     {
         $post_id = 0;
@@ -178,19 +226,105 @@ class WpImporter
         }
     }
 
-    // public function update_post($post_id)
-    // { }
+    public function add_post_terms()
+    {
+        $post_id = self::$step['get']['ID'];
+        $taxonomy_obj = array();
+        try {
+            foreach (self::$step['set'] as $taxonomy => $value) {
+                $taxonomy_obj[$value] = wp_set_object_terms($post_id, $value, $taxonomy, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
-    // Working on this one now! Jan 2020
+    public function add_post_meta()
+    {
+        $post_id = self::$step['get']['ID'];
+        $meta_obj = array();
+        try {
+            foreach (self::$step['set'] as $meta_key => $meta_value) {
+                $meta_obj[$meta_key] = add_post_meta($post_id, $meta_value, $meta_key, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    public function add_user_meta()
+    {
+        $user_id = self::$step['get']['ID'];
+        $meta_obj = array();
+        try {
+            foreach (self::$step['set'] as $meta_value => $meta_key) {
+                $meta_obj[$meta_key] = add_user_meta($user_id, $meta_value, $meta_key, true);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
-    // public function add_post_terms()
-    // {
-    //     $post_id = self::$step['get']->ID;
-    //     foreach (self::$step['set'] as $mapRow) {
-    //         wp_set_object_terms($post_id, $mapRow->right, $mapRow->left, true);
-    //     }
-    //     $term_type = self::$step['term_type'];
-    // }
+    public function add_featured_image()
+    {
+        $post_id = self::$step['get']['ID'];
+        $image_url = self::$step['set']['url'] ? self::$step['set']['url'] : "";
+
+        if (isset(self::$step['set']['url']) && "" !== self::$step['set']['url']) {
+            $image_url = self::$step['set']['url'];
+        } elseif (isset(self::$step['set']['default_url']) && "" !== self::$step['set']['default_url']) {
+            $image_url = self::$step['set']['default_url'];
+        }
+
+        if (isset(self::$step['set']['img_desc']) && "" !== self::$step['set']['img_desc']) {
+            $image_desc = self::$step['set']['img_desc'];
+        } else {
+            $image_desc = basename($image_url);
+        }
+
+        $image_id = media_sideload_image($image_url, $post_id, $image_desc, 'id');
+
+
+        // $upload_dir       = wp_upload_dir(); // Set upload folder
+        // $image_data       = file_get_contents($image_url); // Get image data
+        // $unique_file_name = wp_unique_filename($upload_dir['path'], $image_desc); // Generate unique name
+        // $filename         = basename($unique_file_name); // Create image file name
+
+        // // Check folder permission and define file location
+        // if (wp_mkdir_p($upload_dir['path'])) {
+        //     $file = $upload_dir['path'] . '/' . $filename;
+        // } else {
+        //     $file = $upload_dir['basedir'] . '/' . $filename;
+        // }
+
+        // // Create the image  file on the server
+        // file_put_contents($file, $image_data);
+
+        // // Check image file type
+        // $wp_filetype = wp_check_filetype($filename, null);
+
+        // // Set attachment data
+        // $attachment = array(
+        //     'post_mime_type' => $wp_filetype['type'],
+        //     'post_title'     => sanitize_file_name($filename),
+        //     'post_content'   => '',
+        //     'post_status'    => 'inherit'
+        // );
+
+        // // Create the attachment
+        // $attach_id = wp_insert_attachment($attachment, $image, $post_id);
+
+        // // Define attachment metadata
+        // $attach_data = wp_generate_attachment_metadata($attach_id, $file);
+
+        // // Assign metadata to attachment
+        // wp_update_attachment_metadata($attach_id, $attach_data);
+
+        // And finally assign featured image to post
+        return set_post_thumbnail($post_id, $image_id);
+    }
 
     public function add_acf_meta()
     {

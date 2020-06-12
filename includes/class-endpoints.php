@@ -23,7 +23,7 @@ class ENDPOINTS
             'callback' => [new Import, 'run'],
             'validate_callback' => function ($param, $request, $key) {
                 // ifm_tasklist_add_validation_logic
-                return true;
+                return current_user_can('manage_options');
             }
         ));
 
@@ -85,11 +85,7 @@ class ENDPOINTS
         register_rest_route($this->namespace, '/preview-custom-var', array(
             'methods' => 'GET',
             'callback' => [new Import, 'preview_custom_var'],
-            'permission_callback' => [$this, 'is_admin'],
-            'validate_callback' => function ($param, $request, $key) {
-                // ifm_tasklist_add_validation_logic
-                return true;
-            }
+            'permission_callback' => [$this, 'is_admin']
         ));
     }
 
@@ -132,7 +128,7 @@ class ENDPOINTS
     public function get_acf_fields()
     {
         $options = array();
-        $field_groups = acf_get_field_groups();
+        $field_groups = function_exists('acf_get_field_groups') ? \acf_get_field_groups() : array();
         foreach ($field_groups as $group) {
             // DO NOT USE here: $fields = acf_get_fields($group['key']);
             // because it causes repeater field bugs and returns "trashed" fields

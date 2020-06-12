@@ -2,14 +2,14 @@
   <div class="import">
     <FileUploader @uploaded="onUpload" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <div v-if="checkedFields && checkedFields.length > 0">
+    <div v-if="csvFields && csvFields.length > 0">
       <hr />
       <div class="ifm-steps-and-vars">
         <ImportSteps />
         <div class="submit-wrapper">
-          <button class="button button-secondary" @click="validateInput">
+          <!-- <button class="button button-secondary" @click="validateInput">
             Validate Input
-          </button>
+          </button> -->
           <button
             class="button button-primary"
             @click="handleImport"
@@ -18,9 +18,57 @@
             Run Import
           </button>
         </div>
-        <h3>{{ progress }}</h3>
       </div>
       <VarBuilder />
+      <ProgressModal v-if="showModal" @close="showModal = false">
+        <template v-slot:body>
+          <details open>
+            <summary>Progress : {{ importState }} </summary>
+            <div class="modal-details-body">
+              <div
+                v-for="(record, recordIndex) in progress"
+                :key="recordIndex"
+                class="record-out"
+              >
+                {{
+                  Math.round(
+                    (parseInt(recordIndex) / parseInt(importLimit)) * 100
+                  )
+                }}% Record: {{ parseInt(recordIndex) }}/{{
+                  parseInt(importLimit)
+                }}
+                <div
+                  v-for="(step, stepIndex) in record"
+                  v-bind:class="{ progress: true, failed: !step.success }"
+                  :key="stepIndex"
+                >
+                  <b>Step id:</b> {{ step.id }} <b>Success:</b>
+                  {{ step.success ? "true" : "false" }}
+                  <div
+                    v-show="step.get"
+                    v-for="(value, param) in step.get"
+                    :key="param"
+                  >
+                    <b>Get Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                  </div>
+                  <div
+                    v-show="step.set"
+                    v-for="(value, param) in step.set"
+                    :key="param"
+                  >
+                    <b>Set Parameter:</b> {{ param }} <b>Value:</b> {{ value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </template>
+        <template v-slot:footer>
+          <button class="button-primary" @click="closeModal">
+            x
+          </button>
+        </template>
+      </ProgressModal>
     </div>
   </div>
 </template>
@@ -36,6 +84,7 @@ import FileUploader from "@/components/FileUploader.vue";
 import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
+import ProgressModal from "@/components/ProgressModal.vue";
 
 export default {
   name: "Import",
@@ -43,7 +92,8 @@ export default {
     FileUploader,
     ImportSteps,
     VarBuilder,
-    CsvPreview
+    CsvPreview,
+    ProgressModal
   },
   data() {
     return {
@@ -52,21 +102,42 @@ export default {
       rawCsv: {},
       parsedCsv: [],
       inputValid: true,
-      progress: "",
-      importComplete: false
+      progress: null,
+      importComplete: false,
+      requestContent: "",
+      showModal: false,
+      err: false
     };
   },
   computed: {
-    checkedFields: {
-      get: () => store.state.checkedFields,
-      set: value => store.commit("updateCheckedFields", value)
+    importLimit() {
+      return store.state.importLimit;
+    },
+    csvFields: {
+      get: () => store.state.csvFields,
+      set: value => store.commit("updateCsvFields", value)
+    },
+    importState() {
+      if (this.importComplete) {
+        return "Complete";
+      } else if (this.err) {
+        return this.err;
+      }
+      return "Pending";
     }
   },
   methods: {
+    closeModal() {
+      this.showModal = false;
+      this.progress = "";
+    },
     validateInput() {
       this.inputValid = true;
     },
     async handleImport() {
+      this.showModal = true;
+      this.importComplete = false;
+      this.err = false;
       this.getProgress();
       this.runImport();
     },
@@ -74,27 +145,44 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     async getProgress() {
-      while (false === this.importComplete) {
-        await this.timeout(500);
+      while (false === this.importComplete && false === this.err) {
         let state = await WpApi.getProgress().auth();
-        this.progress = state;
+        this.parseProgress(state);
+        await this.timeout(200);
       }
-      this.progress = "Complete!";
+    },
+    parseProgress(state) {
+      state = JSON.parse(state);
+
+      if (state.err) {
+        this.err = state.err;
+      }
+      if (false === this.importComplete) {
+        this.progress = state.progress;
+      }
     },
     async runImport() {
-      await WpApi.auth()
-        .runImport()
-        .param("upload_object", this.uploadObject)
-        .param("import_steps", store.getters.jsonSteps)
-        .param("import_vars", store.getters.jsonVars);
-      this.importComplete = true;
+      try {
+        let request = await WpApi.auth()
+          .runImport()
+          .param("upload_object", this.uploadObject)
+          .param("import_steps", store.getters.jsonSteps)
+          .param("import_vars", store.getters.jsonVars)
+          .param("offset", store.state.importOffset)
+          .param("limit", store.state.importLimit);
+        this.parseProgress(request);
+        this.importComplete = true;
+      } catch (err) {
+        console.log(err.rawResponse);
+        this.err = JSON.parse(err);
+      }
     },
     async onUpload(uploadId) {
       store.commit("setFileId", uploadId);
       const uploadObject = await this.getObjectFromId(uploadId);
       this.downloadFromUrl(this.uploadObject.guid.rendered);
-      this.checkedFields = [];
-      store.commit("updateCheckedFields", this.checkedFields);
+      this.csvFields = [];
+      store.commit("updateCsvFields", this.csvFields);
       this.allSelected = false;
     },
     async getObjectFromId(fileId) {
@@ -107,6 +195,7 @@ export default {
       axios.get(url).then(response => {
         this.rawCsv = response;
         this.parsedCsv = CsvToArray(response.data);
+        store.commit("updateCsvFields", this.parsedCsv[0]);
         store.state.csvLength = this.parsedCsv.length;
       });
     }

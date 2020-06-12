@@ -4,7 +4,9 @@ import {
   getUser,
   getPost,
   createUser,
-  createPost
+  createPost,
+  updateUser,
+  addFeatured
 } from "@/services/Params";
 import { WpApi } from "@/services/WpApi";
 
@@ -16,6 +18,12 @@ let baseActions = [
     setParams: createPost
   },
   {
+    id: "add_featured_image",
+    displayName: "add featured image",
+    getParams: getPost,
+    setParams: addFeatured
+  },
+  {
     id: "create_user",
     displayName: "create user",
     setParams: createUser
@@ -24,7 +32,7 @@ let baseActions = [
     id: "update_user",
     displayName: "update user",
     getParams: getUser,
-    setParams: createUser
+    setParams: updateUser
   },
   {
     id: "update_post",
@@ -32,19 +40,19 @@ let baseActions = [
     getParams: getPost,
     setParams: createPost
   },
+  // {
+  //   id: "get_post",
+  //   displayName: "get post",
+  //   getParams: getPost
+  // },
+  // {
+  //   id: "get_user",
+  //   displayName: "get user",
+  //   getParams: getUser
+  // },
   {
-    id: "get_post",
-    displayName: "get post",
-    getParams: getPost
-  },
-  {
-    id: "get_user",
-    displayName: "get user",
-    getParams: getUser
-  },
-  {
-    id: "taxonomy",
-    displayName: "add categories, tags, etc",
+    id: "add_post_terms",
+    displayName: "add categories, tags, etc., to post",
     getParams: getPost,
     setParams: { custom: "taxonomies" }
   },

@@ -8,9 +8,9 @@ use function Stringy\create as s;
 class VarBuilder
 {
     // should match names in services/StringEdits.js
-    private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize))/';
+    private static $string_functions = '/^((toLower)|(trim)|(toUpper)|(humanize)|(replace)|(htmlDecode)|(htmlEncode)|(titleize)|(formatDate))/';
     private static $string_pattern = '/^\"([\s\S]*?)\"/';
-    private static $csv_value_regex = '/{{([\w|\s|-]+?)}}/';
+    private static $csv_value_regex = '/{{([\w|\s|-|\.]+?)}}/';
     public static $code = "";
 
     public function __construct()
@@ -37,8 +37,6 @@ class VarBuilder
 
     public static function get_csv_values($code, $record)
     {
-        xdebug_break();
-
         $csv_values = array();
         preg_match_all(self::$csv_value_regex, $code, $matches, PREG_PATTERN_ORDER);
 
@@ -54,7 +52,6 @@ class VarBuilder
 
     public static function parse($parsed)
     {
-
         if (")" == self::$code->first(1)) {
 
             self::$code = self::$code->substr(1);
@@ -109,11 +106,22 @@ class VarBuilder
         }
     }
 
+    private static function formatDate($args)
+    {
+        $array = s($args)->split(",,args,,");
+        if (is_array($array) && count($array) === 2) {
+            $d = new \DateTime($array[0]);
+            return $d->format($array[1]);
+        } else {
+            return "";
+        }
+    }
+
     private static function replace($args)
     {
         $array = s($args)->split(",,args,,");
         if (is_array($array) && count($array) === 3) {
-            return s($array[0])->replace($array[1], $array[2]);
+            return s($array[0])->regexReplace(strval($array[1]), $array[2]);
         } else {
             return "";
         }

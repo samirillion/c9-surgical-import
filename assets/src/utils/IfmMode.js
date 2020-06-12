@@ -8,11 +8,11 @@ CodeMirror.defineSimpleMode("IfmScript", {
   // The start state contains the rules that are intially used
   start: [
     // The regex matches the token, the token property contains the type
-    { regex: /{{([\w|\s|-]+?)}}/, token: "variable" },
+    { regex: /{{([\w|\s|-|\.]+?)}}/, token: "variable" },
     { regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string" },
 
     {
-      regex: /(trim|toLower|toUpper|humanize|replace|htmlEncode|htmlDecode|titleize)\(\)?/,
+      regex: /(trim|toLower|toUpper|humanize|replace|htmlEncode|htmlDecode|titleize|formatDate)\(\)?/,
       token: "function",
       push: "args"
     },
@@ -27,7 +27,7 @@ CodeMirror.defineSimpleMode("IfmScript", {
     { regex: /[-+\/*(==)!]+/, token: "operator", next: "start" }
   ],
   args: [
-    { regex: /{{\w+}}(,\s?)?/, token: "variable_arg" },
+    { regex: /{{([\w|\s|-|\.]+?)}}/, token: "variable_arg" },
     {
       regex: /"(?:[^\\]|\\.)*?(?:"|$)/,
       token: "string_arg"

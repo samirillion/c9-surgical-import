@@ -9,5 +9,5 @@ csv/*/vendor
 /nbproject/private/
 .DS_Store
 node_modules
-
-/vendor/
+*.min.js
+*.min.css

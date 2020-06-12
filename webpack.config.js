@@ -5,6 +5,8 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 const config = require("./config.json");
 
@@ -74,6 +76,8 @@ plugins.push(
 
 // Differ settings based on production flag
 if (isProduction()) {
+  plugins.push(new BundleAnalyzerPlugin());
+
   plugins.push(
     new UglifyJsPlugin({
       sourceMap: true

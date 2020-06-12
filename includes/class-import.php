@@ -31,27 +31,48 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        delete_transient("ifm_progress");
+        set_transient("ifm_error", false, 3600);
+        set_transient("ifm_complete", false, 3600);
+        $importer = new WpImporter;
+
         $params = $request->get_params();
 
+        $offset = json_decode($params["offset"]);
+        $limit = json_decode($params["limit"]);
         $steps = json_decode($params["import_steps"]);
         $vars = json_decode($params["import_vars"]);
 
         $file_id = $params["upload_object"]["id"];
 
-        $importer = new WpImporter;
-
+        if (!$file_id) {
+            set_transient("ifm_error", "The importer cannot find a CSV");
+            wp_die("error");
+        }
+        if (0 === $limit) {
+            $limit -= 1;
+        }
         try {
-            $importer->setup($file_id, $steps, $vars);
-            $importer->run();
-            return json_encode(array("success"));
+            $importer->setup($file_id, $steps, $vars, $offset, $limit);
+            $output = $importer->run();
+            return $output;
+            set_transient("ifm_complete", true, 0);
         } catch (\Exception $e) {
-            return json_encode(array("Exception" => $e->getMessage()));
+            set_transient("ifm_error", $e->getMessage(), 0);
+            wp_die("error");
         }
     }
 
     public function get_progress()
     {
-        return get_transient("ifm_record")["Name"];
+        return json_encode(
+            array(
+                "complete" => get_transient("ifm_complete"),
+                "progress" => get_transient("ifm_progress"),
+                "err" => get_transient("ifm_error"),
+            ),
+            3
+        );
     }
 
     public function preview_custom_var(\WP_REST_Request $request)
@@ -62,7 +83,6 @@ class Import
         $limit = 1;
         $offset = intval($params["record_index"]);
         $code = $params["var_code"];
-
 
         $importer = new WpImporter;
 
@@ -78,7 +98,9 @@ class Import
 
         VarBuilder::$code = s($code);
 
-        return VarBuilder::parse("");
+        $output = VarBuilder::parse("");
+
+        return $output ? $output : _e("Something went wrong or you're passing an empty string");
     }
 
     public function get_edit_steps()
