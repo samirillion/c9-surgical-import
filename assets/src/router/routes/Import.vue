@@ -2,7 +2,8 @@
   <div class="import">
     <FileUploader @uploaded="onUpload" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <div v-if="csvFields && csvFields.length > 0">
+    <!-- replace v-if with: csvFields && csvFields.length > 0 -->
+    <div v-if="true">
       <hr />
       <div class="ifm-steps-and-vars">
         <ImportSteps />
