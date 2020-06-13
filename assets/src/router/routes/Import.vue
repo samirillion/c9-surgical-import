@@ -1,9 +1,16 @@
 <template>
   <div class="import">
-    <FileUploader @uploaded="onUpload" />
+    <fieldset>
+      <legend class="screen-reader-text"><span>Upload File?</span></legend>
+      <label for="upload_file">
+        <input name="upload_file" type="checkbox" v-model="uploadFile" />
+        <span>Upload File?</span>
+      </label>
+    </fieldset>
+    <FileUploader @uploaded="onUpload" v-if="uploadFile" />
+    <ImportWhile v-if="!uploadFile || (uploadFile && parsedCsv.length > 1)" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <!-- replace v-if with: csvFields && csvFields.length > 0 -->
-    <div v-if="true">
+    <div v-if="csvFields && csvFields.length > 0">
       <hr />
       <div class="ifm-steps-and-vars">
         <ImportSteps />
@@ -86,6 +93,7 @@ import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
 import ProgressModal from "@/components/ProgressModal.vue";
+import ImportWhile from "@/components/ImportWhile.vue";
 
 export default {
   name: "Import",
@@ -94,10 +102,12 @@ export default {
     ImportSteps,
     VarBuilder,
     CsvPreview,
-    ProgressModal
+    ProgressModal,
+    ImportWhile
   },
   data() {
     return {
+      uploadFile: 1,
       file: [],
       uploadObject: {},
       rawCsv: {},

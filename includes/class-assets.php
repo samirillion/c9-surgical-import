@@ -86,7 +86,7 @@ class Assets
             ],
             'ifm-importer-admin' => [
                 'src'       => IFM_IMPORT_ASSETS . '/js/admin.js',
-                'deps'      => ['jquery', 'ifm-importer-vendor'],
+                'deps'      => ['jquery', 'ifm-importer-vendor', 'wp-api'],
                 'version'   => filemtime(IFM_IMPORT_PATH . '/assets/js/admin.js'),
                 'in_footer' => true
             ]

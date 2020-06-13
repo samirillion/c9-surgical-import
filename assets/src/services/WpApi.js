@@ -6,7 +6,7 @@ var WPAPI = require("wpapi");
 var WpApi = new WPAPI({
   username: "sam",
   password: "sam",
-  endpoint: window.location.origin + "/wp-json",
+  endpoint: window.WP_API_Settings.root,
   nonce: window.WP_API_Settings.nonce
 });
 

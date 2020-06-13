@@ -56,7 +56,7 @@ export default {
       store.commit("addStep", stepIndex);
     },
     deleteStep(stepIndex) {
-      store.commit("removeStep", stepIndex);
+      store.commit("deleteStep", stepIndex);
     }
   }
 };

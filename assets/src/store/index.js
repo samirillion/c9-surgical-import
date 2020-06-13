@@ -136,7 +136,7 @@ export default new Vuex.Store({
         setMap: [{ left: "post_type" }]
       });
     },
-    removeStep(state, stepIndex) {
+    deleteStep(state, stepIndex) {
       state.steps.splice(stepIndex, 1);
     },
     addMapRow(state, stepMapArgs) {
