@@ -40,16 +40,16 @@ let baseActions = [
     getParams: getPost,
     setParams: createPost
   },
-  // {
-  //   id: "get_post",
-  //   displayName: "get post",
-  //   getParams: getPost
-  // },
-  // {
-  //   id: "get_user",
-  //   displayName: "get user",
-  //   getParams: getUser
-  // },
+  {
+    id: "get_post",
+    displayName: "get post (good for import loop)",
+    getParams: getPost
+  },
+  {
+    id: "get_user",
+    displayName: "get user (good for import loop)",
+    getParams: getUser
+  },
   {
     id: "add_post_terms",
     displayName: "add categories, tags, etc., to post",

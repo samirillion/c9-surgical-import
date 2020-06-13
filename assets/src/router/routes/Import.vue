@@ -8,12 +8,15 @@
       </label>
     </fieldset>
     <FileUploader @uploaded="onUpload" v-if="uploadFile" />
-    <ImportWhile v-if="!uploadFile || (uploadFile && parsedCsv.length > 1)" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <div v-if="csvFields && csvFields.length > 0">
+    <div v-if="(csvFields && csvFields.length > 0) || !uploadFile">
       <hr />
       <div class="ifm-steps-and-vars">
+        <!-- Where all the steps go -->
         <ImportSteps />
+
+        <!-- Define conditions for running import -->
+        <ImportLoop :parsedCsv="parsedCsv" />
         <div class="submit-wrapper">
           <!-- <button class="button button-secondary" @click="validateInput">
             Validate Input
@@ -93,7 +96,7 @@ import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
 import ProgressModal from "@/components/ProgressModal.vue";
-import ImportWhile from "@/components/ImportWhile.vue";
+import ImportLoop from "@/components/ImportLoop.vue";
 
 export default {
   name: "Import",
@@ -103,7 +106,7 @@ export default {
     VarBuilder,
     CsvPreview,
     ProgressModal,
-    ImportWhile
+    ImportLoop
   },
   data() {
     return {

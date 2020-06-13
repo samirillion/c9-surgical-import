@@ -54,8 +54,6 @@
 <script>
 import store from "@/store";
 
-import { getUser, getPost, createUser, createPost } from "@/services/Params";
-
 import { WpApi } from "@/services/WpApi";
 
 export default {

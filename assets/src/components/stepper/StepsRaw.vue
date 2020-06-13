@@ -5,6 +5,8 @@
     <pre>{{ vars }}</pre>
     <h4 style="margin:20px;">Steps</h4>
     <pre>{{ steps }}</pre>
+    <h4 style="margin:20px;">Import Loop</h4>
+    <pre>{{ loop }}</pre>
   </details>
 </template>
 
@@ -20,6 +22,9 @@ export default {
     },
     vars: function() {
       return store.state.customVars;
+    },
+    loop: function() {
+      return store.state.importLoop;
     }
   }
 };

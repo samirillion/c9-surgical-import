@@ -298,7 +298,8 @@ Ifm Steps
     background: @lightest-grey;
     border: 1px solid @lighter-grey;
   }
-  .type-and-value {
+  .type-and-value,
+  .ifm-loop-wrapper {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -314,6 +315,18 @@ Ifm Steps
       margin-top: 5px;
       background: @lightest-grey;
     }
+  }
+  .ifm-loop-wrapper {
+    padding: 10px;
+    margin: 10px;
+  }
+  .ifm-while-value {
+    display: flex;
+    align-items: flex-end;
+  }
+  .ifm-loop-wrapper .ifm-value-wrapper {
+    margin-top: 0;
+    flex-grow: 5;
   }
   .map-row {
     display: flex;

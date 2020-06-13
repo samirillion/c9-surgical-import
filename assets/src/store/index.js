@@ -25,6 +25,7 @@ const getDefaultState = () => {
       }
     ],
     csvFields: [],
+    importLoop: { left: "csv_rows", right: { offset: 1, limit: 1 } },
     customVars: [
       {
         name: "Custom Var",
