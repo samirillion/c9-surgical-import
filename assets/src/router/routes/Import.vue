@@ -1,10 +1,26 @@
 <template>
   <div class="import">
-    <ImportLoop :parsedCsv="parsedCsv" />
+    <div class="ifm-input-wrapper">
+      <label for="loopOptionLeft">Loop Through</label>
+      <select name="loopOptionLeft" v-model="loopOption.left">
+        <option
+          v-for="(paramValue, paramKey) in loopOptions"
+          :key="paramKey"
+          :value="paramKey"
+        >
+          {{ paramValue }}
+        </option>
+      </select>
+    </div>
 
-    <FileUploader @uploaded="onUpload" v-if="uploadFile" />
-    <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
-    <div v-if="(csvFields && csvFields.length > 0) || !uploadFile">
+    <LoopParams :loopOptionLeft="loopOption.left" :parsedCsv="parsedCsv" />
+
+    <FileUploader @uploaded="onUpload" v-if="'csv_rows' === loopOption.left" />
+    <div v-if="parsedCsv.length > 1 || 'csv_rows' !== loopOption.left">
+      <CsvPreview
+        v-if="parsedCsv.length > 1 && 'csv_rows' === loopOption.left"
+        :parsedCsv="parsedCsv"
+      />
       <hr />
       <div class="ifm-steps-and-vars">
         <!-- Where all the steps go -->
@@ -90,7 +106,7 @@ import VarBuilder from "@/components/VarBuilder.vue";
 import CsvPreview from "@/components/CsvPreview.vue";
 import ImportSteps from "@/components/stepper/ImportSteps.vue";
 import ProgressModal from "@/components/ProgressModal.vue";
-import ImportLoop from "@/components/ImportLoop.vue";
+import LoopParams from "@/components/LoopParams.vue";
 
 export default {
   name: "Import",
@@ -100,10 +116,16 @@ export default {
     VarBuilder,
     CsvPreview,
     ProgressModal,
-    ImportLoop
+    LoopParams
   },
   data() {
     return {
+      loopOptions: {
+        csv_rows: "csv rows",
+        integer: "a set number of times",
+        get_value: "the output of a 'get_' action"
+      },
+      loopOption: store.state.loopOption,
       uploadFile: 1,
       file: [],
       uploadObject: {},
