@@ -30,7 +30,7 @@
           <input
             type="number"
             name="loopOffset"
-            min="0"
+            min="1"
             :max="parsedCsv.length - 1"
             class="import-range"
             v-model="importLoop.right.offset"
@@ -39,7 +39,7 @@
           <input
             type="number"
             name="loopLimit"
-            min="0"
+            min="1"
             :max="parsedCsv.length"
             class="import-range"
             v-model="importLoop.right.limit"
@@ -50,9 +50,10 @@
           v-else-if="'integer' === importLoop.left"
           class="ifm-input-wrapper"
         >
-          <label for="importLimit">ImportLimit</label>
+          <label for="importLimit">Import Limit</label>
           <input
             type="number"
+            min="1"
             name="importLimit"
             class="import-limit"
             v-model="importLoop.right"
@@ -88,22 +89,24 @@ export default {
   data() {
     return {
       loopOptions: {
-        csv_rows: "csv rows",
         integer: "a set number of times",
-        get_value: "the output of a 'get_' action"
+        get_value: "the output of a 'get_' action",
+        csv_rows: "csv rows"
       },
       importLoop: store.state.importLoop,
       getIds: []
     };
   },
-  mounted() {
-    this.getIds = store.state.steps
-      .filter(option => {
-        return option.id.startsWith("get_");
-      })
-      .map(option => {
-        return { key: option, value: option };
-      });
+  created() {
+    let ids = store.state.steps.filter(option => {
+      return option.id.startsWith("get_");
+    });
+    this.getIds = ids.map(option => {
+      let obj = {};
+      obj.key = option.id;
+      obj.value = option.id;
+      return obj;
+    });
     this.importLoop.right.limit = this.parsedCsv.length;
     store.state.importLoop.right.limit = this.parsedCsv.length;
   },
@@ -117,7 +120,7 @@ export default {
             return option.id.startsWith("get_");
           })
           .map(option => {
-            return { key: option, value: option };
+            return { key: option.id, value: option.id };
           });
       }
       if ("csv_rows" === type) {

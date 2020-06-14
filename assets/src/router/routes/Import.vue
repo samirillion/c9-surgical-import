@@ -1,12 +1,7 @@
 <template>
   <div class="import">
-    <fieldset>
-      <legend class="screen-reader-text"><span>Upload File?</span></legend>
-      <label for="upload_file">
-        <input name="upload_file" type="checkbox" v-model="uploadFile" />
-        <span>Upload File?</span>
-      </label>
-    </fieldset>
+    <ImportLoop :parsedCsv="parsedCsv" />
+
     <FileUploader @uploaded="onUpload" v-if="uploadFile" />
     <CsvPreview v-if="parsedCsv.length > 1" :parsedCsv="parsedCsv" />
     <div v-if="(csvFields && csvFields.length > 0) || !uploadFile">
@@ -16,7 +11,6 @@
         <ImportSteps />
 
         <!-- Define conditions for running import -->
-        <ImportLoop :parsedCsv="parsedCsv" />
         <div class="submit-wrapper">
           <!-- <button class="button button-secondary" @click="validateInput">
             Validate Input
