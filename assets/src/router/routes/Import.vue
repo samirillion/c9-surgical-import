@@ -1,21 +1,21 @@
 <template>
   <div class="import">
-    <div class="ifm-input-wrapper">
-      <label for="loopOptionLeft">Loop Through</label>
-      <select name="loopOptionLeft" v-model="loopOption.left">
-        <option
-          v-for="(paramValue, paramKey) in loopOptions"
-          :key="paramKey"
-          :value="paramKey"
-        >
-          {{ paramValue }}
-        </option>
-      </select>
+    <div class="ifm-input-wrapper ifm-loop-wrapper">
+      <div class="ifm-input-wrapper">
+        <label for="loopOptionLeft">Loop Through</label>
+        <select name="loopOptionLeft" v-model="loopOption.left">
+          <option
+            v-for="(paramValue, paramKey) in loopOptions"
+            :key="paramKey"
+            :value="paramKey"
+          >
+            {{ paramValue }}
+          </option>
+        </select>
+      </div>
+      <LoopParams :loopOptionLeft="loopOption.left" :parsedCsv="parsedCsv" />
     </div>
-
-    <LoopParams :loopOptionLeft="loopOption.left" :parsedCsv="parsedCsv" />
-
-    <FileUploader @uploaded="onUpload" v-if="'csv_rows' === loopOption.left" />
+    <FileUploader @uploaded="onUpload" v-if="'csv_rowls' === loopOption.left" />
     <div v-if="parsedCsv.length > 1 || 'csv_rows' !== loopOption.left">
       <CsvPreview
         v-if="parsedCsv.length > 1 && 'csv_rows' === loopOption.left"
