@@ -15,7 +15,7 @@
       </div>
       <LoopParams :loopOptionLeft="loopOption.left" :parsedCsv="parsedCsv" />
     </div>
-    <FileUploader @uploaded="onUpload" v-if="'csv_rowls' === loopOption.left" />
+    <FileUploader @uploaded="onUpload" v-if="'csv_rows' === loopOption.left" />
     <div v-if="parsedCsv.length > 1 || 'csv_rows' !== loopOption.left">
       <CsvPreview
         v-if="parsedCsv.length > 1 && 'csv_rows' === loopOption.left"

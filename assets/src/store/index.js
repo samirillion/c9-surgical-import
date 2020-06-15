@@ -41,6 +41,18 @@ const state = getDefaultState();
 export default new Vuex.Store({
   state,
   getters: {
+    getIds: state => {
+      return state.steps
+        .filter(option => {
+          return option.id.startsWith("get_");
+        })
+        .map(option => {
+          let obj = {};
+          obj.key = option.id;
+          obj.value = option.id;
+          return obj;
+        });
+    },
     customVars: state => {
       return state.customVars.map(customVar => {
         return {

@@ -44,6 +44,7 @@
         index="value"
         :options="getIds"
         v-model="loopOption.right"
+        item-value="text"
       />
     </div>
   </div>
@@ -57,18 +58,28 @@ export default {
   props: ["parsedCsv", "loopOptionLeft"],
   data() {
     return {
-      loopOption: store.state.loopOption
+      loopOption: store.state.loopOption,
+      getIds: store.state.getIds
     };
   },
+  created() {
+    store.state.loopOption.right.limit = this.parsedCsv.length;
+  },
   watch: {
-    loopOptionLeft: function(newRight, oldRight) {
-      store.loopOption["right"] = newRight;
-      if ("csv_rows" === newRight) {
+    getIds: function(newVal, oldVal) {
+      this.getIds = store.stage.getIds;
+    },
+    parsedCsv: function(newVal, oldVal) {
+      store.state.loopOption.right.limit = newVal.length;
+    },
+    loopOptionLeft: function(newVal, oldVal) {
+      store.state.loopOption.right = newVal;
+      if ("csv_rows" === newVal) {
         store.state.loopOption.right = {};
         store.state.loopOption.right.offset = 1;
         store.state.loopOption.right.limit = this.parsedCsv.length;
       }
-      if ("get_value" === type) {
+      if ("get_value" === newVal) {
         this.getIds = store.state.steps
           .filter(option => {
             return option.id.startsWith("get_");
@@ -76,26 +87,12 @@ export default {
           .map(option => {
             return { key: option.id, value: option.id };
           });
+        store.state.loopOption.right = this.getIds[0];
+      }
+      if ("integer" === newVal) {
+        store.state.loopOption.right = 0;
       }
     }
-  },
-  created() {
-    this.getIds = store.state.steps
-      .filter(option => {
-        return option.id.startsWith("get_");
-      })
-      .map(option => {
-        let obj = {};
-        obj.key = option.id;
-        obj.value = option.id;
-        return obj;
-      });
-
-    this.loopOption.right.limit = this.parsedCsv.length;
-    store.state.loopOption.right.limit = this.parsedCsv.length;
-
-    this.loopOption.right.limit = this.parsedCsv.length;
-    store.state.loopOption.right.limit = this.parsedCsv.length;
   }
 };
 </script>

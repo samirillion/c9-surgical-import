@@ -79,19 +79,4 @@ class Admin
     {
         echo '<div class="wrap"><div id="vue-admin-app"></div></div>';
     }
-
-    // /**
-    //  * Register Rest Endpoints
-    //  *
-    //  * @param  array $endpoints
-    //  *
-    //  * @return void
-    //  */
-    // public function register_rest_routes()
-    // {
-    //     register_rest_route('ifm-importer/v1', '/author/(?P<id>\d+)', array(
-    //         'methods' => 'GET',
-    //         'callback' => $this->my_awesome_func
-    //     ));
-    // }
 }

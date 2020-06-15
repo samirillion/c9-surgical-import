@@ -110,7 +110,9 @@ export default {
           setParams: this.action.setParams
         });
       }
+      console.log(store.state.getIds);
     },
+
     addMapRow(mapLength) {
       store.commit("addMapRow", {
         stepIndex: this.stepIndex,

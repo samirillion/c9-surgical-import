@@ -24,7 +24,7 @@ export default {
       return store.state.customVars;
     },
     loop: function() {
-      return store.state.loopOptions;
+      return store.state.loopOption;
     }
   }
 };
