@@ -5,7 +5,7 @@ namespace IfmImport;
 use League\Csv\Reader;
 use League\Csv\Statement;
 
-class WpImporter
+class IfmImporter
 {
     public static $steps;
     public static $step = null;
@@ -77,8 +77,6 @@ class WpImporter
 
                 // run function specified in step, e.g., 'get_user_by_email'
                 $step_method = $step->action;
-
-                xdebug_break();
 
                 $step_output = $this->$step_method();
                 self::$ids[$step->id] = $step_output;

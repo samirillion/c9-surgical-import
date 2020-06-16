@@ -42,7 +42,7 @@ export default new Vuex.Store({
   state,
   getters: {
     getIds: state => {
-      return state.steps
+      let getIds = state.steps
         .filter(option => {
           return option.id.startsWith("get_");
         })
@@ -52,6 +52,8 @@ export default new Vuex.Store({
           obj.value = option.id;
           return obj;
         });
+      console.log(getIds);
+      return getIds;
     },
     customVars: state => {
       return state.customVars.map(customVar => {

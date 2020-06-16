@@ -42,12 +42,12 @@ let baseActions = [
   },
   {
     id: "get_post",
-    displayName: "get post (of import loop)",
+    displayName: "get post",
     getParams: getPost
   },
   {
     id: "get_user",
-    displayName: "get user (of import loop)",
+    displayName: "get user",
     getParams: getUser
   },
   {

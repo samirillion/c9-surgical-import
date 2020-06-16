@@ -199,7 +199,7 @@ export default {
           .param("import_steps", store.getters.jsonSteps)
           .param("import_vars", store.getters.jsonVars)
           .param("offset", store.state.importOffset)
-          .param("limit", store.state.importLimit);
+          .param("loop_option", store.state.loopOption);
         this.parseProgress(request);
         this.importComplete = true;
       } catch (err) {

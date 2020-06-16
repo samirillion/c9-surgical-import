@@ -6,7 +6,7 @@ namespace IfmImport;
 require_once 'importer/class-wp-importer.php';
 require_once 'importer/class-var-builder.php';
 
-use IfmImport\WpImporter;
+use IfmImport\IfmImporter;
 use IfmImport\VarBuilder;
 
 use function Stringy\create as s;
@@ -31,19 +31,22 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
+        xdebug_break();
         delete_transient("ifm_progress");
         set_transient("ifm_error", false, 3600);
         set_transient("ifm_complete", false, 3600);
-        $importer = new WpImporter;
 
-        $params = $request->get_params();
+        $importer    = new IfmImporter;
 
-        $offset = json_decode($params["offset"]);
-        $limit = json_decode($params["limit"]);
-        $steps = json_decode($params["import_steps"]);
-        $vars = json_decode($params["import_vars"]);
+        $params      = $request->get_params();
 
-        $file_id = $params["upload_object"]["id"];
+        $offset      = json_decode($params["offset"]);
+        $limit       = json_decode($params["limit"]);
+        $steps       = json_decode($params["import_steps"]);
+        $vars        = json_decode($params["import_vars"]);
+        $loop_option = json_decode($params["loop_option"]);
+
+        $file_id     = $params["upload_object"]["id"];
 
         if (!$file_id) {
             set_transient("ifm_error", "The importer cannot find a CSV");
@@ -84,7 +87,7 @@ class Import
         $offset = intval($params["record_index"]);
         $code = $params["var_code"];
 
-        $importer = new WpImporter;
+        $importer = new IfmImporter;
 
         $records = $importer->readCSV($file_id, $limit, $offset);
 

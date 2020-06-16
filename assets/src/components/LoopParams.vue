@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       loopOption: store.state.loopOption,
-      getIds: store.state.getIds
+      getIds: store.getters.getIds
     };
   },
   created() {
@@ -67,7 +67,7 @@ export default {
   },
   watch: {
     getIds: function(newVal, oldVal) {
-      this.getIds = store.stage.getIds;
+      this.getIds = store.state.getIds;
     },
     parsedCsv: function(newVal, oldVal) {
       store.state.loopOption.right.limit = newVal.length;

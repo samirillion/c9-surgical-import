@@ -110,7 +110,6 @@ export default {
           setParams: this.action.setParams
         });
       }
-      console.log(store.state.getIds);
     },
 
     addMapRow(mapLength) {
