@@ -3,7 +3,7 @@
 namespace IfmImport;
 
 // use IfmImport\CsvEdit;
-require_once 'importer/class-wp-importer.php';
+require_once 'importer/class-importer.php';
 require_once 'importer/class-var-builder.php';
 
 use IfmImport\IfmImporter;
@@ -31,7 +31,6 @@ class Import
 
     public function run(\WP_REST_Request $request)
     {
-        xdebug_break();
         delete_transient("ifm_progress");
         set_transient("ifm_error", false, 3600);
         set_transient("ifm_complete", false, 3600);

@@ -25,11 +25,12 @@ class Admin
         $capability = 'manage_options';
         $slug       = 'ifm-importer';
 
-        $hook = add_menu_page(__('Ifm Importer', 'textdomain'), __('Ifm Importer', 'textdomain'), $capability, $slug, [$this, 'plugin_page'], 'dashicons-networking');
+        $hook = add_menu_page(__('Ifm Importer', 'ifm'), __('Ifm Importer', 'ifm'), $capability, $slug, [$this, 'plugin_page'], 'dashicons-networking');
 
         if (current_user_can($capability)) {
-            $submenu[$slug][] = array(__('Import', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/');
-            // $submenu[$slug][] = array(__('Settings', 'textdomain'), $capability, 'admin.php?page=' . $slug . '#/settings');
+            $submenu[$slug][] = array(__('Import', 'ifm'), $capability, 'admin.php?page=' . $slug . '#/');
+            $submenu[$slug][] = array(__('Export', 'ifm'), $capability, 'admin.php?page=' . $slug . '#/export');
+            // $submenu[$slug][] = array(__('Settings', 'ifm'), $capability, 'admin.php?page=' . $slug . '#/settings');
         }
 
         add_action('load-' . $hook, [$this, 'init_hooks']);

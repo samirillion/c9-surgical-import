@@ -233,6 +233,8 @@ final class IFM_Importer_Plugin
     public function init_classes()
     {
 
+        require_once IFM_IMPORT_INCLUDES . '/exporter/class-exporter.php';
+
         if ($this->is_request('admin')) {
             $this->container['admin'] = new IfmImport\Admin();
         }
