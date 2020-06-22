@@ -203,7 +203,6 @@ export default {
         this.parseProgress(request);
         this.importComplete = true;
       } catch (err) {
-        console.log(err.rawResponse);
         this.err = JSON.parse(err);
       }
     },

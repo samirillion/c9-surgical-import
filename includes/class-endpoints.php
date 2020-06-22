@@ -42,6 +42,12 @@ class ENDPOINTS
             'callback' => [new Import, 'get_csv']
         ));
 
+        register_rest_route($this->namespace, '/stage-csv', array(
+            'methods' => 'GET',
+            'callback' => [new Import, 'stage_csv'],
+            'permission_callback' => [$this, 'is_admin']
+        ));
+
         register_rest_route($this->namespace, '/import-posts', array(
             'methods' => 'GET',
             'callback' => [new Import, 'run_import']
