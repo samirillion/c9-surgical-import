@@ -89,11 +89,11 @@ class Import
         $offset = intval($params["record_index"]);
         $code = $params["var_code"];
 
-        $importer = new IfmImporter;
-
         $file_path = get_attached_file($file_id);
 
-        $records = $importer->getCsvRecords($file_path, $limit, $offset);
+        $importer = new IfmImporter(array('file_path' => $file_path, 'limit' => $limit, 'offset' => $offset));
+
+        $records = $importer->getCsvRecords();
 
         // stupid way to get val from limit iterator
         foreach ($records as $record) {

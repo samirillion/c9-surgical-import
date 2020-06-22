@@ -21,6 +21,11 @@ $ana_steps = json_decode('[
         "right": "post_title"
       },
       {
+        "left": "post_status",
+        "type": "string",
+        "right": "publish"
+      },
+      {
         "left": "post_content",
         "type": "csvValue",
         "right": "post_content"
@@ -52,17 +57,28 @@ $ana_steps = json_decode('[
         "left": "epkb_post_type_1_category",
         "type": "csvValue",
         "right": "printer_type"
+      },
+      {
+        "left": "epkb_post_type_1_category",
+        "type": "csvValue",
+        "right": "printer_type"
       }
     ]
   }
 ]');
 
-$ana_importer = new IfmImporter(
-  array(
-    'file_path' => IFM_IMPORT_PATH . "/tmp/csv/support-export.csv",
-    'steps' => $ana_steps,
-    'limit' => 10,
-  )
-);
 
-// $ana_importer->run();
+// $ana_transient = 'my_onetime_check_2';
+// if (!get_transient($ana_transient)) {
+
+//   set_transient($ana_transient, 'locked', 600); // lock function for 10 Minutes
+
+//   $ana_importer = new IfmImporter(
+//     array(
+//       'file_path' => IFM_IMPORT_PATH . "/tmp/csv/support-export.csv",
+//       'steps' => $ana_steps,
+//       'limit' => 10,
+//     )
+//   );
+//   $ana_importer->run();
+// }
