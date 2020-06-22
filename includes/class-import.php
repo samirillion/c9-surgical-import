@@ -23,19 +23,11 @@ ini_set('memory_limit', '1024M');
 class Import
 {
 
-    protected $csv = null;
-    protected $edit_steps = [];
-    protected $import_steps = [];
-    protected $first_line = 0;
-    protected $last_line = -1;
-
     public function run(\WP_REST_Request $request)
     {
         delete_transient("ifm_progress");
         set_transient("ifm_error", false, 3600);
         set_transient("ifm_complete", false, 3600);
-
-        $importer    = new IfmImporter;
 
         $params      = $request->get_params();
 
@@ -43,7 +35,7 @@ class Import
         $limit       = json_decode($params["limit"]);
         $steps       = json_decode($params["import_steps"]);
         $vars        = json_decode($params["import_vars"]);
-        $loop_option = json_decode($params["loop_option"]);
+        // $loop_option = json_decode($params["loop_option"]);
 
         $file_id     = $params["upload_object"]["id"];
 
@@ -54,8 +46,20 @@ class Import
         if (0 === $limit) {
             $limit -= 1;
         }
+
+        $file_path = get_attached_file($file_id);
+
         try {
-            $importer->setup($file_id, $steps, $vars, $offset, $limit);
+            // Instantiate Importer with File Specification
+            $importer    = new IfmImporter(
+                array(
+                    'file_path' => $file_path,
+                    'steps' => $steps,
+                    'custom_vars' => $vars,
+                    'limit' => $limit,
+                    'offset' => $offset
+                )
+            );
             $output = $importer->run();
             return $output;
             set_transient("ifm_complete", true, 0);
@@ -79,7 +83,6 @@ class Import
 
     public function preview_custom_var(\WP_REST_Request $request)
     {
-
         $params = $request->get_params();
         $file_id = $params["upload_id"];
         $limit = 1;
@@ -88,7 +91,9 @@ class Import
 
         $importer = new IfmImporter;
 
-        $records = $importer->readCSV($file_id, $limit, $offset);
+        $file_path = get_attached_file($file_id);
+
+        $records = $importer->getCsvRecords($file_path, $limit, $offset);
 
         // stupid way to get val from limit iterator
         foreach ($records as $record) {

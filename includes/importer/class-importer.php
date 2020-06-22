@@ -26,11 +26,27 @@ class IfmImporter
     // maintain an array of ids to reference in later steps _on the same record_
     public static $ids = array();
 
-    public function __construct()
+    public function __construct($args = array())
     {
+        $args = array_merge(
+            array(
+                'file_path' => null,
+                'steps' => array(),
+                'custom_vars' => array(),
+                'limit' => -1,
+                'offset' => 0
+            ),
+            $args
+        );
+
+        self::$custom_vars = $args['custom_vars'];
+        self::$steps = $args['steps'];
+        $this->file_path = $args['file_path'];
+        $this->offset = $args['offset'];
+        $this->limit = $args['limit'];
     }
 
-    public function setup($file, $steps, $custom_vars, $offset = 0, $limit = -1)
+    public function run()
     {
         if (!ini_get("auto_detect_line_endings")) {
             ini_set("auto_detect_line_endings", '1');
@@ -38,33 +54,8 @@ class IfmImporter
 
         ini_set('memory_limit', '1024M');
 
-        self::$custom_vars = $custom_vars;
-        self::$steps = $steps;
-        $this->readCSV($file, $limit, $offset);
-    }
+        $this->getCsvRecords();
 
-    public function readCSV($file_id, $limit, $offset)
-    {
-        $attached_file = get_attached_file($file_id);
-        $csv = Reader::createFromPath($attached_file, 'r');
-        // wp_delete_attachment($file_id);
-        $csv->setHeaderOffset(0);
-        self::$header = $csv->getHeader();
-
-        if ($limit >= 0) {
-            $stmt = (new Statement())
-                ->offset($offset)
-                ->limit($limit);
-            self::$records = $stmt->process($csv);
-        } else {
-            self::$records = $csv->getRecords();
-        }
-
-        return self::$records;
-    }
-
-    public function run()
-    {
         $progress = array();
 
         foreach (self::$records as $recordIndex => $record) {
@@ -106,6 +97,23 @@ class IfmImporter
         );
     }
 
+    public function getCsvRecords()
+    {
+        $csv = Reader::createFromPath($this->file_path, 'r');
+        $csv->setHeaderOffset(0);
+        self::$header = $csv->getHeader();
+
+        if ($this->limit >= 0) {
+            $stmt = (new Statement())
+                ->offset($this->offset)
+                ->limit($this->limit);
+            self::$records = $stmt->process($csv);
+        } else {
+            self::$records = $csv->getRecords();
+        }
+
+        return self::$records;
+    }
 
     public function hydrate($step)
     {
@@ -230,7 +238,7 @@ class IfmImporter
         $taxonomy_obj = array();
         try {
             foreach (self::$step['set'] as $taxonomy => $value) {
-                $taxonomy_obj[$value] = wp_set_object_terms($post_id, $value, $taxonomy, true);
+                $taxonomy_obj[$value] = wp_set_object_terms($post_id, explode(",", $value), $taxonomy, true);
             }
             return 1;
         } catch (\Exception $e) {

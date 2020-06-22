@@ -73,10 +73,9 @@ class IfmExporter
 
     public function write_csv()
     {
-        $file_path = IFM_IMPORT_INCLUDES . '/exporter/' . $this->export_id . '.csv';
+        $file_path = IFM_IMPORT_INCLUDES . '/tmp/csv/' . $this->export_id . '.csv';
         if (!file_exists($file_path)) {
             try {
-
                 // Create CSV, Add Header
                 $writer = Writer::createFromPath($file_path, 'w+');
                 $writer->insertOne($this->header);
@@ -110,9 +109,3 @@ class IfmExporter
         }
     }
 }
-
-// IfmExporter::run('support-export', array(
-//     'post_type' => 'support',
-//     'post_status' => 'publish',
-//     'posts_per_page' => -1
-// ));
